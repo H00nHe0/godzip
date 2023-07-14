@@ -100,11 +100,11 @@
       </dependency>
             
       <!-- lib 폴더에 직접 추가 -->
-      <!-- <dependency>
+      <dependency>
          <groupId>javax.servlet</groupId>
          <artifactId>jstl</artifactId>
          <version>1.2</version>
-      </dependency> -->
+      </dependency>
       
       <!-- DB 관련 설정 -->
       
