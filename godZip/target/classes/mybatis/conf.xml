@@ -9,8 +9,9 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 	
-	<typeAliases></typeAliases>	
+	<typeAliases>
+  		<typeAlias type="com.hoon.app.member.vo.MemberVo" alias="memberVo"/>	
+	</typeAliases>	
 	
-	<mappers></mappers>
 	
 </configuration>

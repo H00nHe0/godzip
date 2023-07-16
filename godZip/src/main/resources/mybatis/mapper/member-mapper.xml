@@ -5,6 +5,37 @@
   
 <mapper namespace="member">
 	
+	<insert id="join">
+		INSERT INTO MEMBER_INFO
+		(
+		NO
+		,GRADE_NO
+		,ID
+		,PWD
+		,NICK
+		,ENROLL_DATE
+		,QUIT_YN
+		,IS_BLOCKED_YN
+		,LAST_VISIT
+		,TOTAL_VISIT
+		,LOGIN_TYPE
+		)
+		VALUES
+		(
+		SEQ_MEMBER_INFO_NO.NEXTVAL
+		, DEFAULT
+		, #{id}
+		, #{pwd}
+		, #{nick}
+		, DEFAULT
+		, DEFAULT
+		, DEFAULT
+		, SYSDATE
+		, DAFAULT
+		, 'WEB'
+		)
+	
+	</insert>
 	
 	
 </mapper>
