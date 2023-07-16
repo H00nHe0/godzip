@@ -46,10 +46,10 @@
 	          <c:if test="${empty mvo}">
 			      <ul class="navbar-nav navbar-right nav-underline">
 		            <li class="nav-item mx-3">
-		            	<a class="nav-link" href="${root}/loginForm"><dt class="text-muted fs-6 fw-bold">로그인<i class="bi bi-door-open"></i></dt></a>
+		            	<a class="nav-link" href="${root}/member/loginForm"><dt class="text-muted fs-6 fw-bold">로그인<i class="bi bi-door-open"></i></dt></a>
 	            	</li>
 		            <li class="nav-item mx-3">
-		            	<a class="nav-link" href="${root}/joinForm"><dt class="text-muted fs-6 fw-bold">회원가입<i class="bi bi-pen"></i></dt></a>
+		            	<a class="nav-link" href="${root}/member/joinForm"><dt class="text-muted fs-6 fw-bold">회원가입<i class="bi bi-pen"></i></dt></a>
 		            </li>
    		            <li class="nav-item mx-3">
 		            	<a class="nav-link" href="${root}/joinForm"><dt class="text-muted fs-6 fw-bold">For Businesses<i class="bi bi-briefcase-fill"></i></dt></a>
