@@ -24,4 +24,20 @@ public class MemberService {
 
 	}
 
+	public MemberVo nickDupChk(String nick) {
+		return dao.nickDupChk(sst,nick);
+	}
+
+	public MemberVo idDupChk(String id) {
+		return dao.idDupChk(sst,id);
+	}
+
+	public MemberVo login(MemberVo mvo) {
+		return dao.login(sst,mvo);
+	}
+
+	public MemberVo myPagePwdChk(String loginId, String pwd) {
+		return dao.myPagePwdChk(sst, loginId, pwd);
+	}
+
 }

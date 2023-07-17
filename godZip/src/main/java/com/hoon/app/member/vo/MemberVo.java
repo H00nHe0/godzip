@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MemberVo {
 
-	private String no;
+	private int no;
 	private String gradeNo;
 	private String id;
 	private String pwd;
@@ -13,7 +13,7 @@ public class MemberVo {
 	private String enrollDate;
 	private String quitYn;
 	private String isBlockedYn;
-	private String tel;
+	private String email;
 	private String lastVisit;
 	private int totalVisit;
 	private String loginType;

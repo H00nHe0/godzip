@@ -189,6 +189,7 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
+                    <input type="hidden" name="email" id="email">
                     <input
                       type="text"
                       class="joinInput"
@@ -235,7 +236,7 @@ pageEncoding="UTF-8"%>
                     /><span
                       class="btn btn-warning btn-sm"
                       onclick="isValidNick()"
-                      >닉네임 중복확인</span
+                      >닉네임 확인</span
                     >
                   </td>
                 </tr>
@@ -275,14 +276,31 @@ pageEncoding="UTF-8"%>
     if (id == "") {
       alert("아이디를 입력하세요.");
     } else if (idPattern.test(id)) {
-      alert("아이디가 유효합니다.");
+        $.ajax({
+            url: "${root}/member/idDupChk",
+            type: "get",
+            data: { "id": id },
+            success: function(result) {
+              // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
+              if (result === 0) {
+                alert("중복된 아이디 입니다. 다른 아이디를 입력해 주세요.");
+              } else {
+                	validId();
+              }
+            },
+            error: function(result) {
+              console.log(result);
+            }
+          });
     } else {
       alert(
         "아이디가 유효하지 않습니다.지정된 형식[4~12자리의 알파벳 대.소문자와 숫자 등 구성]을 확인해 주세요"
       );
     }
-
-    isIdValidated = true;
+  }
+  function validId() {
+	  alert("사용가능한 아이디 입니다.");
+      isIdValidated = true;
   }
   //비밀번호 일치 확인, 유효성 검사
   function pwdValidChk() {
@@ -318,22 +336,39 @@ pageEncoding="UTF-8"%>
   $("#password1, #password2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
-  function isValidNick() {
-    var nickName = document.querySelector('input[name="nick"]').value;
-    console.log(nickName);
-    var nickPattern =
-      /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
-    if (nickName == "") {
-      alert("닉네임을 입력하세요.");
-    } else if (nickPattern.test(nickName)) {
-      alert("사용가능한 닉네임 입니다.");
-    } else {
-      alert(
-        "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
-      );
-    }
-    isNickValidated = true;
+function isValidNick() {
+  var nickName = document.querySelector('input[name="nick"]').value;
+  console.log(nickName);
+  var nickPattern = /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
+  if (nickName == "") {
+    alert("닉네임을 입력하세요.");
+  } else if (nickPattern.test(nickName)) {
+    $.ajax({
+      url: "${root}/member/nickDupChk",
+      type: "get",
+      data: { "nick": nickName },
+      success: function(result) {
+        // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
+        if (result === 0) {
+          alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
+        } else {
+          	validNick();
+        }
+      },
+      error: function(result) {
+        console.log(result);
+      }
+    });
+  } else {
+    alert(
+      "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
+    );
   }
+}
+function validNick() {
+  alert("사용가능한 닉네임 입니다.");
+  isNickValidated = true;
+}
   //이메일 도메인 넘어가게
   function setDomain(domain) {
     $("#emailDomain").val(domain);
@@ -376,7 +411,7 @@ pageEncoding="UTF-8"%>
       return false;
     }
     if (!isIdValidated || !isNickValidated) {
-      alert("아이디 확인 혹인 닉네임 중복확인 버튼을 눌러 확인해 주세요");
+      alert("아이디 확인 혹인 닉네임 확인 버튼을 눌러 확인해 주세요");
       return false;
     }
     if (!isPwdValidated) {

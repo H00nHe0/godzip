@@ -58,9 +58,12 @@
 		      </c:if>
 		      <c:if test="${!empty mvo}">
 		 	     <ul class="navbar-nav navbar-right nav-underline">
-		            <li class="nav-item mx-3"><a href="${root}/memberEditForm"><dt class="text-muted lead fw-bold">마이페이지</dt></a></li>
-		            <li class="nav-item mx-3"><a href="${root}/imageForm"><dt class="text-muted lead fw-bold">고객문의</dt></a></li>
-		            <li class="nav-item mx-3"><a href="${root}/logout"><dt class="text-muted lead fw-bold">로그아웃</dt></a></li>
+		            <li class="nav-item mx-3">
+		            	<a class="nav-link" href="${root}/member/myPagePwdChk"><dt class="text-muted lead fw-bold">마이페이지</dt></a></li>
+		            <li class="nav-item mx-3">
+		            	<a class="nav-link" href="${root}/member/qna"><dt class="text-muted lead fw-bold">고객문의</dt></a></li>
+		            <li class="nav-item mx-3">
+		            	<a class="nav-link" href="${root}/member/logout"><dt class="text-muted lead fw-bold">로그아웃</dt></a></li>
 			      </ul>
 		      </c:if>
 			  </div>
