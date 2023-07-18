@@ -36,8 +36,5 @@ public class MemberService {
 		return dao.login(sst,mvo);
 	}
 
-	public MemberVo myPagePwdChk(String loginId, String pwd) {
-		return dao.myPagePwdChk(sst, loginId, pwd);
-	}
 
 }

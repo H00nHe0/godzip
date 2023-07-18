@@ -24,8 +24,6 @@ public class MemberDao {
 		return sst.selectOne("member.login", mvo);
 	}
 
-	public MemberVo myPagePwdChk(SqlSessionTemplate sst, String loginId, String pwd) {
-		return sst.selectOne("member.myPagePwdChk",loginId, pwd);
-	}
+
 
 }

@@ -45,25 +45,52 @@
 			    </ul>
 	          <c:if test="${empty mvo}">
 			      <ul class="navbar-nav navbar-right nav-underline">
-		            <li class="nav-item mx-3">
+		            <li class="nav-item mx-2">
 		            	<a class="nav-link" href="${root}/member/loginForm"><dt class="text-muted fs-6 fw-bold">로그인<i class="bi bi-door-open"></i></dt></a>
 	            	</li>
-		            <li class="nav-item mx-3">
+		            <li class="nav-item mx-2">
 		            	<a class="nav-link" href="${root}/member/joinForm"><dt class="text-muted fs-6 fw-bold">회원가입<i class="bi bi-pen"></i></dt></a>
 		            </li>
-   		            <li class="nav-item mx-3">
+   		            <li class="nav-item mx-2">
 		            	<a class="nav-link" href="${root}/joinForm"><dt class="text-muted fs-6 fw-bold">For Businesses<i class="bi bi-briefcase-fill"></i></dt></a>
 		            </li>
 		 	     </ul>
 		      </c:if>
 		      <c:if test="${!empty mvo}">
 		 	     <ul class="navbar-nav navbar-right nav-underline">
-		            <li class="nav-item mx-3">
-		            	<a class="nav-link" href="${root}/member/myPagePwdChk"><dt class="text-muted lead fw-bold">마이페이지</dt></a></li>
-		            <li class="nav-item mx-3">
-		            	<a class="nav-link" href="${root}/member/qna"><dt class="text-muted lead fw-bold">고객문의</dt></a></li>
-		            <li class="nav-item mx-3">
-		            	<a class="nav-link" href="${root}/member/logout"><dt class="text-muted lead fw-bold">로그아웃</dt></a></li>
+     			   <c:if test="${mvo.profile eq ''}">
+		            <li>
+		              <img
+		                class="img-circle"
+		                src="${root}/resources/img/memberImg/defaultProfile.png"
+		                style="width: 50px; height: 50px"
+		              />${mvo.nick}님 Welcome!
+		            </li>
+		          </c:if>
+		          <c:if test="${empty mvo.profile}">
+		            <li>
+		              <img
+		                class="img-circle"
+		                src="${root}/resources/img/memberImg/defaultProfile.png"
+		                style="width: 50px; height: 50px"
+		              />${mvo.nick}님 Welcome!
+		            </li>
+		          </c:if>
+		          <c:if test="${!empty mvo.profile}">
+		            <li>
+		              <img
+		                class="img-circle"
+		                src="${root}/resources/img/memberImg/${mvo.profile}"
+		                style="width: 50px; height: 50px"
+		              />${mvo.nick}님 Welcome!
+		            </li>
+		          </c:if>		 	     
+		            <li class="nav-item mx-2">
+		            	<a class="nav-link" href="${root}/member/myPagePwdChk"><dt class="text-muted fs-6 fw-bold">마이페이지</dt></a></li>
+		            <li class="nav-item mx-2">
+		            	<a class="nav-link" href="${root}/member/qna"><dt class="text-muted fs-6 fw-bold">고객문의</dt></a></li>
+		            <li class="nav-item mx-2">
+		            	<a class="nav-link" href="${root}/member/logout"><dt class="text-muted fs-6 fw-bold">로그아웃</dt></a></li>
 			      </ul>
 		      </c:if>
 			  </div>
@@ -125,6 +152,26 @@
 							</div>
 						</div>
 					</div>
-
+	<!-- The Modal -->
+	<div class="modal" id="myMsg">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div id="messageType" class="modal-header">
+            <h4 class="modal-title">${msgType}</h4>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+	      </div>
+	      <!-- Modal body -->
+	      <div class="modal-body">
+     		<p id="checkMsg">${msg}</p>
+	      </div>
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
         </header>
 
