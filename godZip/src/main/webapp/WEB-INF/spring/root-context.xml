@@ -44,5 +44,6 @@
 	<context:component-scan base-package="com.hoon.app">
 		<context:include-filter type="annotation" expression="org.aspectj.lang.annotation.Aspect"/>
 	</context:component-scan>
-		
+	
+
 </beans>

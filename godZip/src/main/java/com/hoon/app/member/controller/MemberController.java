@@ -27,111 +27,123 @@ public class MemberController {
 		this.ms = ms;
 	}
 	
-	//È¸¿ø°¡ÀÔ È­¸é
+	//íšŒì›ê°€ì… í™”ë©´
 	@GetMapping("joinForm")
 	public String joinForm() {
 		
 		return "member/joinForm";
 	}
-	//´Ğ³×ÀÓ À¯È¿¼º °Ë»ç
+	//ë‹‰ë„¤ì„ ìœ íš¨ì„± ê²€ì‚¬
 	@GetMapping("nickDupChk")
 	@ResponseBody
 	public int nickDupChk(@RequestParam("nick")String nick) {
 		System.out.println(nick);
 		MemberVo mvo = ms.nickDupChk(nick);
 		System.out.println(mvo);
-		if(mvo!=null) { //ÀÌ¹ÌÁ¸ÀçÇÏ´Â ´Ğ³×ÀÓ
+		if(mvo!=null) { //ì´ë¯¸ì¡´ì¬í•˜ëŠ” ë‹‰ë„¤ì„
 			return 0;
-		}else {			//»ç¿ë°¡´ÉÇÑ ´Ğ³×ÀÓ
+		}else {			//ì‚¬ìš©ê°€ëŠ¥í•œ ë‹‰ë„¤ì„
 			return 1; 		
 		}
 	}
-	//¾ÆÀÌµğ À¯È¿¼º °Ë»ç
+	//ì•„ì´ë”” ìœ íš¨ì„± ê²€ì‚¬
 	@GetMapping("idDupChk")
 	@ResponseBody
 	public int idDupChk(@RequestParam("id")String id) {
 		System.out.println(id);
 		MemberVo mvo = ms.idDupChk(id);
 		System.out.println(mvo);
-		if(mvo!=null) {     //ÀÌ¹ÌÁ¸ÀçÇÏ´Â ¾ÆÀÌµğ
+		if(mvo!=null) {      //ì´ë¯¸ì¡´ì¬í•˜ëŠ” ì•„ì´ë””
 			return 0;
-		}else {				//»ç¿ë°¡´ÉÇÑ ¾ÆÀÌµğ
+		}else {				//ì‚¬ìš©ê°€ëŠ¥í•œ ì•„ì´ë””
 			return 1; 		
 		}
 	}	
-	//È¸¿ø°¡ÀÔ Ã³¸®
+	//íšŒì›ê°€ì… ì²˜ë¦¬
 	@PostMapping("join")
 	public String join(MemberVo mvo, HttpSession session, Model model) {
 		
 		int result = ms.join(mvo);
 		
 		if(result != 1) {
-			model.addAttribute("errorMsg" , "È¸¿ø°¡ÀÔ ½ÇÆĞ...");
+			model.addAttribute("errorMsg" , "íšŒì› ê°€ì… ì‹¤íŒ¨..");
 			return "common/error-page";			
 		}
-			session.setAttribute("alertMsg", "È¸¿ø°¡ÀÔ ¼º°ø! °¡ÀÔÇÏ½ÅÁ¤º¸·Î ´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä");
+			session.setAttribute("alertMsg", "íšŒì›ê°€ì… ì„±ê³µ! ê°€ì…í•˜ì‹ ì •ë³´ë¡œ ë‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”");
 			return "redirect:/home";		
 			
 	}
-	//·Î±×ÀÎ È­¸é ÀÌµ¿
+	//ë¡œê·¸ì¸
 	@GetMapping("loginForm")
 	public String loginForm() {
 		
 		return "member/loginForm";
 	}
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸ ê¸°ëŠ¥
 	@PostMapping("login")
 	public String login(MemberVo mvo, RedirectAttributes rttr, HttpSession session) {
 		System.out.println(mvo);
 		if(mvo.getId()==null||mvo.getId().equals("")||mvo.getPwd()==null||mvo.getPwd().equals("")) {
 			rttr.addFlashAttribute("msgType", "errorMsg");
-			rttr.addFlashAttribute("msg", "¸ğµç ³»¿ëÀ» ÀÔ·ÂÇØ ÁÖ¼¼¿ä");
+			rttr.addFlashAttribute("msg", "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ëª¨ë‘ ì…ë ¥í•´ì£¼ì„¸ìš”");
 			return "redirect:/member/loginForm";
 		}
 		MemberVo loginMember = ms.login(mvo);
-		if(loginMember != null) {//·Î±×ÀÎ ¼º°ø
-			session.setAttribute("alertMsg", "·Î±×ÀÎ ¼º°ø!");			
+		if(loginMember != null) {//ë¡œê·¸ì¸ ì„±ê³µ
+			//session.setAttribute("alertMsg", "ë¡œê·¸ì¸ ì„±ê³µ!");			
+			rttr.addFlashAttribute("msgType", "successMsg");
+			rttr.addFlashAttribute("msg", "ë¡œê·¸ì¸ ì„±ê³µ!");
 			session.setAttribute("mvo", loginMember); //${!empty mvo}
 			return "redirect:/home";
-		}else {//·Î±×ÀÎ ½ÇÆĞ
+		}else {//ë¡œê·¸ì¸ ì‹¤íŒ¨
 			rttr.addFlashAttribute("msgType", "errorMsg");
-			rttr.addFlashAttribute("msg", "·Î±×ÀÎ¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù. ¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä");
+			rttr.addFlashAttribute("msg", "ë¡œê·¸ì¸ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤. ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”");
+
 			return "redirect:/member/loginForm";
 		}
 		
 	}
-	//·Î±×¾Æ¿ô
+	//ë¡œê·¸ì•„ì›ƒ
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/home";
 	}
 	
-	//¸¶ÀÌÆäÀÌÁö È­¸éÀÌµ¿
+	//ë§ˆì´í˜ì´ì§€ ë¹„ë²ˆí™•ì¸ í™”ë©´ì´ë™
 	@GetMapping("myPagePwdChk")
-	public String myPage() {
+	public String myPagePwdChk() {
 		return "member/myPagePwdChk";
 	}
+	//ë§ˆì´í˜ì´ì§€ í™”ë©´ì´ë™
+	@GetMapping("myPage")
+	public String myPage() {
+		return "member/myPage";
+	}	
 	
-	//¸¶ÀÌÆäÀÌÁö ºñ¹øÈ®ÀÎ
+	//ë§ˆì´í˜ì´ì§€ ë¹„ë²ˆí™•ì¸
 	@PostMapping("myPagePwdChk")
-	public String myPagePwdChk(@RequestParam("pwd") String pwd, HttpSession session) {
+	public String myPagePwdChk(@RequestParam("pwd") String pwd, HttpSession session, RedirectAttributes rttr) {
 		
 		MemberVo mvo = (MemberVo) session.getAttribute("mvo");
 		String loginId = mvo.getId();
-		System.out.println("loginId"+"="+loginId +","+"pwd"+"="+pwd);
-		MemberVo result = ms.myPagePwdChk(loginId, pwd);
-		System.out.println(result);
-		if(result != null) { // ºñ¹ø ¸ÂÀ¸¸é
-			
-			return "redirect:/member/myPage";
-		}else { //ºñ¹ø ¾Æ´Ï¸é
-			
+		String loginPwd = mvo.getPwd();
+		System.out.println("loginId"+"="+loginId +","+"loginPwd"+"="+loginPwd+"inputPwd = "+pwd);
+
+		if(!loginPwd.equals(pwd)) { // ë¹„ë²ˆ í‹€ë¦¬ë©´
+			rttr.addFlashAttribute("msgType", "errorMsg");
+			rttr.addFlashAttribute("msg", "ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸ í•´ì£¼ì„¸ìš”");
 			return "redirect:/member/myPagePwdChk";
+		}else { //ë¹„ë²ˆ ë§ìœ¼ë©´
+			rttr.addFlashAttribute("msgType", "successMsg");
+			rttr.addFlashAttribute("msg", "ë³¸ì¸í™•ì¸ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!");
+			return "redirect:/member/myPage";
 		}
-		
-		
-		
+	}
+	//íšŒì›ì •ë³´ ìˆ˜ì • í˜ì´ì§€ ì´ë™
+	@GetMapping("editInfo")
+	public String editInfo() {
+		return "member/editInfo";
 	}
 	
 		

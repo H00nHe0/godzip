@@ -176,12 +176,17 @@ pageEncoding="UTF-8"%>
   </body>
 </html>
     <script>
-	$(document).ready(function() {
-		var msgType = "${msgType}";
-		if(msgType === "errorMsg"){
-			$("#messageType").attr("class","modal-header bg-warning");
-			$("#myMsg").modal("show");
-		}
-	});
+    var msgType = "<c:out value='${msgType}'/>";
+
+    $(document).ready(function() {
+      if (msgType === "errorMsg") {
+        $("#messageType").attr("class", "modal-header bg-warning");
+        $("#myMsg").modal("show");
+      }
+      if (msgType === "successMsg") {
+        $("#messageType").attr("class", "modal-header bg-success");
+        $("#myMsg").modal("show");
+      }
+    });
     </script>
 

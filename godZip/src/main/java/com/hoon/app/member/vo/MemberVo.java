@@ -17,4 +17,5 @@ public class MemberVo {
 	private String lastVisit;
 	private int totalVisit;
 	private String loginType;
+	private String profile;
 }

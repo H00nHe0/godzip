@@ -42,7 +42,4 @@
 		SELECT * FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd}
 	</select>
 	
-	<select id="myPagePwdChk" resultType="memberVo">
-		SELECT * FROM MEMBER_INFO WHERE ID = #{loginId} AND PWD = #{pwd} 
-	</select>
 </mapper>
