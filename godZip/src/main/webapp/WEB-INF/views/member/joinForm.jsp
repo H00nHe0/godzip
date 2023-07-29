@@ -154,7 +154,7 @@ pageEncoding="UTF-8"%>
                       class="joinInput"
                       name="pwd"
                       id="pwd"
-                      placeholder="8자리 이상의 알파벳 대.소문자와 특수문자 포함하여 구성"
+                      placeholder="8자리 이상의 알파벳 대.소문자와 특수문자,숫자 포함하여 구성"
                     />
                   </td>
                 </tr>
@@ -306,8 +306,7 @@ pageEncoding="UTF-8"%>
   function pwdValidChk() {
     var pwd = $("#pwd").val();
     var pwd2 = $("#pwd2").val();
-    var passwordPattern = /^(?=.*[a-zA-Z!@#$%^&*])(?=.*\d).{8,20}$/; //비밀번호 정규식 패턴
-
+    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;//비밀번호 정규식 패턴
     // 입력값 비교 함수 + 입력한 두 비밀번호 일치 시 정규식 테스트 후 isPwsValidated = true or false;
     var message = $("#pwdMsg");
     var pwdCheck = $("#pwdCheck");
@@ -317,6 +316,7 @@ pageEncoding="UTF-8"%>
       if (passwordPattern.test(pwd2)) {
         isPwdValidated = true;
       } else {
+    	  message.html("비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성").css("color", "red");
         isPwdValidated = false;
       }
     } else {
@@ -333,7 +333,7 @@ pageEncoding="UTF-8"%>
     }
   }
   // 두 비밀번호가 입력할 때마다 비교 함수를 호출.
-  $("#password1, #password2").on("input", pwdValidChk);
+  $("#pwd, #pwd2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
 function isValidNick() {

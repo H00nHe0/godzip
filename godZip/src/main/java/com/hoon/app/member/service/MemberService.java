@@ -36,5 +36,9 @@ public class MemberService {
 		return dao.login(sst,mvo);
 	}
 
+	public int editMemberInfo(MemberVo mvo, int no) {
+		return dao.editMemberInfo(sst,mvo, no);
+	}
+
 
 }

@@ -200,7 +200,7 @@ pageEncoding="UTF-8"%>
                       style="width: 80%"
                       name="emailId"
                       id="emailId"
-                      placeholder="이메일 주소 입력 "
+                      placeholder= "${mvo.email}"
                     />
                   </td>
                   <td style="display: flex">
@@ -236,7 +236,7 @@ pageEncoding="UTF-8"%>
                       class="joinInput"
                       name="nick"
                       style="width: 80%"
-                      placeholder="4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성"
+                      placeholder="${mvo.nick}"
                     /><span
                       class="btn btn-warning btn-sm"
                       onclick="isValidNick()"
@@ -260,49 +260,14 @@ pageEncoding="UTF-8"%>
   </body>
 </html>
 <script>
-  var isIdValidated = false; // 아이디 유효성 확인 여부
   var isNickValidated = false; // 닉네임 유효성 확인 여부
   var isPwdValidated = false; // 비밀번호 유효성 확인 여부
 
-  //아이디 유효성 검사
-  function isValidId() {
-    var id = document.querySelector('input[name="id"]').value;
-    var idPattern = /^[a-zA-Z0-9]{4,12}$/;
-    if (id == "") {
-      alert("아이디를 입력하세요.");
-    } else if (idPattern.test(id)) {
-        $.ajax({
-            url: "${root}/member/idDupChk",
-            type: "get",
-            data: { "id": id },
-            success: function(result) {
-              // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-              if (result === 0) {
-                alert("중복된 아이디 입니다. 다른 아이디를 입력해 주세요.");
-              } else {
-                	validId();
-              }
-            },
-            error: function(result) {
-              console.log(result);
-            }
-          });
-    } else {
-      alert(
-        "아이디가 유효하지 않습니다.지정된 형식[4~12자리의 알파벳 대.소문자와 숫자 등 구성]을 확인해 주세요"
-      );
-    }
-  }
-  function validId() {
-	  alert("사용가능한 아이디 입니다.");
-      isIdValidated = true;
-  }
   //비밀번호 일치 확인, 유효성 검사
   function pwdValidChk() {
     var pwd = $("#pwd").val();
     var pwd2 = $("#pwd2").val();
-    var passwordPattern = /^(?=.*[a-zA-Z!@#$%^&*])(?=.*\d).{8,20}$/; //비밀번호 정규식 패턴
-
+    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;//비밀번호 정규식 패턴
     // 입력값 비교 함수 + 입력한 두 비밀번호 일치 시 정규식 테스트 후 isPwsValidated = true or false;
     var message = $("#pwdMsg");
     var pwdCheck = $("#pwdCheck");
@@ -312,6 +277,7 @@ pageEncoding="UTF-8"%>
       if (passwordPattern.test(pwd2)) {
         isPwdValidated = true;
       } else {
+    	  message.html("비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성").css("color", "red");
         isPwdValidated = false;
       }
     } else {
@@ -328,7 +294,7 @@ pageEncoding="UTF-8"%>
     }
   }
   // 두 비밀번호가 입력할 때마다 비교 함수를 호출.
-  $("#password1, #password2").on("input", pwdValidChk);
+  $("#pwd, #pwd2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
 function isValidNick() {
@@ -405,8 +371,8 @@ function validNick() {
       alert("이메일을 형식에 맞게 입력해주세요.");
       return false;
     }
-    if (!isIdValidated || !isNickValidated) {
-      alert("아이디 확인 혹인 닉네임 확인 버튼을 눌러 확인해 주세요");
+    if (!isNickValidated) {
+      alert("닉네임 확인 버튼을 눌러 확인해 주세요");
       return false;
     }
     if (!isPwdValidated) {

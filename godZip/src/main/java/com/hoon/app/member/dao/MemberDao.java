@@ -24,6 +24,11 @@ public class MemberDao {
 		return sst.selectOne("member.login", mvo);
 	}
 
+	public int editMemberInfo(SqlSessionTemplate sst, MemberVo mvo, int no) {
+		mvo.setNo(no);
+		return sst.update("member.editMemberInfo", mvo);
+	}
+
 
 
 }

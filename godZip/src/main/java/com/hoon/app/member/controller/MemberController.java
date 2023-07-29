@@ -146,6 +146,21 @@ public class MemberController {
 		return "member/editInfo";
 	}
 	
+	//회원정보 수정
+	@PostMapping("editInfo")
+	public String editMemberInfo(MemberVo mvo, HttpSession session) {
+		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
+		int no = loginMember.getNo();
+		System.out.println("memberNo :"+ no);
+		System.out.println("mvo : "+mvo);
+		int result = ms.editMemberInfo(mvo, no);
+		if(result != 1) {
+			session.setAttribute("alertMsg", "회원정보수정 실패.. 다시 시도해주세요");
+			return "redirect:/member/editInfo";
+		}
+		session.setAttribute("alertMsg" , "회원정보 수정 성공! 다시 로그인 해주세요.");			
+		return "home";
+	}
 		
 	
 }
