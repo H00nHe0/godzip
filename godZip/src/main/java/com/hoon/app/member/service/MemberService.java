@@ -40,5 +40,9 @@ public class MemberService {
 		return dao.editMemberInfo(sst,mvo, no);
 	}
 
+	public MemberVo updatedInfo(int no) {
+		return dao.updatedInfo(sst, no);
+	}
+
 
 }

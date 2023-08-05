@@ -46,4 +46,8 @@
 	<update id="editMemberInfo">
 		UPDATE MEMBER_INFO SET PWD = #{pwd}, NICK = #{nick}, EMAIL = #{email} WHERE NO = #{no}
 	</update>
+	
+	<select id="updatedInfo" resultType = "memberVo">
+		SELECT * FROM MEMBER_INFO WHERE NO = #{no}
+	</select>
 </mapper>

@@ -106,13 +106,19 @@ pageEncoding="UTF-8"%>
       table {
         width: 100%;
       }
-      table tr td{
-      padding-top: 5px;
+      table tr td {
+        padding-top: 5px;
       }
-      table tr th{
-      	padding-top: 10px;
-      	padding-bottom: 10px;
-      }          
+      table tr th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      .form-check {
+        display: inline-block;
+        text-align: right;
+        justify-content: center;
+        margin-right: 10px;
+      }
     </style>
   </head>
   <body>
@@ -143,13 +149,28 @@ pageEncoding="UTF-8"%>
                     <input
                       type="text"
                       class="joinInput my-1 text-center fs-6 fw-bold"
- 					  readonly
- 					  value="${mvo.id}"
+                      readonly
+                      value="${mvo.id}"
                     />
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">변경할 비밀번호</th>
+                  <th colspan="2">
+                    변경할 비밀번호
+                    <span class="form-check">
+                      <input
+                        type="checkbox"
+                        id="noPwdUpdate"
+                        name="noPwdUpdate"
+                        value="${mvo.pwd}"
+                        checked
+                        onclick="useOldPwd();"
+                      />
+                      <label class="form-check-label" for="noPwdUpdate"
+                        >기존 비밀번호 사용</label
+                      >
+                    </span>
+                  </th>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -171,7 +192,9 @@ pageEncoding="UTF-8"%>
                         align-items: center;
                       "
                     >
-                      <div class="my-1 text-center fs-6 fw-bold" id="pwdCheck">비밀번호 확인</div>
+                      <div class="my-1 text-center fs-6 fw-bold" id="pwdCheck">
+                        비밀번호 확인
+                      </div>
                       <span id="pwdMsg"></span>
                     </div>
                   </td>
@@ -189,18 +212,33 @@ pageEncoding="UTF-8"%>
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">이메일</th>
+                  <th colspan="2">
+                    이메일
+                    <span class="form-check">
+                      <input
+                        type="checkbox"
+                        id="noEmailUpdate"
+                        name="noEmailUpdate"
+                        value="${mvo.email}"
+                        checked
+                      />
+                      <label class="form-check-label" for="noEmailUpdate"
+                        >기존 이메일주소 사용</label
+                      >
+                    </span>
+                  </th>
                 </tr>
                 <tr>
                   <td>
-                    <input type="hidden" name="email" id="email">
+                    <input type="hidden" name="email" id="email" />
+
                     <input
                       type="text"
                       class="joinInput"
                       style="width: 80%"
                       name="emailId"
                       id="emailId"
-                      placeholder= "${mvo.email}"
+                      placeholder="이메일아이디입력"
                     />
                   </td>
                   <td style="display: flex">
@@ -227,7 +265,21 @@ pageEncoding="UTF-8"%>
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">닉네임</th>
+                  <th colspan="2">
+                    닉네임
+                    <span class="form-check">
+                      <input
+                        type="checkbox"
+                        id="noNickUpdate"
+                        name="noNickUpdate"
+                        value="${mvo.nick}"
+                        checked
+                      />
+                      <label class="form-check-label" for="noNickUpdate"
+                        >기존 닉네임 사용</label
+                      >
+                    </span>
+                  </th>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -235,6 +287,7 @@ pageEncoding="UTF-8"%>
                       type="text"
                       class="joinInput"
                       name="nick"
+                      id="nick"
                       style="width: 80%"
                       placeholder="${mvo.nick}"
                     /><span
@@ -260,24 +313,102 @@ pageEncoding="UTF-8"%>
   </body>
 </html>
 <script>
+  // 무슨 일이있어도 8월 6일 까지 마이페이지 수정해야함(처음 로드시에 기존 비번,메일,닉네임 버튼 눌려있어야 하고
+  //, 그대로 누르면 기존정보로 업데이트 되게, 체크박스 해제시에 는 인풋태그에 입력한 값들이 서버에 전달되게)
+  //버튼 누르고 안누르고에 따라서 각 값들이 업데이트 달 되도록 수정 꼬오옥!!!!
+  const registeredEmail = "${mvo.email}";
+  var [emailId, emailDomain] = registeredEmail.split("@");
+  var registeredPwd = "${mvo.pwd}";
+  var registeredNick = "${mvo.nick}";
+  $(document).ready(function () {
+    // 화면 로드시 인풋 태그들 비활성화
+    disableInputFields();
+    // placeholder로 설정.
+    $("#emailId").attr("placeholder", emailId);
+    $("#emailDomain").attr("placeholder", emailDomain);
+
+    // 기본적으로 체크되어 있기 때문에 기존 정보를 사용하도록 설정
+    $("#noPwdUpdate").prop("checked", true);
+    $("#noEmailUpdate").prop("checked", true);
+    $("#noNickUpdate").prop("checked", true);
+
+    $("#pwd").val(registeredPwd);
+    $("#pwd2").val(registeredPwd);
+    // 체크박스 클릭 시 기존 정보 사용/사용 안 함 설정
+
+    $("#noEmailUpdate").on("click", function () {
+      // 체크되지 않았을 때만 이메일 입력 필드 활성화
+      if (!this.checked) {
+        $("#emailId").prop("disabled", false);
+        $("#emailDomain").prop("disabled", false);
+      } else {
+        // 체크되어 있으면 다시 기존 이메일 정보로 설정
+        $("#emailId").val(emailId);
+        $("#emailDomain").val(emailDomain);
+        $("#emailId").prop("disabled", true);
+        $("#emailDomain").prop("disabled", true);
+      }
+    });
+
+    $("#noNickUpdate").on("click", function () {
+      if (!this.checked) {
+        $("#nick").prop("disabled", false);
+      } else {
+        // 체크되어 있으면 다시 기존 이메일 정보로 설정
+        $("#nick").val(registeredNick);
+        console.log(registeredNick);
+        $("#nick").prop("disabled", true);
+      }
+    });
+  });
+
+  function disableInputFields() {
+    $("#pwd").prop("disabled", true);
+    $("#pwd2").prop("disabled", true);
+    $("#emailId").prop("disabled", true);
+    $("#emailDomain").prop("disabled", true);
+    $("#nick").prop("disabled", true);
+  }
+
   var isNickValidated = false; // 닉네임 유효성 확인 여부
   var isPwdValidated = false; // 비밀번호 유효성 확인 여부
+
+  function useOldPwd() {
+    var noPwdUpdateCheckbox = $("#noPwdUpdate");
+    if (!noPwdUpdateCheckbox.prop("checked")) {
+      $("#pwd").prop("disabled", false);
+      $("#pwd2").prop("disabled", false);
+    } else {
+      $("#pwd").val(registeredPwd);
+      console.log(registeredPwd);
+      $("#pwd2").val(registeredPwd);
+      $("#pwd").prop("disabled", true);
+      $("#pwd2").prop("disabled", true);
+    }
+    isPwdValidated = true;
+  }
 
   //비밀번호 일치 확인, 유효성 검사
   function pwdValidChk() {
     var pwd = $("#pwd").val();
     var pwd2 = $("#pwd2").val();
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;//비밀번호 정규식 패턴
+    var passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/; //비밀번호 정규식 패턴
     // 입력값 비교 함수 + 입력한 두 비밀번호 일치 시 정규식 테스트 후 isPwsValidated = true or false;
-    var message = $("#pwdMsg");
     var pwdCheck = $("#pwdCheck");
+    var message = $("#pwdMsg");
+
     if (pwd == pwd2) {
       pwdCheck.css("display", "none");
       message.text("비밀번호가 일치합니다.").css("color", "blue");
       if (passwordPattern.test(pwd2)) {
         isPwdValidated = true;
       } else {
-    	  message.html("비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성").css("color", "red");
+        message
+          .html(
+            "비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성"
+          )
+          .css("color", "red");
         isPwdValidated = false;
       }
     } else {
@@ -293,43 +424,45 @@ pageEncoding="UTF-8"%>
       pwdCheck.css("display", "none");
     }
   }
+
   // 두 비밀번호가 입력할 때마다 비교 함수를 호출.
   $("#pwd, #pwd2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
-function isValidNick() {
-  var nickName = document.querySelector('input[name="nick"]').value;
-  console.log(nickName);
-  var nickPattern = /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
-  if (nickName == "") {
-    alert("닉네임을 입력하세요.");
-  } else if (nickPattern.test(nickName)) {
-    $.ajax({
-      url: "${root}/member/nickDupChk",
-      type: "get",
-      data: { "nick": nickName },
-      success: function(result) {
-        // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-        if (result === 0) {
-          alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
-        } else {
-          	validNick();
-        }
-      },
-      error: function(result) {
-        console.log(result);
-      }
-    });
-  } else {
-    alert(
-      "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
-    );
+  function isValidNick() {
+    var nickName = document.querySelector('input[name="nick"]').value;
+    console.log(nickName);
+    var nickPattern =
+      /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
+    if (nickName == "") {
+      alert("닉네임을 입력하세요.");
+    } else if (nickPattern.test(nickName)) {
+      $.ajax({
+        url: "${root}/member/nickDupChk",
+        type: "get",
+        data: { nick: nickName },
+        success: function (result) {
+          // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
+          if (result === 0) {
+            alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
+          } else {
+            validNick();
+          }
+        },
+        error: function (result) {
+          console.log(result);
+        },
+      });
+    } else {
+      alert(
+        "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
+      );
+    }
   }
-}
-function validNick() {
-  alert("사용가능한 닉네임 입니다.");
-  isNickValidated = true;
-}
+  function validNick() {
+    alert("사용가능한 닉네임 입니다.");
+    isNickValidated = true;
+  }
   //이메일 도메인 넘어가게
   function setDomain(domain) {
     $("#emailDomain").val(domain);
@@ -337,6 +470,8 @@ function validNick() {
 
   //전체 유효성 검사
   function checkValidation() {
+    var pwd = $("#pwd").val();
+    var pwd2 = $("#pwd2").val();
     //이메일 유효성 검사
     var emailPattern =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,}$/;
@@ -344,7 +479,7 @@ function validNick() {
     var emailDomain = $("#emailDomain").val();
     var email = "";
 
-    if (!pwd || !pwd2) {
+    if ((!pwd || !pwd2) && pwd2 == null) {
       alert("비밀번호를 입력해 주세요");
       return false;
     }
@@ -352,24 +487,18 @@ function validNick() {
       alert("비밀번호가 일치하지 않습니다.");
       return false;
     }
-    if (!emailId) {
-      console.log(emailId);
-      alert("이메일을 입력해주세요");
-      $("#emailId").focus();
-      return false;
-    }
-    if (!emailDomain) {
-      alert("도메인을 입력해주세요");
-      $("#emailDomain").focus();
-      return false;
-    }
-    email = emailId + "@" + emailDomain;
-    $("#email").val(email);
-    console.log(email);
-
-    if (!emailPattern.test(email)) {
-      alert("이메일을 형식에 맞게 입력해주세요.");
-      return false;
+    if ((!emailId || !emailDomain) && $("#noEmailUpdate").prop("checked")) {
+      // 기존 이메일을 사용하는 체크박스가 체크되어 있고, 입력 필드에 값이 없으면 기존 이메일 정보 사용
+      email = registeredEmail;
+      alert(email);
+      $("#email").val(email);
+    } else {
+      email = emailId + "@" + emailDomain;
+      $("#email").val(email);
+      if (!emailPattern.test(email)) {
+        alert("이메일을 형식에 맞게 입력해주세요.");
+        return false;
+      }
     }
     if (!isNickValidated) {
       alert("닉네임 확인 버튼을 눌러 확인해 주세요");
@@ -379,10 +508,9 @@ function validNick() {
       alert(
         "비밀번호 형식에 유효하지 않습니다.지정된 형식[8자리 이상의 알파벳 대.소문자와 특수문자 포함하여 구성]을 확인해 주세요"
       );
+      console.log(pwd);
       return false;
     }
-      return true;
+    return true;
   }
-
-  //집가서 할거, 회원가입완료후 메인 페이지로 전환하고 모달로 회원가입 축하 메시지 보내기 + 로그인 기능. + 마이페이지
 </script>

@@ -152,13 +152,15 @@ public class MemberController {
 		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
 		int no = loginMember.getNo();
 		System.out.println("memberNo :"+ no);
-		System.out.println("mvo : "+mvo);
-		int result = ms.editMemberInfo(mvo, no);
+		System.out.println("loginMember : "+loginMember);
+		int result = ms.editMemberInfo(loginMember, no);
 		if(result != 1) {
 			session.setAttribute("alertMsg", "회원정보수정 실패.. 다시 시도해주세요");
 			return "redirect:/member/editInfo";
 		}
-		session.setAttribute("alertMsg" , "회원정보 수정 성공! 다시 로그인 해주세요.");			
+		session.setAttribute("alertMsg" , "회원정보 수정 성공!");			
+		mvo = ms.updatedInfo(no);
+		session.setAttribute("mvo", mvo);
 		return "home";
 	}
 		
