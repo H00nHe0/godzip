@@ -527,7 +527,11 @@ pageEncoding="UTF-8"%>
       alert("이메일을 확인해 주세요");
       return false;
     }
-    if (
+    if($("#noNickUpdate").prop("checked")){
+        nick.value = registeredNick;
+        alert(document.querySelector('input[name="nick"]').value);
+        isNickValidated = true;
+      }else if (
       (!$("#noNickUpdate").prop("checked") || !isNickValidated) &&
       !nick.value
     ) {
@@ -536,10 +540,6 @@ pageEncoding="UTF-8"%>
     } else if (!$("#noNickUpdate").prop("checked") && !nick.value) {
       alert("닉네임을 입력해 주세요");
       return false;
-    }else if($("#noNickUpdate").prop("checked")){
-      nick.value = registeredNick;
-      alert(document.querySelector('input[name="nick"]').value);
-      isNickValidated = true;
     }
     alert(password.value + nick.value + email.value);
     return true;
