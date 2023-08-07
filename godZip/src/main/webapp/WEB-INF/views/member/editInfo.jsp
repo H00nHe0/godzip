@@ -158,13 +158,13 @@ pageEncoding="UTF-8"%>
                   <th colspan="2">
                     변경할 비밀번호
                     <span class="form-check">
+                      <input type="hidden" id="pwd" name="pwd" />
                       <input
                         type="checkbox"
                         id="noPwdUpdate"
                         name="noPwdUpdate"
                         value="${mvo.pwd}"
                         checked
-                        onclick="useOldPwd();"
                       />
                       <label class="form-check-label" for="noPwdUpdate"
                         >기존 비밀번호 사용</label
@@ -177,8 +177,8 @@ pageEncoding="UTF-8"%>
                     <input
                       type="password"
                       class="joinInput"
-                      name="pwd"
-                      id="pwd"
+                      name="pwd1"
+                      id="pwd1"
                       placeholder="8자리 이상의 알파벳 대.소문자와 특수문자 포함하여 구성"
                     />
                   </td>
@@ -268,6 +268,7 @@ pageEncoding="UTF-8"%>
                   <th colspan="2">
                     닉네임
                     <span class="form-check">
+                      <input type="hidden" id="nick" name="nick" />
                       <input
                         type="checkbox"
                         id="noNickUpdate"
@@ -286,8 +287,8 @@ pageEncoding="UTF-8"%>
                     <input
                       type="text"
                       class="joinInput"
-                      name="nick"
-                      id="nick"
+                      name="nickname"
+                      id="nickname"
                       style="width: 80%"
                       placeholder="${mvo.nick}"
                     /><span
@@ -307,19 +308,27 @@ pageEncoding="UTF-8"%>
           </form>
         </div>
       </div>
-
       <%-- <%@ include file="/WEB-INF/views/common/footer.jsp" %> --%>
     </div>
   </body>
 </html>
 <script>
+  var isNickValidated = false; // 닉네임 유효성 확인 여부
+  var isPwdValidated = false; // 비밀번호 유효성 확인 여부
+  var isEmailValidated = false; // 이메일 유효성 확인 여부
   // 무슨 일이있어도 8월 6일 까지 마이페이지 수정해야함(처음 로드시에 기존 비번,메일,닉네임 버튼 눌려있어야 하고
   //, 그대로 누르면 기존정보로 업데이트 되게, 체크박스 해제시에 는 인풋태그에 입력한 값들이 서버에 전달되게)
   //버튼 누르고 안누르고에 따라서 각 값들이 업데이트 달 되도록 수정 꼬오옥!!!!
-  const registeredEmail = "${mvo.email}";
+  const registeredEmail = document.querySelector(
+    'input[name="noEmailUpdate"]'
+  ).value;
   var [emailId, emailDomain] = registeredEmail.split("@");
-  var registeredPwd = "${mvo.pwd}";
-  var registeredNick = "${mvo.nick}";
+  const registeredPwd = document.querySelector(
+    'input[name="noPwdUpdate"]'
+  ).value;
+  const registeredNick = document.querySelector(
+    'input[name="noNickUpdate"]'
+  ).value;
   $(document).ready(function () {
     // 화면 로드시 인풋 태그들 비활성화
     disableInputFields();
@@ -332,9 +341,23 @@ pageEncoding="UTF-8"%>
     $("#noEmailUpdate").prop("checked", true);
     $("#noNickUpdate").prop("checked", true);
 
-    $("#pwd").val(registeredPwd);
+    $("#pwd1").val(registeredPwd);
     $("#pwd2").val(registeredPwd);
     // 체크박스 클릭 시 기존 정보 사용/사용 안 함 설정
+    $("#noPwdUpdate").on("click", function () {
+      // 체크되지 않았을 때만 비밀번호 입력 필드 활성화
+      if (!this.checked) {
+        $("#pwd1").prop("disabled", false);
+        $("#pwd2").prop("disabled", false);
+      } else {
+        $("#pwd1").val(registeredPwd);
+        console.log(registeredPwd);
+        $("#pwd2").val(registeredPwd);
+        $("#pwd1").prop("disabled", true);
+        $("#pwd2").prop("disabled", true);
+        isPwdValidated = true;
+      }
+    });
 
     $("#noEmailUpdate").on("click", function () {
       // 체크되지 않았을 때만 이메일 입력 필드 활성화
@@ -352,45 +375,27 @@ pageEncoding="UTF-8"%>
 
     $("#noNickUpdate").on("click", function () {
       if (!this.checked) {
-        $("#nick").prop("disabled", false);
+        $("#nickname").prop("disabled", false);
       } else {
         // 체크되어 있으면 다시 기존 이메일 정보로 설정
-        $("#nick").val(registeredNick);
+        $("#nickname").val(registeredNick);
         console.log(registeredNick);
-        $("#nick").prop("disabled", true);
+        $("#nickname").prop("disabled", true);
       }
     });
   });
 
   function disableInputFields() {
-    $("#pwd").prop("disabled", true);
+    $("#pwd1").prop("disabled", true);
     $("#pwd2").prop("disabled", true);
     $("#emailId").prop("disabled", true);
     $("#emailDomain").prop("disabled", true);
-    $("#nick").prop("disabled", true);
+    $("#nickname").prop("disabled", true);
   }
 
-  var isNickValidated = false; // 닉네임 유효성 확인 여부
-  var isPwdValidated = false; // 비밀번호 유효성 확인 여부
-
-  function useOldPwd() {
-    var noPwdUpdateCheckbox = $("#noPwdUpdate");
-    if (!noPwdUpdateCheckbox.prop("checked")) {
-      $("#pwd").prop("disabled", false);
-      $("#pwd2").prop("disabled", false);
-    } else {
-      $("#pwd").val(registeredPwd);
-      console.log(registeredPwd);
-      $("#pwd2").val(registeredPwd);
-      $("#pwd").prop("disabled", true);
-      $("#pwd2").prop("disabled", true);
-    }
-    isPwdValidated = true;
-  }
-
-  //비밀번호 일치 확인, 유효성 검사
+  //체크박스 체크안하고 비밀번호 변경시 비밀번호 일치 확인, 유효성 검사(화면)
   function pwdValidChk() {
-    var pwd = $("#pwd").val();
+    var pwd1 = $("#pwd1").val();
     var pwd2 = $("#pwd2").val();
     var passwordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/; //비밀번호 정규식 패턴
@@ -398,10 +403,11 @@ pageEncoding="UTF-8"%>
     var pwdCheck = $("#pwdCheck");
     var message = $("#pwdMsg");
 
-    if (pwd == pwd2) {
+    if (pwd1 == pwd2) {
       pwdCheck.css("display", "none");
       message.text("비밀번호가 일치합니다.").css("color", "blue");
       if (passwordPattern.test(pwd2)) {
+        document.querySelector('input[name="pwd"]').value = pwd2;
         isPwdValidated = true;
       } else {
         message
@@ -426,11 +432,11 @@ pageEncoding="UTF-8"%>
   }
 
   // 두 비밀번호가 입력할 때마다 비교 함수를 호출.
-  $("#pwd, #pwd2").on("input", pwdValidChk);
+  $("#pwd1, #pwd2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
   function isValidNick() {
-    var nickName = document.querySelector('input[name="nick"]').value;
+    var nickName = document.querySelector('input[name="nickname"]').value;
     console.log(nickName);
     var nickPattern =
       /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
@@ -461,6 +467,10 @@ pageEncoding="UTF-8"%>
   }
   function validNick() {
     alert("사용가능한 닉네임 입니다.");
+    document.querySelector('input[name="nick"]').value = document.querySelector(
+      'input[name="nickname"]'
+    ).value;
+    alert(document.querySelector('input[name="nick"]').value);
     isNickValidated = true;
   }
   //이메일 도메인 넘어가게
@@ -470,47 +480,68 @@ pageEncoding="UTF-8"%>
 
   //전체 유효성 검사
   function checkValidation() {
-    var pwd = $("#pwd").val();
+    var pwd1 = $("#pwd1").val();
     var pwd2 = $("#pwd2").val();
-    //이메일 유효성 검사
+    var password = document.querySelector('input[name="pwd"]');
     var emailPattern =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,}$/;
     var emailId = $("#emailId").val();
     var emailDomain = $("#emailDomain").val();
-    var email = "";
+    var email = document.querySelector('input[name="email"]');
+    var nick = document.querySelector('input[name="nick"]');
 
-    if ((!pwd || !pwd2) && pwd2 == null) {
+    if (!pwd1 || !pwd2 || pwd2 == null) {
       alert("비밀번호를 입력해 주세요");
       return false;
     }
-    if (!pwd == pwd2) {
+    if (!(pwd1 == pwd2)) {
       alert("비밀번호가 일치하지 않습니다.");
       return false;
     }
+    if (!isPwdValidated && !$("#noPwdUpdate").prop("checked")) {
+      // 기존 비밀번호를 사용하는 체크박스가 체크되어 있지않고 비번유료성도 적합하지 않을때
+      alert(
+        "비밀번호 형식에 유효하지 않습니다.지정된 형식[8자리 이상의 알파벳 대.소문자와 특수문자 포함하여 구성]을 확인해 주세요"
+      );
+      return false;
+    }
+    if ($("#noPwdUpdate").prop("checked")) {
+      password.value = registeredPwd;
+      alert(document.querySelector('input[name="pwd"]').value);
+      isNickValidated = true;
+    }
     if ((!emailId || !emailDomain) && $("#noEmailUpdate").prop("checked")) {
       // 기존 이메일을 사용하는 체크박스가 체크되어 있고, 입력 필드에 값이 없으면 기존 이메일 정보 사용
-      email = registeredEmail;
-      alert(email);
-      $("#email").val(email);
+      email.value = registeredEmail;
+      isEmailValidated = true;
     } else {
-      email = emailId + "@" + emailDomain;
-      $("#email").val(email);
-      if (!emailPattern.test(email)) {
+      email.value = emailId + "@" + emailDomain;
+      alert(email.value);
+      isEmailValidated = true;
+      if (!emailPattern.test(email.value)) {
         alert("이메일을 형식에 맞게 입력해주세요.");
         return false;
       }
     }
-    if (!isNickValidated) {
-      alert("닉네임 확인 버튼을 눌러 확인해 주세요");
+    if (!isEmailValidated) {
+      alert("이메일을 확인해 주세요");
       return false;
     }
-    if (!isPwdValidated) {
-      alert(
-        "비밀번호 형식에 유효하지 않습니다.지정된 형식[8자리 이상의 알파벳 대.소문자와 특수문자 포함하여 구성]을 확인해 주세요"
-      );
-      console.log(pwd);
+    if (
+      (!$("#noNickUpdate").prop("checked") || !isNickValidated) &&
+      !nick.value
+    ) {
+      alert("닉네임을 확인버튼을 눌러주세요");
       return false;
+    } else if (!$("#noNickUpdate").prop("checked") && !nick.value) {
+      alert("닉네임을 입력해 주세요");
+      return false;
+    }else if($("#noNickUpdate").prop("checked")){
+      nick.value = registeredNick;
+      alert(document.querySelector('input[name="nick"]').value);
+      isNickValidated = true;
     }
+    alert(password.value + nick.value + email.value);
     return true;
   }
 </script>

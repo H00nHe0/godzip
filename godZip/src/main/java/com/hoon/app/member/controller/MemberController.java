@@ -41,8 +41,10 @@ public class MemberController {
 		MemberVo mvo = ms.nickDupChk(nick);
 		System.out.println(mvo);
 		if(mvo!=null) { //이미존재하는 닉네임
+			System.out.println("0리턴");
 			return 0;
 		}else {			//사용가능한 닉네임
+			System.out.println("1리턴");
 			return 1; 		
 		}
 	}
@@ -152,16 +154,19 @@ public class MemberController {
 		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
 		int no = loginMember.getNo();
 		System.out.println("memberNo :"+ no);
+		System.out.println("mvo : "+mvo);
 		System.out.println("loginMember : "+loginMember);
-		int result = ms.editMemberInfo(loginMember, no);
+		int result = ms.editMemberInfo(mvo, no);
 		if(result != 1) {
 			session.setAttribute("alertMsg", "회원정보수정 실패.. 다시 시도해주세요");
+			System.out.println("mvo : "+mvo);
 			return "redirect:/member/editInfo";
 		}
 		session.setAttribute("alertMsg" , "회원정보 수정 성공!");			
 		mvo = ms.updatedInfo(no);
+		System.out.println("mvo : "+mvo);
 		session.setAttribute("mvo", mvo);
-		return "home";
+		return "redirect:/home";
 	}
 		
 	
