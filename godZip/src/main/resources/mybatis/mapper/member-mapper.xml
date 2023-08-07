@@ -42,4 +42,12 @@
 		SELECT * FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd}
 	</select>
 	
+	<!-- 회원정보 수정 -->
+	<update id="editMemberInfo">
+		UPDATE MEMBER_INFO SET PWD = #{pwd}, NICK = #{nick}, EMAIL = #{email} WHERE NO = #{no}
+	</update>
+	
+	<select id="updatedInfo" resultType = "memberVo">
+		SELECT * FROM MEMBER_INFO WHERE NO = #{no}
+	</select>
 </mapper>

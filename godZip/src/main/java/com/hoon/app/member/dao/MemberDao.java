@@ -24,6 +24,16 @@ public class MemberDao {
 		return sst.selectOne("member.login", mvo);
 	}
 
+	public int editMemberInfo(SqlSessionTemplate sst, MemberVo mvo, int no) {
+		mvo.setNo(no);
+		return sst.update("member.editMemberInfo", mvo);
+	}
+
+	public MemberVo updatedInfo(SqlSessionTemplate sst, int no) {
+		// TODO Auto-generated method stub
+		return sst.selectOne("member.updatedInfo", no);
+	}
+
 
 
 }
