@@ -1,5 +1,13 @@
 package com.hoon.app.member.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +19,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hoon.app.member.service.MemberService;
 import com.hoon.app.member.vo.MemberVo;
 
+import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
+
+@Slf4j
 @RequestMapping("member")
 @Controller
 public class MemberController {
@@ -147,7 +160,67 @@ public class MemberController {
 	public String editInfo() {
 		return "member/editInfo";
 	}
-	
+	//회원 프로필 폴더 날짜별로 생성
+	private String getFolder(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String str = sdf.format(date);
+		return str.replace("-", File.separator);
+	}
+	//프로파일 사진 업로드
+	@PostMapping("uploadProfile")
+	@ResponseBody
+	public void uploadProfile(MultipartFile profile) {
+		String profileFolder = "C:\\dev\\sidePrjRepo\\godzipGit\\godZip\\src\\main\\webapp\\resources\\img\\memberImg";
+
+		//폴더를 만들자
+		File uploadPath = new File(profileFolder, getFolder());
+		log.info("uploadPath : "+ uploadPath);
+		if(uploadPath.exists()==false) {
+			uploadPath.mkdirs();
+		}
+
+			log.info("update ajax post....");
+			log.info("Uplodaed profile img :"+ profile.getOriginalFilename());
+			log.info("Uplodaed profile size :"+ profile.getSize());
+			String uploadedFileName = profile.getOriginalFilename();
+			//IE has file path
+			uploadedFileName = uploadedFileName.substring(uploadedFileName.lastIndexOf("//")+1);
+			log.info("only file name: "+uploadedFileName);
+			//중복방지를 위한 UUID적용
+			UUID uuid = UUID.randomUUID();
+			uploadedFileName = uuid.toString()+"_"+uploadedFileName;
+			
+			
+			try {
+				File saveFile = new File(uploadPath, uploadedFileName);
+				profile.transferTo(saveFile);
+				//이미지 타입파일인지 확인
+				if(checkImageType(saveFile)) {
+					try{
+						FileOutputStream thumbnail =  new FileOutputStream(new File(uploadPath, "s_"+uploadedFileName));
+						Thumbnailator.createThumbnail(profile.getInputStream(), thumbnail, 100, 100);
+						thumbnail.close();
+					}catch (IOException e) {
+					    log.error("Error creating thumbnail: " + e.getMessage());
+					    e.printStackTrace();
+					}
+				}
+			}catch (Exception e) {
+				log.error(e.getMessage());
+			}//end catch
+		}//end for
+
+	//이미지 파일 판단->섬네일 위해
+	private boolean checkImageType(File file) {
+		try {
+			String contentType = Files.probeContentType(file.toPath());
+			return contentType.startsWith("image");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	//회원정보 수정
 	@PostMapping("editInfo")
 	public String editMemberInfo(MemberVo mvo, HttpSession session) {
