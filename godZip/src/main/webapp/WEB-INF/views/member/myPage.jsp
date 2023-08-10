@@ -106,121 +106,137 @@ pageEncoding="UTF-8"%>
       table {
         width: 100%;
       }
-      table tr td{
-      	padding-top: 5px;
+      table tr td {
+        padding-top: 5px;
       }
-      table tr th{
-      	padding-top: 10px;
-      	padding-bottom: 10px;
-      }      
-      .filebox{
-      	margin: auto;
-      	border: 2px solid gray;
-      	height: 200px;
-      	width: 200px;
-      	vertical-align: middle;
-      	padding-top: 50px;
+      table tr th {
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
-		.filebox .upload-name {
-		    display: inline-block;
-		    height: 40px;
-		    padding: 0 10px;
-		    vertical-align: middle;
-		    border: 1px solid #dddddd;
-		    width: 80%;
-		    color: #999999;
-		}
-		.filebox label {
-		    display: inline-block;
-		    padding: 10px 20px;
-		    color: #fff;
-		    vertical-align: middle;
-		    background-color: #999999;
-		    cursor: pointer;
-		    height: 40px;
-		    margin-left: 10px;
-		}
-		.filebox input[type="file"] {
-		    position: absolute;
-		    width: 0;
-		    height: 0;
-		    padding: 0;
-		    overflow: hidden;
-		    border: 0;
-		}
-			.cta {
-			  border: none;
-			  background: none;
-			}
-			
-			.cta span {
-			  padding-bottom: 7px;
-			  letter-spacing: 4px;
-			  font-size: 14px;
-			  padding-right: 15px;
-			  text-transform: uppercase;
-			}
-			
-			.cta svg {
-			  transform: translateX(-8px);
-			  transition: all 0.3s ease;
-			}
-			
-			.cta:hover svg {
-			  transform: translateX(0);
-			}
-			
-			.cta:active svg {
-			  transform: scale(0.9);
-			}
-			
-			.hover-underline-animation {
-			  position: relative;
-			  color: black;
-			  padding-bottom: 20px;
-			}
-			
-			.hover-underline-animation:after {
-			  content: "";
-			  position: absolute;
-			  width: 100%;
-			  transform: scaleX(0);
-			  height: 2px;
-			  bottom: 0;
-			  left: 0;
-			  background-color: #000000;
-			  transform-origin: bottom right;
-			  transition: transform 0.25s ease-out;
-			}
-			
-			.cta:hover .hover-underline-animation:after {
-			  transform: scaleX(1);
-			  transform-origin: bottom left;
-			}		
-			
-			#profileInfo{
-				padding-top: 10px;
-				font-size: 12px;
-			}		
-		
+      .filebox {
+        margin: auto;
+        border: 2px solid gray;
+        height: 200px;
+        width: 200px;
+        vertical-align: middle;
+        padding-top: 50px;
+      }
+      .filebox .upload-name {
+        margin-top: 10px;
+        display: inline-block;
+        height: 30px;
+        padding: 0 5px;
+        vertical-align: middle;
+        border: 1px solid #dddddd;
+        width: 60%;
+        color: #999999;
+      }
+      .filebox label {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 5px 5px;
+        color: #fff;
+        vertical-align: middle;
+        background-color: #999999;
+        cursor: pointer;
+        height: 30px;
+        width: 50%;
+        font-size: 11px;
+      }
+      .filebox input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+      }
+      .cta {
+        border: none;
+        background: none;
+      }
+
+      .cta span {
+        padding-bottom: 7px;
+        letter-spacing: 4px;
+        font-size: 14px;
+        padding-right: 15px;
+        text-transform: uppercase;
+      }
+
+      .cta svg {
+        transform: translateX(-8px);
+        transition: all 0.3s ease;
+      }
+
+      .cta:hover svg {
+        transform: translateX(0);
+      }
+
+      .cta:active svg {
+        transform: scale(0.9);
+      }
+
+      .hover-underline-animation {
+        position: relative;
+        color: black;
+        padding-bottom: 20px;
+      }
+
+      .hover-underline-animation:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #000000;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+      }
+
+      .cta:hover .hover-underline-animation:after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+
+      #profileInfo {
+        padding-top: 10px;
+        font-size: 12px;
+      }
     </style>
   </head>
   <body>
     <div id="wrap">
       <%@ include file="/WEB-INF/views/common/header.jsp" %>
       <script type="script" defer src="${root}/resources/js/main.js"></script>
-	          <div class="form-section">
-	            <p class="fs-6 lead">회원 정보 수정을 원하시나요? 
-	            <a href="${root}/member/editInfo">
-	            	<button class="cta">
-					    <span class="hover-underline-animation" style="font-size: 18px;"> click me</span>
-					    <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
-					        <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
-					    </svg>
-					</button>
-	            </a>
-	            </p>
-	          </div>
+      <div class="form-section">
+        <p class="fs-6 lead">
+          회원 정보 수정을 원하시나요?
+          <a href="${root}/member/editInfo">
+            <button class="cta">
+              <span class="hover-underline-animation" style="font-size: 18px">
+                click me</span
+              >
+              <svg
+                viewBox="0 0 46 16"
+                height="10"
+                width="30"
+                xmlns="http://www.w3.org/2000/svg"
+                id="arrow-horizontal"
+              >
+                <path
+                  transform="translate(30)"
+                  d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                  data-name="Path 10"
+                  id="Path_10"
+                ></path>
+              </svg>
+            </button>
+          </a>
+        </p>
+      </div>
       <div>
         <h2>마이 페이지</h2>
       </div>
@@ -246,14 +262,34 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-					<div class="filebox">
-					    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
-					    <label for="file">사진 찾기</label> 
-					    <input type="file" id="file">
-					    <div id="profileInfo">
-					    프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
-					    </div>
-					</div>
+                    <div class="filebox">
+                      <c:if test="${empty mvo.profile}">
+                        <img
+                          class="img-circle"
+                          src="${root}/resources/img/memberImg/defaultProfile.png"
+                          style="width: 100%; height: 70%"
+                        />
+                      </c:if>
+                      <c:if test="${!empty mvo.profile}">
+                        <img
+                          class="img-circle"
+                          src="${root}/resources/img/memberImg/${mvo.profile}"
+                          style="width: 50px; height: 50px"
+                        />
+                      </c:if>
+                      <!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일"> -->
+                      <label for="uploadProfile" id="profileChange"
+                        >프로필 사진변경</label
+                      >
+                      <input
+                        type="file"
+                        id="uploadProfile"
+                        name="uploadProfile"
+                      />
+                    </div>
+                    <div id="profileInfo">
+                      프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
+                    </div>
                   </td>
                   <td>
                     <input
@@ -270,14 +306,12 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-					총~일 출석
-                    <input
-                    />
+                    총~일 출석
+                    <input />
                   </td>
                   <td>
-					~~일 만 더
-                    <input
-                    />
+                    ~~일 만 더
+                    <input />
                   </td>
                 </tr>
                 <tr>
@@ -285,14 +319,12 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-					내가 남긴 리뷰
-                    <input
-                    />
+                    내가 남긴 리뷰
+                    <input />
                   </td>
                   <td>
-					받은 좋아요
-                    <input
-                    />
+                    받은 좋아요
+                    <input />
                   </td>
                 </tr>
                 <tr>
@@ -325,5 +357,49 @@ pageEncoding="UTF-8"%>
   </body>
 </html>
 <script>
- 
+  //파일 확장자,사진 용량 제한
+  var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf)");
+  var maxSize = 10485760; //10mb
+  function checkExtension(fileName, fileSize) {
+    if (fileSize >= maxSize) {
+      alert("사진의 용량이 10mb를 넘습니다.");
+      return false;
+    }
+    if (regex.test(fileName)) {
+      alert("해당 확장자 파일은 업로드 할 수 없습니다.");
+      return false;
+    }
+    return true;
+  }
+
+  $("#profileChange").on("click", function () {
+    var formData = new FormData();
+    //이벤트 버블링 발생 하여 off메서드 사용
+    $("input[name='uploadProfile']")
+      .off()
+      .on("change", function () {
+        var selectedFile = $("input[name='uploadProfile']")[0].files[0];
+        console.log("Selected file:", selectedFile);
+        //첨부파일 서버로 보내서 저장하기
+        if (!checkExtension(selectedFile.name, selectedFile.size)) {
+          console.log("파일 확장자,사진 용량 제한");
+          return false;
+        }
+        formData.append("profile", selectedFile);
+
+        $.ajax({
+          url: "${root}/member/uploadProfile",
+          processData: false,
+          contentType: false,
+          data: formData,
+          type: "POST",
+          success: function (result) {
+            alert("프로필 업데이트완료!");
+          },
+          error: function () {
+            alert(formData);
+          },
+        }); //ajax
+      });
+  });
 </script>
