@@ -218,16 +218,19 @@
       </dependency>       
       
       <!-- 406에러 방지 jackson API -->
-       <dependency>
-	    <groupId>com.fasterxml.jackson.core</groupId>
-	    <artifactId>jackson-core</artifactId>
-	    <version>2.15.0</version>
-	   </dependency>
-		 <dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.15.0</version>
-		 </dependency>
+		    <version>2.15.2</version>
+		</dependency>
+		<!-- https://mvnrep            ository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-xml</artifactId>
+		    <version>2.15.2</version>
+		</dependency>
+
 		 
 <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
 		<dependency>

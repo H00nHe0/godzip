@@ -262,7 +262,7 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-                    <div class="filebox">
+                    <div id="showProfile" class="filebox">
                       <c:if test="${empty mvo.profile}">
                         <img
                           class="img-circle"
@@ -274,7 +274,7 @@ pageEncoding="UTF-8"%>
                         <img
                           class="img-circle"
                           src="${root}/resources/img/memberImg/${mvo.profile}"
-                          style="width: 50px; height: 50px"
+                          style="width: 100%; height: 70%"
                         />
                       </c:if>
                       <!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일"> -->
@@ -373,7 +373,9 @@ pageEncoding="UTF-8"%>
   }
 
   $("#profileChange").on("click", function () {
+
     var formData = new FormData();
+    var memberNo = ${mvo.no};
     //이벤트 버블링 발생 하여 off메서드 사용
     $("input[name='uploadProfile']")
       .off()
@@ -386,6 +388,7 @@ pageEncoding="UTF-8"%>
           return false;
         }
         formData.append("profile", selectedFile);
+        formData.append("no", memberNo);
 
         $.ajax({
           url: "${root}/member/uploadProfile",
@@ -395,9 +398,12 @@ pageEncoding="UTF-8"%>
           type: "POST",
           success: function (result) {
             alert("프로필 업데이트완료!");
+            console.log(result);
+            $(".img-circle").attr("src", "${root}/resources/img/memberImg/" + result);
           },
           error: function () {
             alert(formData);
+            console.log("에러에러");
           },
         }); //ajax
       });

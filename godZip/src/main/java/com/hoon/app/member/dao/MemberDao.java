@@ -1,5 +1,8 @@
 package com.hoon.app.member.dao;
 
+import java.io.File;
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,6 +35,13 @@ public class MemberDao {
 	public MemberVo updatedInfo(SqlSessionTemplate sst, int no) {
 		// TODO Auto-generated method stub
 		return sst.selectOne("member.updatedInfo", no);
+	}
+
+	public int insertThumbnail(SqlSessionTemplate sst, String profileImg, int no) {
+	    return sst.update("member.insertThumbnail", new HashMap<String, Object>() {{
+	        put("profileImg", profileImg);
+	        put("no", no);
+	    }});
 	}
 
 
