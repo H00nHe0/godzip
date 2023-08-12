@@ -50,4 +50,8 @@
 	<select id="updatedInfo" resultType = "memberVo">
 		SELECT * FROM MEMBER_INFO WHERE NO = #{no}
 	</select>
+	
+	<update id="insertThumbnail">
+		UPDATE MEMBER_INFO SET PROFILE = #{profileImg} WHERE NO = #{no}
+	</update>
 </mapper>

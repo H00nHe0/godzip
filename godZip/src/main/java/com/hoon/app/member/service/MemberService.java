@@ -1,5 +1,7 @@
 package com.hoon.app.member.service;
 
+import java.io.File;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,11 @@ public class MemberService {
 
 	public MemberVo updatedInfo(int no) {
 		return dao.updatedInfo(sst, no);
+	}
+
+	public int insertThumbnail(String profileImg, int no) {
+
+		return dao.insertThumbnail(sst, profileImg, no);
 	}
 
 

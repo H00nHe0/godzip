@@ -1,7 +1,6 @@
 package com.hoon.app.member.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -160,25 +159,11 @@ public class MemberController {
 	public String editInfo() {
 		return "member/editInfo";
 	}
-	//회원 프로필 폴더 날짜별로 생성
-	private String getFolder(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		String str = sdf.format(date);
-		return str.replace("-", File.separator);
-	}
 	//프로파일 사진 업로드
 	@PostMapping("uploadProfile")
 	@ResponseBody
-	public void uploadProfile(MultipartFile profile) {
+	public String uploadProfile(MultipartFile profile, @RequestParam int no, HttpSession session) {
 		String profileFolder = "C:\\dev\\sidePrjRepo\\godzipGit\\godZip\\src\\main\\webapp\\resources\\img\\memberImg";
-
-		//폴더를 만들자
-		File uploadPath = new File(profileFolder, getFolder());
-		log.info("uploadPath : "+ uploadPath);
-		if(uploadPath.exists()==false) {
-			uploadPath.mkdirs();
-		}
 
 			log.info("update ajax post....");
 			log.info("Uplodaed profile img :"+ profile.getOriginalFilename());
@@ -191,16 +176,15 @@ public class MemberController {
 			UUID uuid = UUID.randomUUID();
 			uploadedFileName = uuid.toString()+"_"+uploadedFileName;
 			
-			
+			File thumbnail = null;
 			try {
-				File saveFile = new File(uploadPath, uploadedFileName);
+				File saveFile = new File(profileFolder, uploadedFileName);
 				profile.transferTo(saveFile);
 				//이미지 타입파일인지 확인
 				if(checkImageType(saveFile)) {
 					try{
-						FileOutputStream thumbnail =  new FileOutputStream(new File(uploadPath, "s_"+uploadedFileName));
-						Thumbnailator.createThumbnail(profile.getInputStream(), thumbnail, 100, 100);
-						thumbnail.close();
+						thumbnail = new File(profileFolder, "s_" + uploadedFileName);
+						Thumbnailator.createThumbnail(saveFile, thumbnail, 100, 100);
 					}catch (IOException e) {
 					    log.error("Error creating thumbnail: " + e.getMessage());
 					    e.printStackTrace();
@@ -209,7 +193,20 @@ public class MemberController {
 			}catch (Exception e) {
 				log.error(e.getMessage());
 			}//end catch
-		}//end for
+			//썸네일 이름 db에 넣기
+			String profileImg = thumbnail.getName();
+			int result = ms.insertThumbnail(profileImg, no);
+			if(result != 1) {
+				log.info("problem occur on inserting profileImg name");
+				return "error";
+			}else {
+				log.info("Uplodaed profile name in DB :"+ profileImg);
+				MemberVo mvo = ms.updatedInfo(no);
+				session.setAttribute("mvo", mvo);
+				System.out.println(mvo);
+				return profileImg;
+			}
+		}//end
 
 	//이미지 파일 판단->섬네일 위해
 	private boolean checkImageType(File file) {
@@ -221,6 +218,14 @@ public class MemberController {
 		}
 		return false;
 	}
+	/*
+	 * //프사 썸네일 프사 화면에 보여주기
+	 * 
+	 * @GetMapping("display")
+	 * 
+	 * @ResponseBody public Res
+	 */
+	
 	//회원정보 수정
 	@PostMapping("editInfo")
 	public String editMemberInfo(MemberVo mvo, HttpSession session) {
