@@ -15,7 +15,7 @@ public class MemberVo {
 	private String isBlockedYn;
 	private String email;
 	private String lastVisit;
-	private int totalVisit;
+	private int visitedDays;
 	private String loginType;
 	private String profile;
 }

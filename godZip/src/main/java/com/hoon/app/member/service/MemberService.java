@@ -51,5 +51,10 @@ public class MemberService {
 		return dao.insertThumbnail(sst, profileImg, no);
 	}
 
+	public int updateLastVisit(int memberNo) {
+		// TODO Auto-generated method stub
+		return dao.updateLastVisit(sst,memberNo);
+	}
+
 
 }

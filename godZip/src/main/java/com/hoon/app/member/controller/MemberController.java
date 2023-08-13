@@ -2,6 +2,8 @@ package com.hoon.app.member.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,7 +106,9 @@ public class MemberController {
 		}
 		MemberVo loginMember = ms.login(mvo);
 		if(loginMember != null) {//로그인 성공
-			//session.setAttribute("alertMsg", "로그인 성공!");			
+			
+			//출석일수 변동
+			
 			rttr.addFlashAttribute("msgType", "successMsg");
 			rttr.addFlashAttribute("msg", "로그인 성공!");
 			session.setAttribute("mvo", loginMember); //${!empty mvo}
@@ -120,8 +124,18 @@ public class MemberController {
 	//로그아웃
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/home";
+		//로그아웃 시 lastvisit칼럼 날짜 업데이트
+		MemberVo mvo = (MemberVo) session.getAttribute("mvo");
+		int memberNo = mvo.getNo();
+		int result = ms.updateLastVisit(memberNo);
+		if(result != 1) {
+			log.info("error occurred when logout with updating last_visit column");
+			session.setAttribute("alertMsg", "로그아웃 중에 문제가 발생하였습니다. 다시 시도해 주세요");
+			return "redirect:/home";			
+		}else {
+			session.invalidate();
+			return "redirect:/home";
+		}
 	}
 	
 	//마이페이지 비번확인 화면이동
@@ -162,7 +176,7 @@ public class MemberController {
 	//프로파일 사진 업로드
 	@PostMapping("uploadProfile")
 	@ResponseBody
-	public String uploadProfile(MultipartFile profile, @RequestParam int no, HttpSession session) {
+	public String uploadProfile(MultipartFile profile, @RequestParam int no, HttpSession session) throws Exception {
 		String profileFolder = "C:\\dev\\sidePrjRepo\\godzipGit\\godZip\\src\\main\\webapp\\resources\\img\\memberImg";
 
 			log.info("update ajax post....");
@@ -201,10 +215,13 @@ public class MemberController {
 				return "error";
 			}else {
 				log.info("Uplodaed profile name in DB :"+ profileImg);
+				
+			    // 파일이름 한글이면 안되서 인코딩
+			    String encodedFileName = URLEncoder.encode(profileImg, "UTF-8");
 				MemberVo mvo = ms.updatedInfo(no);
 				session.setAttribute("mvo", mvo);
 				System.out.println(mvo);
-				return profileImg;
+				return encodedFileName;
 			}
 		}//end
 
@@ -218,13 +235,7 @@ public class MemberController {
 		}
 		return false;
 	}
-	/*
-	 * //프사 썸네일 프사 화면에 보여주기
-	 * 
-	 * @GetMapping("display")
-	 * 
-	 * @ResponseBody public Res
-	 */
+
 	
 	//회원정보 수정
 	@PostMapping("editInfo")

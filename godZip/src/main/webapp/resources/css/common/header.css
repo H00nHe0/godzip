@@ -10,8 +10,8 @@
   width: 140px;
   height: 120px;
 }
-#slogan{
-	width: 100%;
+#slogan {
+  width: 100%;
 }
 
 #search-area {
@@ -21,7 +21,6 @@
   align-items: center;
   margin-right: -10%;
 }
-
 
 .slideshow {
   width: 100%;
@@ -34,7 +33,6 @@
   width: 100%;
   height: 400px;
 }
-
 
 /* 서치바  */
 .input {
@@ -165,4 +163,9 @@
   position: absolute;
   white-space: nowrap;
   width: 1px;
+}
+
+.img-circle {
+  margin-right: 5px;
+  border-radius: 20%;
 }

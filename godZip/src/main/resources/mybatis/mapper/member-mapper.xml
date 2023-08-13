@@ -54,4 +54,8 @@
 	<update id="insertThumbnail">
 		UPDATE MEMBER_INFO SET PROFILE = #{profileImg} WHERE NO = #{no}
 	</update>
+	
+	<update id="updateLastVisit">
+	 	UPDATE MEMBER_INFO SET LAST_VISIT = SYSDATE WHERE NO = #{memberNo}
+	</update>
 </mapper>
