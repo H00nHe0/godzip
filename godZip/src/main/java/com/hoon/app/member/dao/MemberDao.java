@@ -44,6 +44,10 @@ public class MemberDao {
 	    }});
 	}
 
+	public int updateLastVisit(SqlSessionTemplate sst, int memberNo) {
+		return sst.update("member.updateLastVisit", memberNo);
+	}
+
 
 
 }

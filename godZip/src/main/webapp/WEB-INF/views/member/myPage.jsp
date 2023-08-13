@@ -205,6 +205,11 @@ pageEncoding="UTF-8"%>
         padding-top: 10px;
         font-size: 12px;
       }
+      .visitInfo {
+        font-weight: 600;
+        border: none;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -306,12 +311,24 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-                    총~일 출석
-                    <input />
+                    최근 방문일
+                    <input
+                      class="visitInfo"
+                      type="text"
+                      id="recentVisit"
+                      value="${mvo.lastVisit}"
+                      readonly
+                    />
                   </td>
                   <td>
-                    ~~일 만 더
-                    <input />
+                    총 방문일 수
+                    <input
+                      class="visitInfo"
+                      type="text"
+                      id="totalVisit"
+                      value="${mvo.visitedDays}"
+                      readonly
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -408,4 +425,12 @@ pageEncoding="UTF-8"%>
         }); //ajax
       });
   });
+  //최근방문일 이쁘게
+  var recentVisit = $("#recentVisit").val();;
+  var modifiedDate = recentVisit.substring(0,10);
+  $("#recentVisit").val(modifiedDate);
+  //총 방문일 앞뒤 텍스트 붙이기
+  var totalVisit = $("#totalVisit").val();;
+  var modifiedTotal = "총 "+totalVisit+"일 방문";
+  $("#totalVisit").val(modifiedTotal);
 </script>
