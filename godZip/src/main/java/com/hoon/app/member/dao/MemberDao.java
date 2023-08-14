@@ -1,6 +1,5 @@
 package com.hoon.app.member.dao;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -46,6 +45,10 @@ public class MemberDao {
 
 	public int updateLastVisit(SqlSessionTemplate sst, int memberNo) {
 		return sst.update("member.updateLastVisit", memberNo);
+	}
+
+	public int updateTotalVisit(SqlSessionTemplate sst, int no) {
+		return sst.update("member.updateTotalVisit", no);
 	}
 
 

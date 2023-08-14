@@ -52,8 +52,11 @@ public class MemberService {
 	}
 
 	public int updateLastVisit(int memberNo) {
-		// TODO Auto-generated method stub
 		return dao.updateLastVisit(sst,memberNo);
+	}
+
+	public int updateTotalVisit(int no) {
+		return dao.updateTotalVisit(sst, no);
 	}
 
 
