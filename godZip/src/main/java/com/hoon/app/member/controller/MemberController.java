@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
@@ -104,11 +106,30 @@ public class MemberController {
 			rttr.addFlashAttribute("msg", "아이디와 비밀번호를 모두 입력해주세요");
 			return "redirect:/member/loginForm";
 		}
+		
 		MemberVo loginMember = ms.login(mvo);
+		System.out.println(loginMember);
 		if(loginMember != null) {//로그인 성공
-			
-			//출석일수 변동
-			
+			int no = loginMember.getNo();
+			//출석일수 변동(하루에 여러번 로그인해도 같은날이면 1 증가)
+			//현재날짜구하기(system default지정된 시간이용방법)
+			LocalDate today = LocalDate.now();
+			//날짜 포멧 정의&적용
+			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+			 String formatedToday = today.format(formatter);
+			 String formatedLastVisit = loginMember.getLastVisit().substring(2,10).replace("-", "/");
+			 //최근 로그아웃 날짜랑 오늘날짜 비교(문자열)
+			if(!formatedLastVisit.equals(formatedToday)) {
+				log.info("loginMember.getLastVisit() : "+loginMember.getLastVisit()+", formatedToday : "+formatedToday);
+				int alreadyVisit = ms.updateTotalVisit(no);
+				if (alreadyVisit == 1) {
+				    log.info("Visited days column updated");
+				} else {
+				    log.info("Error updating visited days column");
+				}
+			}else {
+				log.info("오늘 로그인  이미 함");
+			}
 			rttr.addFlashAttribute("msgType", "successMsg");
 			rttr.addFlashAttribute("msg", "로그인 성공!");
 			session.setAttribute("mvo", loginMember); //${!empty mvo}

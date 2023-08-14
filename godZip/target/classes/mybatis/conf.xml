@@ -11,6 +11,8 @@
 	
 	<typeAliases>
   		<typeAlias type="com.hoon.app.member.vo.MemberVo" alias="memberVo"/>	
+  		<typeAlias type="com.hoon.app.inquiry.vo.InquiryVo" alias="inquiryVo"/>	
+  		<typeAlias type="com.hoon.app.inquiry.vo.FaqVo" alias="faqVo"/>	
 	</typeAliases>	
 	
 	

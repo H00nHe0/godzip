@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%> <%@ taglib prefix='fn'
+uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -205,7 +206,7 @@ pageEncoding="UTF-8"%>
         padding-top: 10px;
         font-size: 12px;
       }
-      .visitInfo {
+      .mypageInfo {
         font-weight: 600;
         border: none;
         text-align: center;
@@ -307,13 +308,28 @@ pageEncoding="UTF-8"%>
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">나의 출석 정보</th>
+                  <th colspan="2">
+                    나의 출석 정보 ( 가입일 :
+                    <c:set
+                      var="enrollYear"
+                      value="${mvo.enrollDate.substring(0, 4)}"
+                    />
+                    <c:set
+                      var="enrollMonth"
+                      value="${mvo.enrollDate.substring(5, 7)}"
+                    />
+                    <c:set
+                      var="enrollDay"
+                      value="${mvo.enrollDate.substring(8, 10)}"
+                    />
+                    ${enrollYear}년 ${enrollMonth}월 ${enrollDay}일 )
+                  </th>
                 </tr>
                 <tr>
                   <td>
                     최근 방문일
                     <input
-                      class="visitInfo"
+                      class="mypageInfo"
                       type="text"
                       id="recentVisit"
                       value="${mvo.lastVisit}"
@@ -323,7 +339,7 @@ pageEncoding="UTF-8"%>
                   <td>
                     총 방문일 수
                     <input
-                      class="visitInfo"
+                      class="mypageInfo"
                       type="text"
                       id="totalVisit"
                       value="${mvo.visitedDays}"
@@ -337,11 +353,23 @@ pageEncoding="UTF-8"%>
                 <tr>
                   <td>
                     내가 남긴 리뷰
-                    <input />
+                    <input
+                      class="mypageInfo"
+                      type="text"
+                      id="myReviewCnt"
+                      value="리뷰기능구현 후 업뎃ㄱㄱ"
+                      readonly
+                    />
                   </td>
                   <td>
                     받은 좋아요
-                    <input />
+                    <input
+                      class="mypageInfo"
+                      type="text"
+                      id="likeCnt"
+                      value="좋아요기능구현 후 업뎃 ㄱㄱ"
+                      readonly
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -354,7 +382,7 @@ pageEncoding="UTF-8"%>
                       class="joinInput"
                       name="nick"
                       style="width: 80%"
-                      placeholder="4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성"
+                      placeholder="나의 문의내역 구현"
                     />
                   </td>
                 </tr>
@@ -433,4 +461,20 @@ pageEncoding="UTF-8"%>
   var totalVisit = $("#totalVisit").val();;
   var modifiedTotal = "총 "+totalVisit+"일 방문";
   $("#totalVisit").val(modifiedTotal);
+
+
+  //등급별 색상변화
+  var grade = $("span[id='gradeName']").text();
+  if (grade == "GREEN") {
+    $("span[id='gradeName']").css("color", "green");
+  }
+  if (grade == "SILVER") {
+    $("span[id='gradeName']").css("color", "silver");
+  }
+  if (grade == "GOLD") {
+    $("span[id='gradeName']").css("color", "gold");
+  }
+  if (grade == "DIAMOND") {
+    $("span[id='gradeName']").css("color", "diamond");
+  }
 </script>

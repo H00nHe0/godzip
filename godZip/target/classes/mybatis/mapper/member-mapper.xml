@@ -39,7 +39,21 @@
 	
 	<!-- 로그인 -->
 	<select id="login" resultType="memberVo">
-		SELECT * FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd}
+		SELECT 
+		NO
+		,GRADE_NO
+		,ID
+		,PWD
+		,NICK
+		,ENROLL_DATE
+		,QUIT_YN
+		,IS_BLOCKED_YN
+		,EMAIL
+		,LAST_VISIT
+		,VISITED_DAYS
+		,LOGIN_TYPE
+		,PROFILE
+		FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd}
 	</select>
 	
 	<!-- 회원정보 수정 -->
@@ -57,5 +71,9 @@
 	
 	<update id="updateLastVisit">
 	 	UPDATE MEMBER_INFO SET LAST_VISIT = SYSDATE WHERE NO = #{memberNo}
+	</update>
+	
+	<update id="updateTotalVisit">
+		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
 	</update>
 </mapper>
