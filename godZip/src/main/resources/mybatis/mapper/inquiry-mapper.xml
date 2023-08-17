@@ -8,4 +8,71 @@
 		SELECT TITLE, CONTENT FROM FAQ ORDER BY NO
 	</select>
 
+	<select id="getInquiryList" resultType="inquiryVo">
+		SELECT 
+			Q.NO,
+			Q.TITLE,
+			Q.CONTENT,
+			Q.ANSWER,
+			M.NICK,
+			Q.ADMIN_NO,
+			Q.MEMBER_NO,
+			TO_CHAR(Q.Q_DATE, 'YYYY-MM-DD HH24:MI') AS Q_DATE,
+       		TO_CHAR(Q.A_DATE, 'YYYY-MM-DD HH24:MI') AS A_DATE,
+			Q.DELETE_YN,
+			Q.EDIT_DATE,
+			Q.COUNT,
+			IT.TYPE
+		FROM QNA Q
+		JOIN MEMBER_INFO M ON Q.MEMBER_NO = M.NO
+		LEFT JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
+		WHERE Q.DELETE_YN = 'N'
+		ORDER BY Q.NO DESC
+	</select>
+	
+	<insert id="inquiryInsert">
+		INSERT INTO QNA
+		(
+		NO
+		,TITLE
+		,CONTENT
+		,MEMBER_NO
+		,Q_DATE
+		,DELETE_YN
+		,TYPE
+		)
+		VALUES
+		(
+		SEQ_QNA_NO.NEXTVAL,
+		#{title}
+		,#{content}
+		,#{memberNo}
+		,SYSDATE
+		,DEFAULT
+		,#{type}
+		)
+	</insert>
+	
+	<select id="selectType" resultType="inquiryTypeVo">
+	SELECT NO, TYPE 
+	FROM INQUIRY_TYPE
+	ORDER BY NO ASC
+	</select>
+	
+	<select id="inquiryContent" resultType="inquiryVo">
+		SELECT * FROM QNA WHERE NO = #{no}	
+	</select>
+	
+	<update id="growCnt">
+		UPDATE QNA SET COUNT = COUNT+1 WHERE NO = #{no}
+	</update>
+	
+	<update id="inquiryDelete">
+		UPDATE QNA SET DELETE_YN = 'Y'
+		WHERE NO = #{no}  
+	</update>
+	
+	<update id="boardEdit">
+		UPDATE QNA SET TITLE = #{title}, CONTENT = #{content} WHERE NO = #{no}
+	</update>	
 </mapper>

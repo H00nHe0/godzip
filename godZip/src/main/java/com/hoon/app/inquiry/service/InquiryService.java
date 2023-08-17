@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.hoon.app.inquiry.dao.InquiryDao;
 import com.hoon.app.inquiry.vo.FaqVo;
+import com.hoon.app.inquiry.vo.InquiryTypeVo;
+import com.hoon.app.inquiry.vo.InquiryVo;
 
 @Service
 public class InquiryService {
@@ -21,6 +23,27 @@ public class InquiryService {
 	}
 	public List<FaqVo> getFAQList() {
 		return idao.getFAQList(sst);
+	}
+	public List<InquiryVo> getInquiryList() {
+		return idao.getInquiryList(sst);
+	}
+	public int inquiryInsert(InquiryVo ivo) {
+		return idao.inquiryInsert(sst, ivo);
+	}
+	public List<InquiryTypeVo> selectType() {
+		return idao.selectType(sst);
+	}
+	public InquiryVo inquiryContent(int no) {
+		return idao.inquiryContent(sst, no);
+	}
+	public int growCnt(int no) {
+		return idao.growCnt(sst, no);
+	}
+	public int inquiryDelete(int no) {
+		return idao.inquiryDelete(sst,no);
+	}
+	public int boardEdit(InquiryVo ivo) {
+		return idao.boardEdit(sst, ivo);
 	}
 	
 }

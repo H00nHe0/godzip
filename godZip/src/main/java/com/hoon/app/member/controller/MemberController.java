@@ -132,6 +132,8 @@ public class MemberController {
 			}
 			rttr.addFlashAttribute("msgType", "successMsg");
 			rttr.addFlashAttribute("msg", "로그인 성공!");
+			//총방문횟수 업뎃되면 업데이트 반영한 정보 세션에 담기
+			loginMember = ms.login(mvo);
 			session.setAttribute("mvo", loginMember); //${!empty mvo}
 			return "redirect:/home";
 		}else {//로그인 실패
