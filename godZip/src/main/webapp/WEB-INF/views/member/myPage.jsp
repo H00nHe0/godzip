@@ -120,7 +120,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         height: 200px;
         width: 200px;
         vertical-align: middle;
-        padding-top: 50px;
+        /* padding-top: 0px; */
       }
       .filebox .upload-name {
         margin-top: 10px;
@@ -273,14 +273,14 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                         <img
                           class="img-circle"
                           src="${root}/resources/img/memberImg/defaultProfile.png"
-                          style="width: 100%; height: 70%"
+                          style="width: 100%; height: 80%"
                         />
                       </c:if>
                       <c:if test="${!empty mvo.profile}">
                         <img
                           class="img-circle"
                           src="${root}/resources/img/memberImg/${mvo.profile}"
-                          style="width: 100%; height: 70%"
+                          style="width: 100%; height: 80%"
                         />
                       </c:if>
                       <!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일"> -->

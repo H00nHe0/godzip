@@ -12,8 +12,11 @@ public class InquiryVo {
 	private String answer;
 	private int memberNo;
 	private int adminNo;
+	private int count;
 	private String qDate;
 	private String aDate;
 	private String deleteYn;
 	private String editDate;
+	private String nick;
+	private String type;
 }

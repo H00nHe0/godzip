@@ -76,4 +76,5 @@
 	<update id="updateTotalVisit">
 		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
 	</update>
+	
 </mapper>
