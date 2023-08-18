@@ -45,5 +45,8 @@ public class InquiryService {
 	public int boardEdit(InquiryVo ivo) {
 		return idao.boardEdit(sst, ivo);
 	}
+	public List<InquiryVo> myQList(int no) {
+		return idao.myQList(sst, no);
+	}
 	
 }
