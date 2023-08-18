@@ -181,7 +181,7 @@ pageEncoding="UTF-8"%>
 
         listHtml += "<tr id='detail" + obj.no + "' style='display:none'>";
         listHtml += "<td>내용</td>";
-        listHtml += "<td colspan = '4'>";
+        listHtml += "<td colspan = '5'>";
         listHtml +=
           "<textarea rows = '7' id='contentDetail" +
           obj.no +
@@ -328,6 +328,7 @@ pageEncoding="UTF-8"%>
               alert("error");
             },
           });
-        }      
+        } 
+           
   </script>
 </html>
