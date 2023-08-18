@@ -114,4 +114,5 @@ public class InquiryController {
 		log.debug("수정 처리 완료");
 		return "error";
 	}
+	
 }

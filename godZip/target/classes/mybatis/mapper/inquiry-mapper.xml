@@ -75,4 +75,24 @@
 	<update id="boardEdit">
 		UPDATE QNA SET TITLE = #{title}, CONTENT = #{content} WHERE NO = #{no}
 	</update>	
+	
+	<select id="myQList" resultType="inquiryVo">
+		SELECT 
+ 			ROWNUM AS NO,
+			Q.TITLE,
+			Q.CONTENT,
+			Q.ANSWER,
+			Q.ADMIN_NO,
+			Q.MEMBER_NO,
+			TO_CHAR(Q.Q_DATE, 'YYYY-MM-DD HH24:MI') AS Q_DATE,
+       		TO_CHAR(Q.A_DATE, 'YYYY-MM-DD HH24:MI') AS A_DATE,
+			Q.DELETE_YN,
+			Q.EDIT_DATE,
+			Q.COUNT,
+			IT.TYPE
+		FROM QNA Q
+		LEFT JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
+		WHERE Q.DELETE_YN = 'N' AND Q.MEMBER_NO = #{no}
+		ORDER BY Q.NO DESC	
+	</select>
 </mapper>

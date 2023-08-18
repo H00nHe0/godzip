@@ -44,4 +44,8 @@ public class InquiryDao {
 		return sst.update("inquiry.boardEdit", ivo);
 	}
 
+	public List<InquiryVo> myQList(SqlSessionTemplate sst, int no) {
+		return sst.selectList("inquiry.myQList", no);
+	}
+
 }

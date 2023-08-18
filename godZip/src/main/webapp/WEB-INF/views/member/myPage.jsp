@@ -211,6 +211,11 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         border: none;
         text-align: center;
       }
+            .titleBox a{
+      font-weight:600;
+      text-decoration: none;
+   	  color: black;
+      }
     </style>
   </head>
   <body>
@@ -373,17 +378,11 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">나의 문의내역</th>
+                  <th colspan="2">나의 문의내역 (제목 클릭시 상세 내용 확인)</th>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <input
-                      type="text"
-                      class="joinInput"
-                      name="nick"
-                      style="width: 80%"
-                      placeholder="나의 문의내역 구현"
-                    />
+        			<div class="panel-body fw-bold" id="view">문의하신 내역이 없습니다.</div>
                   </td>
                 </tr>
                 <tr>
@@ -402,6 +401,67 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
   </body>
 </html>
 <script>
+$(document).ready(function () {
+    loadQList();
+  });
+function loadQList() {
+    //서버와의 통신: 데이터 가져오기
+    var no = "${mvo.no}";
+    $.ajax({
+      url: "myQList",
+      type: "get",
+      data: {no: no},
+      dataType: "json",
+      success: makeView,
+      error: function () {
+        alert("error");
+      },
+    });
+  } 
+function makeView(data) {
+    // data = [{},{},{},,,,,]
+    console.log(data);
+    var listHtml = "<table class ='table table-bordered'> ";
+    listHtml += "<tr>";
+    listHtml += "<td id='inquiryNo' style='width:5%;'>번호</td>";
+    listHtml += "<td id='inquiryType' style='width:12%;'>문의유형</td>";
+    listHtml += "<td id='inquiryTitle'style='width:50%;'>제목</td>";
+    listHtml += "<td id='inquiryDate'style='width:15%;'>작성일</td>";
+    listHtml += "<td id='inquiryCnt'style='width:8%;'>조회수</td>";
+    listHtml += "</tr>";
+    $.each(data, function (index, obj) {
+    var formattedQDate = obj.qdate.split(" ")[0];
+      listHtml += "<tr>";
+      listHtml += "<td>" + obj.no + "</td>";
+      listHtml += "<td>" + obj.type + "</td>";
+      listHtml +=
+        "<td class='titleBox' id='t" +
+        obj.no +
+        "'><a href='javascript:contentDetail(" +
+        obj.no +
+        ")'>" +
+        obj.title +
+        "</a></td>";
+      listHtml += "<td>" + formattedQDate + "</td>";
+      listHtml += "<td id='count" + obj.no + "'>" + obj.count + "</td>";
+      listHtml += "</tr>";
+
+      listHtml += "<tr id='detail" + obj.no + "' style='display:none'>";
+      listHtml += "<td>내용</td>";
+      listHtml += "<td colspan = '5'>";
+      listHtml +=
+        "<textarea rows = '7' id='contentDetail" +
+        obj.no +
+        "' class='form-control' readonly></textarea>";
+      listHtml += "</td>";
+      listHtml += "</tr>";
+    });
+    listHtml += "</table>";
+    $("#view").html(listHtml);
+    $("#view").css("display", "block"); //보이고
+  }
+
+
   //파일 확장자,사진 용량 제한
   var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf)");
   var maxSize = 10485760; //10mb

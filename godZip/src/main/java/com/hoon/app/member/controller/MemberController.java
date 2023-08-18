@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hoon.app.inquiry.service.InquiryService;
+import com.hoon.app.inquiry.vo.InquiryVo;
 import com.hoon.app.member.service.MemberService;
 import com.hoon.app.member.vo.MemberVo;
 
@@ -36,11 +39,13 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 public class MemberController {
 
-	private final MemberService ms; 
+	private MemberService ms;
+	private InquiryService is;
 	
 	@Autowired
-	public MemberController(MemberService ms) {
+	public MemberController(MemberService ms, InquiryService is) {
 		this.ms = ms;
+		this.is = is;
 	}
 	
 	//회원가입 화면
@@ -279,7 +284,17 @@ public class MemberController {
 		System.out.println("mvo : "+mvo);
 		session.setAttribute("mvo", mvo);
 		return "redirect:/home";
+	}	
+	
+	
+	//마이페이지에서 나의 문의 내역보여주기
+	@GetMapping("myQList")
+	@ResponseBody
+	public List<InquiryVo> myQList(@RequestParam int no){
+		List<InquiryVo> ivoList = is.myQList(no);
+		log.info("ivoList : "+ivoList);
+
+		return ivoList;
 	}
-		
 	
 }
