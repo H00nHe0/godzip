@@ -216,6 +216,17 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       text-decoration: none;
    	  color: black;
       }
+      table th{
+      background-color: #FFC107;
+      }
+      table .info-row > td{
+      height: 40px;
+      }
+      .info-title {
+      background-color: #ffffcc;
+      font-weight: 600;
+      margin-right: 15px;
+      }
     </style>
   </head>
   <body>
@@ -330,8 +341,8 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                     ${enrollYear}년 ${enrollMonth}월 ${enrollDay}일 )
                   </th>
                 </tr>
-                <tr>
-                  <td>
+                <tr class="info-row">
+                  <td class="info-title">
                     최근 방문일
                     <input
                       class="mypageInfo"
@@ -341,7 +352,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       readonly
                     />
                   </td>
-                  <td>
+                  <td class="info-title">
                     총 방문일 수
                     <input
                       class="mypageInfo"
@@ -355,8 +366,8 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                 <tr>
                   <th colspan="2">나의 리뷰</th>
                 </tr>
-                <tr>
-                  <td>
+                <tr class="info-row">
+                  <td class="info-title">
                     내가 남긴 리뷰
                     <input
                       class="mypageInfo"
@@ -366,7 +377,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       readonly
                     />
                   </td>
-                  <td>
+                  <td class="info-title">
                     받은 좋아요
                     <input
                       class="mypageInfo"

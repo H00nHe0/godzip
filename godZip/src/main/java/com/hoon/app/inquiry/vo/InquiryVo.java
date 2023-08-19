@@ -13,8 +13,8 @@ public class InquiryVo {
 	private int memberNo;
 	private int adminNo;
 	private int count;
-	private String qDate;
-	private String aDate;
+	private String enrollDate;
+	private String answerDate;
 	private String deleteYn;
 	private String editDate;
 	private String nick;

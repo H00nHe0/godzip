@@ -37,7 +37,46 @@ pageEncoding="UTF-8"%>
       text-decoration: none;
    	  color: black;
       }
+      #write-btn {
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  outline: none;
+	  cursor: pointer;
+	  width: 100px;
+	  height: 40px;
+	  background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+	  border-radius: 30px;
+	  border: 1px solid #8F9092;
+	  transition: all 0.2s ease;
+	  font-family: "Source Sans Pro", sans-serif;
+	  font-size: 14px;
+	  font-weight: 600;
+	  color: #606060;
+	  text-shadow: 0 1px #fff;
+	  margin-left: 50px;
+	}
+	
+	button:hover {
+	  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 3px 3px #CECFD1;
+	}
+	
+	button:active {
+	  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+	}
+	
+	button:focus {
+	  box-shadow: 0 4px 3px 1px #FCFCFC, 0 6px 8px #D6D7D9, 0 -4px 4px #CECFD1, 0 -6px 4px #FEFEFE, inset 0 0 5px 3px #999, inset 0 0 30px #aaa;
+	}
  
+ 	#table-bottom-area{
+ 	}
+ 	#page-area{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+ 	}
+
     </style>
   </head>
   <body>
@@ -49,7 +88,88 @@ pageEncoding="UTF-8"%>
         <h3 class="fw-bold">고객문의 게시판</h3>
         <div id="board-area">
 			        <div class="panel-heading fw-bold">무엇이든 편하게 질문해 주세요</div>
-        <div class="panel-body" id="view">Panel Content</div>
+        <div class="panel-body" id="view">
+			<table class ="table table-bordered">
+				<tr>
+					<td id="inquiryNo" style="width:5%;">번호</td>
+					<td id="inquiryType" style="width:12%;">문의유형</td>
+					<td id="inquiryTitle"style="width:50%;">제목</td>
+					<td id="inquiryWriter"style="width:10%;">작성자</td>
+					<td id="inquiryDate"style="width:15%;">작성일</td>
+					<td id="inquiryCnt" style="width:8%;">조회수</td>
+				</tr>
+				<c:forEach items="${ivoList}" var="i">
+					<tr>
+						<td>${i.no}</td>
+						<td>${i.type}</td>
+          				<td class="titleBox" id="t${i.no}"><a href="javascript:contentDetail(${i.no})">${i.title}</a></td>
+						<td>${i.nick}</td>
+						<td>${i.enrollDate}</td>
+						<td id="count${i.no}">${i.count}</td>
+					</tr>
+					<tr id="detail${i.no}" style="display:none">
+						<td>내용</td>
+						<td colspan = "5">
+       					<textarea rows = "7" id="contentDetail${i.no}" class="form-control" readonly></textarea>
+					<c:if test="${mvo.no == i.memberNo}">
+						<br/>
+			            <span id="updataBtn${i.no}"><button class="btn btn-success btn-sm" onclick="inquiryUpdate(${i.no})">수정화면</button></span>&nbsp;
+			            <button class="btn btn-warning btn-sm" onclick="inquiryDelete(${i.no})">삭제</button>
+					</c:if>
+			   		<c:if test=" ${mvo.no != i.memberNo}">
+						<br/>
+						<span id="updataBtn${i.no}"><button disabled class="btn btn-success btn-sm" onclick="inquiryUpdate(${i.no})">수정하기</button></span>&nbsp;
+						<button disabled class="btn btn-warning btn-sm" onclick="inquiryDelete(${i.no})">삭제</button>
+					</c:if>
+						</td>
+					</tr>
+				</c:forEach>
+	     		 <c:if test="${empty mvo}">
+	        			<tr>
+	        				<td colspan ="6" id="table-bottom-area">
+       				            <select name="searchType" class="">
+					              <option value="#" selected>분류 선택</option>
+					              <option value="type" >문의유형</option>
+					              <option value="title">제목</option>
+					              <option value="nick">닉네임</option>
+					            </select>
+					              <input
+					                type="text"
+					                id="qna-search"
+					                name="searchValue"
+					                value="${searchMap.searchValue}"
+					              />
+	        				</td>
+        				</tr>	     		 
+	     		 </c:if>
+	     		 <c:if test="${not empty mvo}">
+	        			<form action="inquiryBoard" method="get">
+	        			<tr>
+	        				<td colspan ="6" id="table-bottom-area">
+       				            <select name="searchType" class="">
+					              <option value="#" selected>분류 선택(전체)</option>
+					              <option value="type" >문의유형 (
+				                      <c:forEach items="${options}" var="option" varStatus="status">
+								            <c:if test="${status.index > 0}">, </c:if>
+								            ${option.type}
+								      </c:forEach>
+					              ) </option>
+					              <option value="title">제목</option>
+					              <option value="nick">닉네임</option>
+					            </select>
+					              <input
+					                type="text"
+					                id="qna-search"
+					                name="searchValue"
+                					value="${searchMap.searchValue}"					                
+					              />
+	        				<span style="display: inline-block;"><button id="write-btn" onclick='goQuiryForm()'>문의글 작성</button></span>
+	        				</td>
+        				</tr>
+	        			</form>
+	      		</c:if>
+			</table>
+        </div>
         <div class="panel-body" id="wForm" style="display: none">
           <form id="frm">
           	<input type="hidden"  id="id" name="memberNo" value="${mvo.no}">
@@ -126,6 +246,51 @@ pageEncoding="UTF-8"%>
             </table>
           </form>
         </div>
+              <div id="page-area">
+             	 <ul class="pagination">
+                <c:if test="${pv.currentPage > 1}">
+				  <li class="page-item">
+                  <a
+                    href="${root}/inquiry/inquiryBoard?page=${pv.currentPage-1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                    class="page-link"
+                    >이전</a
+                  >
+				  </li>
+                </c:if>
+                <c:forEach
+                  begin="${pv.startPage}"
+                  end="${pv.endPage}"
+                  step="1"
+                  var="i"
+                >
+                  <c:if test="${pv.currentPage != i}">
+				  <li class="page-item">                  
+                    <a class="page-link"
+                      href="${root}/inquiry/inquiryBoard?page=${i}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                      >${i}</a
+                    >
+				  </li>                    
+                  </c:if>
+                  <c:if test="${pv.currentPage == i}">
+				  <li class="page-item active">                  
+                    <a
+					  class="page-link"
+                      >${i}</a
+                    >
+				  </li>                    
+                  </c:if>
+                </c:forEach>
+                <c:if test="${pv.currentPage < pv.maxPage}">
+				  <li class="page-item">
+                  <a
+                    href="${root}/inquiry/inquiryBoard?page=${pv.currentPage+1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                    class="page-link"
+                    >다음</a
+                  >
+				  </li>
+                </c:if>
+				 </ul>
+              </div>
         <div class="panel-footer fw-bold">GODZIP CUSTOMER SERVICE CALL CENTER: 02-XXX-XXXX</div>
       </div>
         </div>
@@ -135,97 +300,7 @@ pageEncoding="UTF-8"%>
     </div>
   </body>
   <script type="text/javascript">
-  $(document).ready(function () {
-      loadList();
-    });
-  function loadList() {
-      //서버와의 통신: 데이터 가져오기
-      $.ajax({
-        url: "board",
-        type: "get",
-        dataType: "json",
-        success: makeView, //콜백함수:클라이언트에서 서버에요청 -> 응답에 따라 실행되는 함수
-        error: function () {
-          alert("error");
-        },
-      });
-    } 
-  function makeView(data) {
-      // data = [{},{},{},,,,,]
-      console.log(data);
-      var listHtml = "<table class ='table table-bordered'> ";
-      listHtml += "<tr>";
-      listHtml += "<td id='inquiryNo' style='width:5%;'>번호</td>";
-      listHtml += "<td id='inquiryType' style='width:12%;'>문의유형</td>";
-      listHtml += "<td id='inquiryTitle'style='width:50%;'>제목</td>";
-      listHtml += "<td id='inquiryWriter'style='width:10%;'>작성자</td>";
-      listHtml += "<td id='inquiryDate'style='width:15%;'>작성일</td>";
-      listHtml += "<td id='inquiryCnt'style='width:8%;'>조회수</td>";
-      listHtml += "</tr>";
-      $.each(data, function (index, obj) {
-        listHtml += "<tr>";
-        listHtml += "<td>" + obj.no + "</td>";
-        listHtml += "<td>" + obj.type + "</td>";
-        listHtml +=
-          "<td class='titleBox' id='t" +
-          obj.no +
-          "'><a href='javascript:contentDetail(" +
-          obj.no +
-          ")'>" +
-          obj.title +
-          "</a></td>";
-        listHtml += "<td>" + obj.nick + "</td>";
-        listHtml += "<td>" + obj.qdate + "</td>";
-        listHtml += "<td id='count" + obj.no + "'>" + obj.count + "</td>";
-        listHtml += "</tr>";
-
-        listHtml += "<tr id='detail" + obj.no + "' style='display:none'>";
-        listHtml += "<td>내용</td>";
-        listHtml += "<td colspan = '5'>";
-        listHtml +=
-          "<textarea rows = '7' id='contentDetail" +
-          obj.no +
-          "' class='form-control' readonly></textarea>";
-
-        if("${mvo.no}" == obj.memberNo){
-        listHtml += "<br/>";
-        listHtml +=
-          "<span id='updataBtn" +
-          obj.no +
-          "'><button class='btn btn-success btn-sm' onclick='inquiryUpdate(" +
-          obj.no +
-          ")'>수정화면</button></span>&nbsp;";
-        listHtml +=
-          "<button class='btn btn-warning btn-sm' onclick='inquiryDelete(" +
-          obj.no +
-          ")'>삭제</button>";
-        }else{
-         listHtml += "<br/>";
-         listHtml +=
-           "<span id='updataBtn" +
-           obj.no +
-           "'><button disabled class='btn btn-success btn-sm' onclick='inquiryUpdate(" +
-           obj.no +
-           ")'>수정하기</button></span>&nbsp;";
-         listHtml +=
-           "<button disabled class='btn btn-warning btn-sm' onclick='inquiryDelete(" +
-           obj.no +
-           ")'>삭제</button>";
-        }
-        listHtml += "</td>";
-        listHtml += "</tr>";
-      });
-    
-	//로그인을 해야 보이는 부분
-	if(${!empty mvo}){
-	      listHtml +=
-	        "<tr><td colspan ='5'><button class='btn btn-primary btn-sm' onclick='goQuiryForm()'>게시글 작성</button></td></tr>";
-	}
-      listHtml += "</table>";
-      $("#view").html(listHtml);
-      $("#view").css("display", "block"); //보이고
-      $("#wForm").css("display", "none"); //감추고
-    }
+ 
 	  function goQuiryForm() {
 	      $("#view").css("display", "none"); //감추고
 	      $("#wForm").css("display", "block"); //보이고
@@ -242,8 +317,8 @@ pageEncoding="UTF-8"%>
             type: "post",
             data: fData,
             success: function(response) {
-              console.log("문의사항 insert성공!");
-              loadList(); 
+              alert("문의사항 접수가 완료되었습니다.");
+ 		      location.reload();
           },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText); // 에러 응답을 콘솔에 출력
@@ -291,7 +366,10 @@ pageEncoding="UTF-8"%>
             url: "board/" + no,
             type: "delete",
             data: { no: no },
-            success: loadList,
+            success:  function () {
+              alert("삭제완료!!");
+ 		      location.reload();
+            },
             errer: function () {
               alert("error");
             },
@@ -323,7 +401,10 @@ pageEncoding="UTF-8"%>
             type: "put",
             contentType: "application/json;charset=utf-8",
             data: JSON.stringify({ no: no, title: title, content: content }),
-            success: loadList,
+        	success: function () {
+              alert("수정완료!!");
+ 		      location.reload();
+            },
             error: function () {
               alert("error");
             },
