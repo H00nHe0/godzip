@@ -1,6 +1,7 @@
 package com.hoon.app.inquiry.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hoon.app.common.page.vo.PageVo;
 import com.hoon.app.inquiry.service.InquiryService;
 import com.hoon.app.inquiry.vo.FaqVo;
 import com.hoon.app.inquiry.vo.InquiryTypeVo;
@@ -42,21 +45,25 @@ public class InquiryController {
 	}
 	//문의 게시판
 	@GetMapping("inquiryBoard")
-	public String inquiryBoard(Model model) {
-		List<InquiryTypeVo> options =  is.selectType();
-		model.addAttribute("options", options);
-		log.info("options : "+options);
-		return "inquiry/inquiryBoard";
-	}
-	//문의게시판 목록 불러오기
-	@GetMapping("board")
-	@ResponseBody
-	public List<InquiryVo> getInquiryList(){
-		List<InquiryVo> ivoList = is.getInquiryList();
+	public String inquiryBoard(@RequestParam(defaultValue = "1") int page ,@RequestParam Map<String , String> searchMap, Model model) {
+		//페이징
+		int listCount = is.getCnt(searchMap);
+		int currentPage = page;
+		int pageLimit = 5;
+		int boardLimit = 10;
+		PageVo pv = new PageVo(listCount, currentPage, pageLimit, boardLimit);		
 
+		log.info("listCount:"+listCount);
+		log.info("pv:"+pv);
+		model.addAttribute("searchMap" , searchMap);
+		model.addAttribute("pv" , pv);
+		List<InquiryVo> ivoList = is.getInquiryList(pv,searchMap);
 		log.info("ivoList : "+ivoList);
-
-		return ivoList;
+		List<InquiryTypeVo> options =  is.selectType();
+		log.info("options : "+options);
+		model.addAttribute("ivoList", ivoList);
+		model.addAttribute("options", options);
+		return "inquiry/inquiryBoard";
 	}
 	
 	//문의 게시판 작성하기 
