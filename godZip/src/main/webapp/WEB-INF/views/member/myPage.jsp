@@ -7,6 +7,24 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
     <meta charset="UTF-8" />
     <title>Insert title here</title>
     <style type="text/css">
+      #grade-info-btn{
+	  border: 1px solid #8F9092;
+	  outline: none;
+      background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
+	  padding: 8px 10px;
+	  font-size: 12px;
+	  font-weight: 700;
+	  color: #606060;
+	  border-radius: 20px;
+	  transition: all ease 0.1s;
+	  box-shadow: 0px 5px 0px 0px white;
+	  margin-left: 30px;
+	}
+	
+	.grade-info-btn:active {
+	  transform: translateY(5px);
+	  box-shadow: 0px 0px 0px 0px #a29bfe;
+	}
       h2 {
         padding-top: 30px;
         text-align: center;
@@ -80,7 +98,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       }
 
       /*Button*/
-      .form button {
+      #seeReview-btn {
         background-color: #0066ff;
         color: #fff;
         border: 0;
@@ -92,7 +110,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         transition: background-color 0.3s ease;
       }
 
-      .form button:hover {
+      #seeReview-btn:hover {
         background-color: #005ce6;
       }
 
@@ -211,7 +229,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         border: none;
         text-align: center;
       }
-            .titleBox a{
+      .titleBox a{
       font-weight:600;
       text-decoration: none;
    	  color: black;
@@ -227,6 +245,15 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       font-weight: 600;
       margin-right: 15px;
       }
+       	#page-area{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+ 	}
+ 	.table-bordered{
+ 		font-size: 13px;
+ 	}
     </style>
   </head>
   <body>
@@ -273,8 +300,33 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
           >
             <span class="title"
               >${mvo.nick}님은
-              <span id="gradeName">${mvo.gradeNo}</span> 등급입니다.</span
-            >
+              <span id="gradeName">${mvo.gradeNo}</span> 등급입니다.<span style="display: inline-block;"><button type="button" id="grade-info-btn" data-bs-toggle="modal" data-bs-target="#myModal">등급안내</button></span>
+            </span>
+            <!-- The Modal -->
+			<div class="modal" id="myModal">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			
+			      <!-- Modal Header -->
+			      <div class="modal-header">
+			        <h4 class="modal-title">등급 기준 안내</h4>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+			      </div>
+			      <!-- Modal body -->
+			      <div class="modal-body">
+					<c:forEach items="${gradeList}" var="gl">
+					 <h4>${gl.grade}</h4>
+					 <p>${gl.gradeInfo}</p>
+					</c:forEach>
+			      </div>
+			      <!-- Modal footer -->
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+            
             <span class="subtitle">Share , Check reviews and Choose!</span>
             <div class="form-container">
               <table>
@@ -373,7 +425,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       class="mypageInfo"
                       type="text"
                       id="myReviewCnt"
-                      value="리뷰기능구현 후 업뎃ㄱㄱ"
+                      value="in progress.."
                       readonly
                     />
                   </td>
@@ -383,7 +435,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       class="mypageInfo"
                       type="text"
                       id="likeCnt"
-                      value="좋아요기능구현 후 업뎃 ㄱㄱ"
+                      value="in progress.."
                       readonly
                     />
                   </td>
@@ -393,12 +445,110 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                 </tr>
                 <tr>
                   <td colspan="2">
+                  <c:if test="${empty ivoList}">
         			<div class="panel-body fw-bold" id="view">문의하신 내역이 없습니다.</div>
+                  </c:if>
+                  <c:if test="${!empty ivoList}">
+        			<div class="panel-body fw-bold" id="view">
+				 		<div class="panel-body" id="view">
+							<table class ="table table-bordered">
+								<tr style="text-align: center;">
+									<th id="inquiryNo" style="width:5%;">번호</th>
+									<th id="inquiryType" style="width:12%;">문의유형</th>
+									<th id="inquiryTitle"style="width:50%;">제목</th>
+									<th id="inquiryDate"style="width:15%;">작성일</th>
+								</tr>
+								<c:forEach items="${ivoList}" var="i">
+									<tr>
+										<td style="text-align: center;">${i.rno}</td>
+										<td>${i.type}</td>
+				          				<td class="titleBox" id="t${i.no}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal${i.no}">${i.title}</a></td>
+										<td class="enrollDate">${i.enrollDate}</td>
+									</tr>
+										            <!-- The Modal -->
+										<div class="modal" id="myModal${i.no}">
+										  <div class="modal-dialog">
+										    <div class="modal-content">
+										
+										      <div class="modal-header">
+						                        <c:set value="${i.enrollDate.substring(0, 4)}"  var="inquiryYear"/>
+							                    <c:set value="${i.enrollDate.substring(5, 7)}" var="inquiryMonth"/>
+							                    <c:set value="${i.enrollDate.substring(8, 10)}" var="inquiryDay"/>
+										      	<h6>${mvo.nick}님이  ${inquiryYear}년 ${inquiryMonth}월 ${inquiryDay}일 남겨주신 문의내역 입니다.</h6>
+										        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+										      </div>
+										      <!-- Modal Header -->
+										        <p class="modal-title" style="text-align: center;">문의 제목: ${i.title}</p>
+										      <!-- Modal body -->
+										      <div class="modal-body" style="text-align: left;">
+										        <p>문의 유형: ${i.type}</p>
+												문의 내용 : ${i.content}<br/>
+												답변 내용 : ${i.answer}<br/>
+												답변 일자 : ${i.answerDate}
+										      </div>
+										      <!-- Modal footer -->
+										      <div class="modal-footer">
+										        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+										      </div> 
+										      
+										    </div>
+										  </div>
+										</div>
+								</c:forEach>
+							</table>
+				              <div id="page-area">
+				             	 <ul class="pagination ">
+				                <c:if test="${pv.currentPage > 1}">
+								  <li class="page-item">
+				                  <a
+				                    href="${root}/member/myPage?page=${pv.currentPage-1}"
+				                    class="page-link"
+				                    >이전</a
+				                  >
+								  </li>
+				                </c:if>
+				                <c:forEach
+				                  begin="${pv.startPage}"
+				                  end="${pv.endPage}"
+				                  step="1"
+				                  var="i"
+				                >
+				                  <c:if test="${pv.currentPage != i}">
+								  <li class="page-item">                  
+				                    <a class="page-link"
+				                      href="${root}/member/myPage?page=${i}"
+				                      >${i}</a
+				                    >
+								  </li>                    
+				                  </c:if>
+				                  <c:if test="${pv.currentPage == i}">
+								  <li class="page-item active">                  
+				                    <a
+									  class="page-link"
+				                      >${i}</a
+				                    >
+								  </li>                    
+				                  </c:if>
+				                </c:forEach>
+				                <c:if test="${pv.currentPage < pv.maxPage}">
+								  <li class="page-item">
+				                  <a
+				                    href="${root}/member/myPage?page=${pv.currentPage+1}"
+				                    class="page-link"
+				                    >다음</a
+				                  >
+								  </li>
+				                </c:if>
+								 </ul>
+				              </div>
+				        </div>
+        			</div>
+                  </c:if>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <button style="width: 90%">내가 쓴 리뷰 확인하기</button>
+                    <button id="seeReview-btn" style="width: 90%">내가 쓴 리뷰 확인하기(in progress..)</button>
                   </td>
                 </tr>
               </table>
@@ -413,65 +563,17 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 </html>
 <script>
 $(document).ready(function () {
-    loadQList();
-  });
-function loadQList() {
-    //서버와의 통신: 데이터 가져오기
-    var no = "${mvo.no}";
-    $.ajax({
-      url: "myQList",
-      type: "get",
-      data: {no: no},
-      dataType: "json",
-      success: makeView,
-      error: function () {
-        alert("error");
-      },
-    });
-  } 
-function makeView(data) {
-    // data = [{},{},{},,,,,]
-    console.log(data);
-    var listHtml = "<table class ='table table-bordered'> ";
-    listHtml += "<tr>";
-    listHtml += "<td id='inquiryNo' style='width:5%;'>번호</td>";
-    listHtml += "<td id='inquiryType' style='width:12%;'>문의유형</td>";
-    listHtml += "<td id='inquiryTitle'style='width:50%;'>제목</td>";
-    listHtml += "<td id='inquiryDate'style='width:15%;'>작성일</td>";
-    listHtml += "<td id='inquiryCnt'style='width:8%;'>조회수</td>";
-    listHtml += "</tr>";
-    $.each(data, function (index, obj) {
-    var formattedQDate = obj.qdate.split(" ")[0];
-      listHtml += "<tr>";
-      listHtml += "<td>" + obj.no + "</td>";
-      listHtml += "<td>" + obj.type + "</td>";
-      listHtml +=
-        "<td class='titleBox' id='t" +
-        obj.no +
-        "'><a href='javascript:contentDetail(" +
-        obj.no +
-        ")'>" +
-        obj.title +
-        "</a></td>";
-      listHtml += "<td>" + formattedQDate + "</td>";
-      listHtml += "<td id='count" + obj.no + "'>" + obj.count + "</td>";
-      listHtml += "</tr>";
 
-      listHtml += "<tr id='detail" + obj.no + "' style='display:none'>";
-      listHtml += "<td>내용</td>";
-      listHtml += "<td colspan = '5'>";
-      listHtml +=
-        "<textarea rows = '7' id='contentDetail" +
-        obj.no +
-        "' class='form-control' readonly></textarea>";
-      listHtml += "</td>";
-      listHtml += "</tr>";
+    var qNAEnroll = $(".enrollDate");
+    
+    qNAEnroll.each(function() {
+        var original = $(this).text(); 
+        var formattedQNAEnroll = original.substring(0, 10); 
+        $(this).text(formattedQNAEnroll); 
     });
-    listHtml += "</table>";
-    $("#view").html(listHtml);
-    $("#view").css("display", "block"); //보이고
-  }
+    });
 
+	
 
   //파일 확장자,사진 용량 제한
   var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf)");
@@ -525,11 +627,11 @@ function makeView(data) {
       });
   });
   //최근방문일 이쁘게
-  var recentVisit = $("#recentVisit").val();;
+  var recentVisit = $("#recentVisit").val();
   var modifiedDate = recentVisit.substring(0,10);
   $("#recentVisit").val(modifiedDate);
   //총 방문일 앞뒤 텍스트 붙이기
-  var totalVisit = $("#totalVisit").val();;
+  var totalVisit = $("#totalVisit").val();
   var modifiedTotal = "총 "+totalVisit+"일 방문";
   $("#totalVisit").val(modifiedTotal);
 
@@ -548,4 +650,24 @@ function makeView(data) {
   if (grade == "DIAMOND") {
     $("span[id='gradeName']").css("color", "diamond");
   }
+  
+/*   function contentDetail(no) {
+
+        $.ajax({
+          url: "${root}/inquiry/board/" + no,
+          type: "get",
+          data: { no: no },
+          dataType: "JSON",
+          success: function (response) {
+        	  console.log(response);
+            $(".modal-header").text(response.title);
+            $(".modal-body").text(response.content);
+          },
+          error: function (response) {
+            alert("error");
+            console.log(response);
+          },
+        });
+      }  */
+    
 </script>

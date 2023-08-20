@@ -80,18 +80,34 @@ public class InquiryController {
 			return "error";
 		}
 	}
+	//문의 게시판 답변하기(관리자만) 
+	@PostMapping("board/answer")
+	@ResponseBody
+	public String answerInsert(String answer, int no) throws Exception {
+		log.info("업데이트하려는 answer :"+ answer );
+		int result = is.answerInsert(answer, no);
+		if(result == 1) {
+			log.info("insert answer to DB Done");
+			return "success";
+		}else {
+			log.info("insert answer to DB fail..");
+			return "error";
+		}
+	}
 	
 	//문의 게시판 내용 확인하기
 	@GetMapping("board/{no}")
 	@ResponseBody
 	public InquiryVo inquiryContent(@PathVariable("no") int no) {
 		InquiryVo ivo = is.inquiryContent(no);
+		log.info("문의게시판 1개 내용확인 ivo :"+ivo);
 		return ivo;
 	}
 	//게시판 클릭시 조회수 증가
 	@ResponseBody
 	@PutMapping("board/count/{no}")
 	public InquiryVo growCnt(@PathVariable("no") int no) {
+			log.info("no : "+no);
 			is.growCnt(no); 
 			InquiryVo ivo = is.inquiryContent(no);
 			System.out.println(ivo);

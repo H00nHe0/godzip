@@ -1,10 +1,12 @@
 package com.hoon.app.member.dao;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.hoon.app.grade.vo.GradeVo;
 import com.hoon.app.member.vo.MemberVo;
 
 @Repository
@@ -49,6 +51,10 @@ public class MemberDao {
 
 	public int updateTotalVisit(SqlSessionTemplate sst, int no) {
 		return sst.update("member.updateTotalVisit", no);
+	}
+
+	public List<GradeVo> gradeList(SqlSessionTemplate sst) {
+		return sst.selectList("member.gradeList");
 	}
 
 

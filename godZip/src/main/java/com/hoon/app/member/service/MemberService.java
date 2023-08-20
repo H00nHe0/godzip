@@ -1,11 +1,13 @@
 package com.hoon.app.member.service;
 
 import java.io.File;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hoon.app.grade.vo.GradeVo;
 import com.hoon.app.member.dao.MemberDao;
 import com.hoon.app.member.vo.MemberVo;
 
@@ -57,6 +59,10 @@ public class MemberService {
 
 	public int updateTotalVisit(int no) {
 		return dao.updateTotalVisit(sst, no);
+	}
+
+	public List<GradeVo> gradeList() {
+		return dao.gradeList(sst);
 	}
 
 

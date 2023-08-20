@@ -77,4 +77,12 @@
 		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
 	</update>
 	
+	<select id="gradeList" resultType="gradeVo">
+		SELECT
+			NO,
+			GRADE,
+			GRADE_INFO
+			FROM GRADE ORDER BY NO ASC
+	</select>
+	
 </mapper>

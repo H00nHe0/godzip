@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hoon.app.common.page.vo.PageVo;
+import com.hoon.app.grade.vo.GradeVo;
 import com.hoon.app.inquiry.service.InquiryService;
 import com.hoon.app.inquiry.vo.InquiryVo;
 import com.hoon.app.member.service.MemberService;
@@ -173,7 +175,24 @@ public class MemberController {
 	}
 	//마이페이지 화면이동
 	@GetMapping("myPage")
-	public String myPage() {
+	public String myPage(@RequestParam(defaultValue = "1") int page ,HttpSession session, Model model) {
+		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
+		int no = loginMember.getNo();
+		//페이징
+		int listCount = is.myQCnt(no);
+		int currentPage = page;
+		int pageLimit = 5;
+		int boardLimit = 5;
+		PageVo pv = new PageVo(listCount, currentPage, pageLimit, boardLimit);	
+		log.info("myQCnt:"+listCount);
+		log.info("pv:"+pv);
+		model.addAttribute("pv" , pv);
+		List<InquiryVo> ivoList = is.myQList(pv, no);
+		log.info("ivoList : "+ivoList);
+		model.addAttribute("ivoList", ivoList);
+		List<GradeVo> gradeList = ms.gradeList();
+		model.addAttribute("gradeList", gradeList);
+		
 		return "member/myPage";
 	}	
 	
@@ -287,14 +306,5 @@ public class MemberController {
 	}	
 	
 	
-	//마이페이지에서 나의 문의 내역보여주기
-	@GetMapping("myQList")
-	@ResponseBody
-	public List<InquiryVo> myQList(@RequestParam int no){
-		List<InquiryVo> ivoList = is.myQList(no);
-		log.info("ivoList : "+ivoList);
-
-		return ivoList;
-	}
 	
 }

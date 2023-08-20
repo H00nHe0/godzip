@@ -25,6 +25,12 @@ public class InquiryDao {
 		RowBounds rb = new RowBounds(offset , limit);
 		return sst.selectList("inquiry.getInquiryList",searchMap, rb);
 	}
+	public List<InquiryVo> myQList(SqlSessionTemplate sst, PageVo pv, int no) {
+		int limit = pv.getBoardLimit();
+		int offset = (pv.getCurrentPage()-1) * limit;
+		RowBounds rb = new RowBounds(offset , limit);
+		return sst.selectList("inquiry.myQList", no, rb);
+	}
 
 	public int inquiryInsert(SqlSessionTemplate sst, InquiryVo ivo) {
 		return sst.insert("inquiry.inquiryInsert", ivo);
@@ -50,13 +56,18 @@ public class InquiryDao {
 		return sst.update("inquiry.boardEdit", ivo);
 	}
 
-	public List<InquiryVo> myQList(SqlSessionTemplate sst, int no) {
-		return sst.selectList("inquiry.myQList", no);
-	}
 
 	public int getCnt(SqlSessionTemplate sst, Map<String, String> searchMap) {
 		System.out.println(searchMap);
 		return sst.selectOne("inquiry.getCnt" , searchMap);
+	}
+
+	public int myQCnt(SqlSessionTemplate sst, int no) {
+		return sst.selectOne("inquiry.myQCnt", no);
+	}
+
+	public int answerInsert(SqlSessionTemplate sst, String answer, int no) {
+		return sst.update("inquiry.answerInsert", no);
 	}
 
 }

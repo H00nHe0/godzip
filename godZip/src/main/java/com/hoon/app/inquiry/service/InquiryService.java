@@ -29,6 +29,9 @@ public class InquiryService {
 	public List<InquiryVo> getInquiryList(PageVo pv, Map<String, String> searchMap) {
 		return idao.getInquiryList(sst, pv, searchMap);
 	}
+	public List<InquiryVo> myQList(PageVo pv,int no) {
+		return idao.myQList(sst, pv, no);
+	}
 	public int inquiryInsert(InquiryVo ivo) {
 		return idao.inquiryInsert(sst, ivo);
 	}
@@ -47,11 +50,14 @@ public class InquiryService {
 	public int boardEdit(InquiryVo ivo) {
 		return idao.boardEdit(sst, ivo);
 	}
-	public List<InquiryVo> myQList(int no) {
-		return idao.myQList(sst, no);
-	}
 	public int getCnt(Map<String, String> searchMap) {
 		return idao.getCnt(sst , searchMap);
+	}
+	public int myQCnt(int no) {
+		return idao.myQCnt(sst, no);
+	}
+	public int answerInsert(String answer, int no) {
+		return idao.answerInsert(sst, answer, no);
 	}
 	
 }
