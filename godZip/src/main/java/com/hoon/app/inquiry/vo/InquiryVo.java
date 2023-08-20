@@ -7,6 +7,7 @@ import lombok.Data;
 public class InquiryVo {
 
 	private int no;
+	private int rno;
 	private String title;
 	private String content;
 	private String answer;
@@ -19,4 +20,5 @@ public class InquiryVo {
 	private String editDate;
 	private String nick;
 	private String type;
+	private String answeredYn;
 }
