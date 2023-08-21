@@ -22,7 +22,8 @@
 	    Q.DELETE_YN,
 	    Q.EDIT_DATE,
 	    Q.COUNT,
-	    IT.TYPE
+	    IT.TYPE,
+	    Q.ANSWERED_YN
 		  FROM QNA Q		
 		  JOIN MEMBER_INFO MI ON Q.MEMBER_NO = MI.NO
 		  LEFT JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
@@ -92,62 +93,6 @@
 	<update id="boardEdit">
 		UPDATE QNA SET TITLE = #{title}, CONTENT = #{content} WHERE NO = #{no}
 	</update>	
-	
-	<select id="myQList" resultType="inquiryVo">
-		SELECT ROWNUM AS RNO, T.*
-				FROM
-					(SELECT
-		                Q.NO,
-						Q.TITLE,
-						Q.CONTENT,
-						Q.ANSWER,
-						Q.ADMIN_NO,
-						Q.MEMBER_NO,
-						TO_CHAR(Q.ENROLL_DATE, 'YYYY-MM-DD HH24:MI') AS ENROLL_DATE,
-			       		TO_CHAR(Q.ANSWER_DATE, 'YYYY-MM-DD HH24:MI') AS ANSWER_DATE,
-						Q.DELETE_YN,
-						Q.EDIT_DATE,
-						Q.COUNT,
-						IT.TYPE
-					FROM QNA Q
-					LEFT JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
-					WHERE Q.DELETE_YN = 'N' AND Q.MEMBER_NO = #{no}
-					ORDER BY Q.ENROLL_DATE DESC) T	
-	</select>
-	
-	  <select id="getCnt" resultType="int">
-	  	SELECT COUNT (Q.NO)
-	  	FROM QNA Q
-	  	<if test="searchType eq 'title'">
-	     WHERE TITLE LIKE '%${searchValue}%'
-	   	 AND Q.DELETE_YN = 'N'
-		</if>
-	  	<if test="searchType eq 'type'">
-	   	INNER JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
-	    WHERE IT.TYPE LIKE '%${searchValue}%'
-		AND Q.DELETE_YN = 'N'	
-		</if>
-	  	<if test="searchType eq 'nick'">
-	   	INNER JOIN MEMBER_INFO MI ON Q.MEMBER_NO = MI.NO
-	    WHERE MI.NICK LIKE '%${searchValue}%'
-		AND Q.DELETE_YN = 'N'
-		</if>
-	  	<if test="searchType eq 'all'">
-	  	INNER JOIN MEMBER_INFO MI ON Q.MEMBER_NO = MI.NO
-        INNER JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO	            	
-	    WHERE (Q.TITLE LIKE '%${searchValue}%'
-	    OR Q.CONTENT LIKE '%${searchValue}%'
-	    OR MI.NICK LIKE '%${searchValue}%'
-	    OR IT.TYPE LIKE '%${searchValue}%')  	
-		AND Q.DELETE_YN = 'N'
-		</if>
-	  </select>
-	  
-	  <select id="myQCnt" resultType="int">
-  	  	SELECT COUNT(NO)
-	  	FROM QNA
-	  	WHERE MEMBER_NO = #{no} AND DELETE_YN = 'N'
-	  </select>
 	  
 	  <update id="answerInsert">
 		  UPDATE QNA
@@ -156,4 +101,67 @@
 		      ANSWERED_YN = 'Y'
 		  WHERE NO = #{no}
 	  </update>
+	
+	  <select id="myQCnt" resultType="int">
+  	  	SELECT COUNT(NO)
+	  	FROM QNA
+	  	WHERE MEMBER_NO = #{no} AND DELETE_YN = 'N'
+	  </select>
+	  
+      <select id="myQList" resultType="inquiryVo">
+			SELECT ROWNUM AS RNO, T.*
+					FROM
+						(SELECT
+			                Q.NO,
+							Q.TITLE,
+							Q.CONTENT,
+							Q.ANSWER,
+							Q.ADMIN_NO,
+							Q.MEMBER_NO,
+							TO_CHAR(Q.ENROLL_DATE, 'YYYY-MM-DD') AS ENROLL_DATE,
+				       		TO_CHAR(Q.ANSWER_DATE, 'YYYY-MM-DD') AS ANSWER_DATE,
+							Q.DELETE_YN,
+							Q.EDIT_DATE,
+							Q.COUNT,
+							Q.ANSWERED_YN,
+							IT.TYPE
+						FROM QNA Q
+						LEFT JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
+						WHERE Q.DELETE_YN = 'N' AND Q.MEMBER_NO = #{no}
+						ORDER BY Q.ENROLL_DATE DESC) T	
+	  </select>
+	
+	<select id="getCnt" resultType="int">
+	  SELECT COUNT (Q.NO)
+	  FROM QNA Q
+	  <choose>
+	    <when test="searchType eq 'title'">
+	      WHERE TITLE LIKE '%${searchValue}%'
+	      AND Q.DELETE_YN = 'N'
+	    </when>
+	    <when test="searchType eq 'type'">
+	      INNER JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
+	      WHERE IT.TYPE LIKE '%${searchValue}%'
+	      AND Q.DELETE_YN = 'N'
+	    </when>
+	    <when test="searchType eq 'nick'">
+	      INNER JOIN MEMBER_INFO MI ON Q.MEMBER_NO = MI.NO
+	      WHERE MI.NICK LIKE '%${searchValue}%'
+	      AND Q.DELETE_YN = 'N'
+	    </when>
+	    <when test="searchType eq 'all'">
+	      INNER JOIN MEMBER_INFO MI ON Q.MEMBER_NO = MI.NO
+	      INNER JOIN INQUIRY_TYPE IT ON Q.TYPE = IT.NO
+	      WHERE (Q.TITLE LIKE '%${searchValue}%'
+	      OR Q.CONTENT LIKE '%${searchValue}%'
+	      OR MI.NICK LIKE '%${searchValue}%'
+	      OR IT.TYPE LIKE '%${searchValue}%')
+	      AND Q.DELETE_YN = 'N'
+	    </when>
+	    <otherwise>
+	     WHERE Q.DELETE_YN = 'N'
+	    </otherwise>
+	  </choose>
+	</select>
+	  
 </mapper>

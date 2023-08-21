@@ -1,5 +1,6 @@
 package com.hoon.app.inquiry.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,10 @@ public class InquiryDao {
 	}
 
 	public int answerInsert(SqlSessionTemplate sst, String answer, int no) {
-		return sst.update("inquiry.answerInsert", no);
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("answer", answer);
+	    paramMap.put("no", no);
+	    return sst.update("inquiry.answerInsert", paramMap);
 	}
 
 }

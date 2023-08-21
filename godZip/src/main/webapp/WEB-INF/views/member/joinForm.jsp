@@ -179,7 +179,6 @@ pageEncoding="UTF-8"%>
                       class="joinInput"
                       name="pwd2"
                       id="pwd2"
-                      onkeyup="pwdValidChk()"
                       placeholder="비밀번호를 한번 더 입력해 주세요"
                     />
                   </td>
@@ -189,7 +188,7 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td>
-                    <input type="hidden" name="email" id="email">
+                    <input type="hidden" name="email" id="email" />
                     <input
                       type="text"
                       class="joinInput"
@@ -240,14 +239,9 @@ pageEncoding="UTF-8"%>
                     >
                   </td>
                 </tr>
+                <tr></tr>
                 <tr>
-                  <td colspan="2">
-                    <input type="checkbox" name="eventYn" value="Y" />이벤트
-                    관련 메일 수신여부 체크
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
+                  <td colspan="2" style="padding-top: 10px">
                     <button style="width: 90%">Sign up</button>
                   </td>
                 </tr>
@@ -276,22 +270,22 @@ pageEncoding="UTF-8"%>
     if (id == "") {
       alert("아이디를 입력하세요.");
     } else if (idPattern.test(id)) {
-        $.ajax({
-            url: "${root}/member/idDupChk",
-            type: "get",
-            data: { "id": id },
-            success: function(result) {
-              // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-              if (result === 0) {
-                alert("중복된 아이디 입니다. 다른 아이디를 입력해 주세요.");
-              } else {
-                	validId();
-              }
-            },
-            error: function(result) {
-              console.log(result);
-            }
-          });
+      $.ajax({
+        url: "${root}/member/idDupChk",
+        type: "get",
+        data: { id: id },
+        success: function (result) {
+          // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
+          if (result === 0) {
+            alert("중복된 아이디 입니다. 다른 아이디를 입력해 주세요.");
+          } else {
+            validId();
+          }
+        },
+        error: function (result) {
+          console.log(result);
+        },
+      });
     } else {
       alert(
         "아이디가 유효하지 않습니다.지정된 형식[4~12자리의 알파벳 대.소문자와 숫자 등 구성]을 확인해 주세요"
@@ -299,14 +293,15 @@ pageEncoding="UTF-8"%>
     }
   }
   function validId() {
-	  alert("사용가능한 아이디 입니다.");
-      isIdValidated = true;
+    alert("사용가능한 아이디 입니다.");
+    isIdValidated = true;
   }
   //비밀번호 일치 확인, 유효성 검사
   function pwdValidChk() {
     var pwd = $("#pwd").val();
     var pwd2 = $("#pwd2").val();
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;//비밀번호 정규식 패턴
+    var passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/; //비밀번호 정규식 패턴
     // 입력값 비교 함수 + 입력한 두 비밀번호 일치 시 정규식 테스트 후 isPwsValidated = true or false;
     var message = $("#pwdMsg");
     var pwdCheck = $("#pwdCheck");
@@ -316,7 +311,11 @@ pageEncoding="UTF-8"%>
       if (passwordPattern.test(pwd2)) {
         isPwdValidated = true;
       } else {
-    	  message.html("비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성").css("color", "red");
+        message
+          .html(
+            "비밀번호 형식이 유효하지 않습니다.<br>8자리 이상의 알파벳 대/소문자와 특수문자, 숫자를 포함하여 구성"
+          )
+          .css("color", "red");
         isPwdValidated = false;
       }
     } else {
@@ -332,43 +331,44 @@ pageEncoding="UTF-8"%>
       pwdCheck.css("display", "none");
     }
   }
-  // 두 비밀번호가 입력할 때마다 비교 함수를 호출.
+  // 두 비밀번호를 입력할 때마다 비교 함수를 호출.
   $("#pwd, #pwd2").on("input", pwdValidChk);
 
   //닉네임 유효성 검사
-function isValidNick() {
-  var nickName = document.querySelector('input[name="nick"]').value;
-  console.log(nickName);
-  var nickPattern = /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
-  if (nickName == "") {
-    alert("닉네임을 입력하세요.");
-  } else if (nickPattern.test(nickName)) {
-    $.ajax({
-      url: "${root}/member/nickDupChk",
-      type: "get",
-      data: { "nick": nickName },
-      success: function(result) {
-        // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-        if (result === 0) {
-          alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
-        } else {
-          	validNick();
-        }
-      },
-      error: function(result) {
-        console.log(result);
-      }
-    });
-  } else {
-    alert(
-      "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
-    );
+  function isValidNick() {
+    var nickName = document.querySelector('input[name="nick"]').value;
+    console.log(nickName);
+    var nickPattern =
+      /^[가-힣a-zA-Z0-9!@#$%^&*()\-_=+{}[\]\\|;:'",.<>/?]{4,16}$/;
+    if (nickName == "") {
+      alert("닉네임을 입력하세요.");
+    } else if (nickPattern.test(nickName)) {
+      $.ajax({
+        url: "${root}/member/nickDupChk",
+        type: "get",
+        data: { nick: nickName },
+        success: function (result) {
+          // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
+          if (result === 0) {
+            alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
+          } else {
+            validNick();
+          }
+        },
+        error: function (result) {
+          console.log(result);
+        },
+      });
+    } else {
+      alert(
+        "닉네임이 유효하지 않습니다.지정된 형식[4~16자리의 한글,알파벳,숫자,특수문자 등으로 구성]을 확인해 주세요"
+      );
+    }
   }
-}
-function validNick() {
-  alert("사용가능한 닉네임 입니다.");
-  isNickValidated = true;
-}
+  function validNick() {
+    alert("사용가능한 닉네임 입니다.");
+    isNickValidated = true;
+  }
   //이메일 도메인 넘어가게
   function setDomain(domain) {
     $("#emailDomain").val(domain);
@@ -376,19 +376,20 @@ function validNick() {
 
   //전체 유효성 검사
   function checkValidation() {
-    //이메일 유효성 검사
+    var pwd = $("#pwd").val();
+    var pwd2 = $("#pwd2").val();
     var emailPattern =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,}$/;
     var emailId = $("#emailId").val();
     var emailDomain = $("#emailDomain").val();
     var email = "";
-
     if (!pwd || !pwd2) {
       alert("비밀번호를 입력해 주세요");
       return false;
     }
-    if (!pwd == pwd2) {
+    if (pwd !== pwd2) {
       alert("비밀번호가 일치하지 않습니다.");
+      console.log("pwd : " + pwd + "pwd2 :" + pwd2);
       return false;
     }
     if (!emailId) {
@@ -411,7 +412,7 @@ function validNick() {
       return false;
     }
     if (!isIdValidated || !isNickValidated) {
-      alert("아이디 확인 혹인 닉네임 확인 버튼을 눌러 확인해 주세요");
+      alert("아이디 확인 또는 닉네임 확인 버튼을 눌러 확인해 주세요");
       return false;
     }
     if (!isPwdValidated) {
@@ -420,7 +421,7 @@ function validNick() {
       );
       return false;
     }
-      return true;
+    return true;
   }
 
   //집가서 할거, 회원가입완료후 메인 페이지로 전환하고 모달로 회원가입 축하 메시지 보내기 + 로그인 기능. + 마이페이지

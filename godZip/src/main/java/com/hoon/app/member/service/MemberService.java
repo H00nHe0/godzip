@@ -25,7 +25,6 @@ public class MemberService {
 
 	public int join(MemberVo mvo) {
 		return dao.join(sst, mvo);
-
 	}
 
 	public MemberVo nickDupChk(String nick) {
@@ -39,7 +38,9 @@ public class MemberService {
 	public MemberVo login(MemberVo mvo) {
 		return dao.login(sst,mvo);
 	}
-
+	public int updateTotalVisit(int no) {
+		return dao.updateTotalVisit(sst, no);
+	}
 	public int editMemberInfo(MemberVo mvo, int no) {
 		return dao.editMemberInfo(sst,mvo, no);
 	}
@@ -57,9 +58,6 @@ public class MemberService {
 		return dao.updateLastVisit(sst,memberNo);
 	}
 
-	public int updateTotalVisit(int no) {
-		return dao.updateTotalVisit(sst, no);
-	}
 
 	public List<GradeVo> gradeList() {
 		return dao.gradeList(sst);

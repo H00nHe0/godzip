@@ -27,6 +27,9 @@ public class MemberDao {
 	public MemberVo login(SqlSessionTemplate sst, MemberVo mvo) {
 		return sst.selectOne("member.login", mvo);
 	}
+	public int updateTotalVisit(SqlSessionTemplate sst, int no) {
+		return sst.update("member.updateTotalVisit", no);
+	}
 
 	public int editMemberInfo(SqlSessionTemplate sst, MemberVo mvo, int no) {
 		mvo.setNo(no);
@@ -49,9 +52,6 @@ public class MemberDao {
 		return sst.update("member.updateLastVisit", memberNo);
 	}
 
-	public int updateTotalVisit(SqlSessionTemplate sst, int no) {
-		return sst.update("member.updateTotalVisit", no);
-	}
 
 	public List<GradeVo> gradeList(SqlSessionTemplate sst) {
 		return sst.selectList("member.gradeList");

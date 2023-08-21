@@ -12,8 +12,7 @@
 		,ID
 		,PWD
 		,NICK
-		,LAST_VISIT
-		,LOGIN_TYPE
+		,ENROLL_DATE
 		,EMAIL
 		)
 		VALUES
@@ -23,10 +22,8 @@
 		, #{pwd}
 		, #{nick}
 		, SYSDATE
-		, 1
 		, #{email}
 		)
-	
 	</insert>
 	<!-- 닉네임 중복체크 -->	
 	<select id="nickDupChk" resultType="memberVo">
@@ -36,8 +33,7 @@
 	<select id="idDupChk" resultType="memberVo">
 		SELECT * FROM MEMBER_INFO WHERE ID = #{id}
 	</select>
-	
-	<!-- 로그인 -->
+
 	<select id="login" resultType="memberVo">
 		SELECT 
 		NO
@@ -55,6 +51,9 @@
 		,PROFILE
 		FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd}
 	</select>
+	<update id="updateTotalVisit">
+		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
+	</update>
 	
 	<!-- 회원정보 수정 -->
 	<update id="editMemberInfo">
@@ -73,10 +72,6 @@
 	 	UPDATE MEMBER_INFO SET LAST_VISIT = SYSDATE WHERE NO = #{memberNo}
 	</update>
 	
-	<update id="updateTotalVisit">
-		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
-	</update>
-	
 	<select id="gradeList" resultType="gradeVo">
 		SELECT
 			NO,
@@ -84,5 +79,6 @@
 			GRADE_INFO
 			FROM GRADE ORDER BY NO ASC
 	</select>
+	
 	
 </mapper>

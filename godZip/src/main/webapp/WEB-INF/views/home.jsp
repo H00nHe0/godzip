@@ -71,7 +71,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body" style="height: 200px;">
-		      <h4 class="card-title">반복문</h4>
+		      <h4 class="card-title">KINGHOON</h4>
 		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
 		      <div style="text-align: center; margin-bottom: 0;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -82,7 +82,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">	  
 		    <div class="card-body">
-		      <h4 class="card-title">으로</h4>
+		      <h4 class="card-title">iamtwoh</h4>
 		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -93,7 +93,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">10개씩</h4>
+		      <h4 class="card-title">kokoko19</h4>
 		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -104,7 +104,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">	  
 		    <div class="card-body">
-		      <h4 class="card-title">보여주기</h4>
+		      <h4 class="card-title">hun7265</h4>
 		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -115,7 +115,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">뭔말</h4>
+		      <h4 class="card-title">kekezz</h4>
 		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -126,7 +126,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">  
 		    <div class="card-body">
-		      <h4 class="card-title">인지</h4>
+		      <h4 class="card-title">youknow</h4>
 		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
 			      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -137,7 +137,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">알지</h4>
+		      <h4 class="card-title">김삿갓</h4>
 		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -148,7 +148,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">화이팅</h4>
+		      <h4 class="card-title">리뷰매니아</h4>
 		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -158,7 +158,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">나는</h4>
+		      <h4 class="card-title">나는짱이다</h4>
 		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -169,7 +169,7 @@ pageEncoding="UTF-8"%>
 		  <div class="card mx-4 my-3">
 		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
 		    <div class="card-body">
-		      <h4 class="card-title">천재다</h4>
+		      <h4 class="card-title">kingsman</h4>
 		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
 		      <div style="text-align: center;">
 			      <a href="#" class="btn btn-primary">See Review</a>
@@ -187,37 +187,37 @@ pageEncoding="UTF-8"%>
 		 	<div class="book my-3">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>전자 제품</p>
 		    </div>
 		   </div>
 		    <div class="book">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>가구</p>
 		    </div>
 		   </div>
 		    <div class="book">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>취미 요품</p>
 		    </div>
 		   </div>
    		 	<div class="book">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>자동차</p>
 		    </div>
 		   </div>
 		    <div class="book">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>호신용품</p>
 		    </div>
 		   </div>
 		    <div class="book">
 		    <p>Hello</p>
 		    <div class="cover">
-		        <p>Hover Me</p>
+		        <p>레스토랑</p>
 		    </div>
 		   </div>
 		</div>

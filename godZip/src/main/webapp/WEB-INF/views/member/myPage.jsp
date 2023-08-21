@@ -462,7 +462,11 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 									<tr>
 										<td style="text-align: center;">${i.rno}</td>
 										<td>${i.type}</td>
-				          				<td class="titleBox" id="t${i.no}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal${i.no}">${i.title}</a></td>
+				          				<td class="titleBox" id="t${i.no}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal${i.no}">${i.title}</a>
+								          	 <c:if test="${i.answeredYn eq 'Y'}"><span class="badge bg-success">답변완료</span></c:if>
+				          					 <c:if test="${i.answeredYn eq 'N'}"><span class="badge bg-warning">답변필요</span></c:if>
+				          					 <c:if test="${i.answeredYn eq null}"><span class="badge bg-warning">답변필요</span></c:if>
+				          				</td>
 										<td class="enrollDate">${i.enrollDate}</td>
 									</tr>
 										            <!-- The Modal -->
@@ -581,15 +585,12 @@ $(document).ready(function () {
   function checkExtension(fileName, fileSize) {
     if (fileSize >= maxSize) {
       alert("사진의 용량이 10mb를 넘습니다.");
-      return false;
-    }
+      return false;}
     if (regex.test(fileName)) {
       alert("해당 확장자 파일은 업로드 할 수 없습니다.");
-      return false;
-    }
-    return true;
-  }
-
+      return false;}
+    return true;}
+  
   $("#profileChange").on("click", function () {
 
     var formData = new FormData();
@@ -603,8 +604,7 @@ $(document).ready(function () {
         //첨부파일 서버로 보내서 저장하기
         if (!checkExtension(selectedFile.name, selectedFile.size)) {
           console.log("파일 확장자,사진 용량 제한");
-          return false;
-        }
+          return false;}
         formData.append("profile", selectedFile);
         formData.append("no", memberNo);
 
@@ -651,23 +651,5 @@ $(document).ready(function () {
     $("span[id='gradeName']").css("color", "diamond");
   }
   
-/*   function contentDetail(no) {
-
-        $.ajax({
-          url: "${root}/inquiry/board/" + no,
-          type: "get",
-          data: { no: no },
-          dataType: "JSON",
-          success: function (response) {
-        	  console.log(response);
-            $(".modal-header").text(response.title);
-            $(".modal-body").text(response.content);
-          },
-          error: function (response) {
-            alert("error");
-            console.log(response);
-          },
-        });
-      }  */
     
 </script>
