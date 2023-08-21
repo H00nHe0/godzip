@@ -316,9 +316,6 @@ pageEncoding="UTF-8"%>
   var isNickValidated = false; // 닉네임 유효성 확인 여부
   var isPwdValidated = false; // 비밀번호 유효성 확인 여부
   var isEmailValidated = false; // 이메일 유효성 확인 여부
-  // 무슨 일이있어도 8월 6일 까지 마이페이지 수정해야함(처음 로드시에 기존 비번,메일,닉네임 버튼 눌려있어야 하고
-  //, 그대로 누르면 기존정보로 업데이트 되게, 체크박스 해제시에 는 인풋태그에 입력한 값들이 서버에 전달되게)
-  //버튼 누르고 안누르고에 따라서 각 값들이 업데이트 달 되도록 수정 꼬오옥!!!!
   const registeredEmail = document.querySelector(
     'input[name="noEmailUpdate"]'
   ).value;

@@ -449,6 +449,15 @@ pageEncoding="UTF-8"%>
               success: function (data) {
                 $("#contentDetail" + no).val(data.content);
                 $("#t" + no).css("background-color", "#ffffcc");
+             // 답변이 달린 경우에만 답변 내용을 보여줌
+                if (data.answeredYn === 'Y') {
+                  $("#answerArea" + no).val(data.answer);  
+                  $("#answerArea" + no).prop("readonly", true); 
+                  $("#answer" + no + " button").hide(); 
+                  $("#answer" + no).css("display", "table-row"); 
+                } else {
+                  $("#answer" + no).css("display", "none");  
+                }
               },
               error: function () {
                 alert("error");
@@ -476,31 +485,6 @@ pageEncoding="UTF-8"%>
             });
           }
         }
-      function inquiryAnswer(no) {
-           $("#answer" + no).css("display", "table-row");   
-           $("#adminBtns" + no).css("display", "none");   
-	}
-      
-       function submitAnswer(no) {
-    	   var answerText = $("#answerArea" + no).val();
-            $.ajax({
-              url: "board/answer",
-              type: "post",
-              data: { no: no, answer:answerText },
-              success: function (response) {
-              if (response === "success") {
-                  alert("답변이 등록되었습니다.");
-     		      location.reload();
-                } else {
-                  alert("답변 등록에실패했습니다.");
-                }
-              },
-              error: function () {
-                alert("답변 등록중 에러발생");
-              },
-            });
-        } 
-      
       function inquiryDelete(no) {
           $.ajax({
             url: "board/" + no,
@@ -550,6 +534,31 @@ pageEncoding="UTF-8"%>
             },
           });
         } 
+      function inquiryAnswer(no) {
+           $("#answer" + no).css("display", "table-row");   
+           $("#adminBtns" + no).css("display", "none");   
+	}
+      
+       function submitAnswer(no) {
+    	   var answerText = $("#answerArea" + no).val();
+            $.ajax({
+              url: "board/answer",
+              type: "post",
+              data: { no: no, answer:answerText },
+              success: function (response) {
+              if (response === "success") {
+                  alert("답변이 등록되었습니다.");
+     		      location.reload();
+                } else {
+                  alert("답변 등록에실패했습니다.");
+                }
+              },
+              error: function () {
+                alert("답변 등록중 에러발생");
+              },
+            });
+        } 
+      
            
   </script>
 </html>

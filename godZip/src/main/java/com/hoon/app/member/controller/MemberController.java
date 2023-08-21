@@ -43,60 +43,52 @@ public class MemberController {
 
 	private MemberService ms;
 	private InquiryService is;
-	
 	@Autowired
 	public MemberController(MemberService ms, InquiryService is) {
 		this.ms = ms;
 		this.is = is;
 	}
-	
 	//회원가입 화면
 	@GetMapping("joinForm")
 	public String joinForm() {
 		
 		return "member/joinForm";
 	}
-	//닉네임 유효성 검사
+	//닉네임 중복 검사
 	@GetMapping("nickDupChk")
 	@ResponseBody
 	public int nickDupChk(@RequestParam("nick")String nick) {
-		System.out.println(nick);
+		
 		MemberVo mvo = ms.nickDupChk(nick);
-		System.out.println(mvo);
-		if(mvo!=null) { //이미존재하는 닉네임
-			System.out.println("0리턴");
+		if(mvo!=null) {
 			return 0;
-		}else {			//사용가능한 닉네임
-			System.out.println("1리턴");
+		}else {			
 			return 1; 		
 		}
 	}
-	//아이디 유효성 검사
+	//아이디 중복 검사
 	@GetMapping("idDupChk")
 	@ResponseBody
 	public int idDupChk(@RequestParam("id")String id) {
 		System.out.println(id);
 		MemberVo mvo = ms.idDupChk(id);
-		System.out.println(mvo);
-		if(mvo!=null) {      //이미존재하는 아이디
+
+		if(mvo!=null) {      
 			return 0;
-		}else {				//사용가능한 아이디
+		}else {				
 			return 1; 		
 		}
 	}	
 	//회원가입 처리
 	@PostMapping("join")
-	public String join(MemberVo mvo, HttpSession session, Model model) {
-		
+	public String join(MemberVo mvo, Model model) {
 		int result = ms.join(mvo);
 		
 		if(result != 1) {
 			model.addAttribute("errorMsg" , "회원 가입 실패..");
 			return "common/error-page";			
 		}
-			session.setAttribute("alertMsg", "회원가입 성공! 가입하신정보로 다시 로그인 해주세요");
 			return "redirect:/home";		
-			
 	}
 	//로그인
 	@GetMapping("loginForm")
@@ -107,19 +99,15 @@ public class MemberController {
 	//로그인 기능
 	@PostMapping("login")
 	public String login(MemberVo mvo, RedirectAttributes rttr, HttpSession session) {
-		System.out.println(mvo);
 		if(mvo.getId()==null||mvo.getId().equals("")||mvo.getPwd()==null||mvo.getPwd().equals("")) {
 			rttr.addFlashAttribute("msgType", "errorMsg");
 			rttr.addFlashAttribute("msg", "아이디와 비밀번호를 모두 입력해주세요");
 			return "redirect:/member/loginForm";
 		}
-		
 		MemberVo loginMember = ms.login(mvo);
-		System.out.println(loginMember);
 		if(loginMember != null) {//로그인 성공
 			int no = loginMember.getNo();
 			//출석일수 변동(하루에 여러번 로그인해도 같은날이면 1 증가)
-			//현재날짜구하기(system default지정된 시간이용방법)
 			LocalDate today = LocalDate.now();
 			//날짜 포멧 정의&적용
 			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
@@ -149,7 +137,6 @@ public class MemberController {
 
 			return "redirect:/member/loginForm";
 		}
-		
 	}
 	//로그아웃
 	@RequestMapping("logout")
@@ -172,6 +159,24 @@ public class MemberController {
 	@GetMapping("myPagePwdChk")
 	public String myPagePwdChk() {
 		return "member/myPagePwdChk";
+	}
+	//마이페이지 비번확인
+	@PostMapping("myPagePwdChk")
+	public String myPagePwdChk(@RequestParam("pwd") String pwd, HttpSession session, RedirectAttributes rttr) {
+		
+		MemberVo mvo = (MemberVo) session.getAttribute("mvo");
+		String loginId = mvo.getId();
+		String loginPwd = mvo.getPwd();
+		
+		if(!loginPwd.equals(pwd)) { // 비번 틀리면
+			rttr.addFlashAttribute("msgType", "errorMsg");
+			rttr.addFlashAttribute("msg", "비밀번호를 확인 해주세요");
+			return "redirect:/member/myPagePwdChk";
+		}else { //비번 맞으면
+			rttr.addFlashAttribute("msgType", "successMsg");
+			rttr.addFlashAttribute("msg", "본인확인이 완료되었습니다!");
+			return "redirect:/member/myPage";
+		}
 	}
 	//마이페이지 화면이동
 	@GetMapping("myPage")
@@ -196,25 +201,6 @@ public class MemberController {
 		return "member/myPage";
 	}	
 	
-	//마이페이지 비번확인
-	@PostMapping("myPagePwdChk")
-	public String myPagePwdChk(@RequestParam("pwd") String pwd, HttpSession session, RedirectAttributes rttr) {
-		
-		MemberVo mvo = (MemberVo) session.getAttribute("mvo");
-		String loginId = mvo.getId();
-		String loginPwd = mvo.getPwd();
-		System.out.println("loginId"+"="+loginId +","+"loginPwd"+"="+loginPwd+"inputPwd = "+pwd);
-
-		if(!loginPwd.equals(pwd)) { // 비번 틀리면
-			rttr.addFlashAttribute("msgType", "errorMsg");
-			rttr.addFlashAttribute("msg", "비밀번호를 확인 해주세요");
-			return "redirect:/member/myPagePwdChk";
-		}else { //비번 맞으면
-			rttr.addFlashAttribute("msgType", "successMsg");
-			rttr.addFlashAttribute("msg", "본인확인이 완료되었습니다!");
-			return "redirect:/member/myPage";
-		}
-	}
 	//회원정보 수정 페이지 이동
 	@GetMapping("editInfo")
 	public String editInfo() {
@@ -225,8 +211,6 @@ public class MemberController {
 	@ResponseBody
 	public String uploadProfile(MultipartFile profile, @RequestParam int no, HttpSession session) throws Exception {
 		String profileFolder = "C:\\dev\\sidePrjRepo\\godzipGit\\godZip\\src\\main\\webapp\\resources\\img\\memberImg";
-
-			log.info("update ajax post....");
 			log.info("Uplodaed profile img :"+ profile.getOriginalFilename());
 			log.info("Uplodaed profile size :"+ profile.getSize());
 			String uploadedFileName = profile.getOriginalFilename();
@@ -254,7 +238,6 @@ public class MemberController {
 			}catch (Exception e) {
 				log.error(e.getMessage());
 			}//end catch
-			//썸네일 이름 db에 넣기
 			String profileImg = thumbnail.getName();
 			int result = ms.insertThumbnail(profileImg, no);
 			if(result != 1) {
@@ -262,7 +245,6 @@ public class MemberController {
 				return "error";
 			}else {
 				log.info("Uplodaed profile name in DB :"+ profileImg);
-				
 			    // 파일이름 한글이면 안되서 인코딩
 			    String encodedFileName = URLEncoder.encode(profileImg, "UTF-8");
 				MemberVo mvo = ms.updatedInfo(no);
@@ -289,18 +271,13 @@ public class MemberController {
 	public String editMemberInfo(MemberVo mvo, HttpSession session) {
 		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
 		int no = loginMember.getNo();
-		System.out.println("memberNo :"+ no);
-		System.out.println("mvo : "+mvo);
-		System.out.println("loginMember : "+loginMember);
 		int result = ms.editMemberInfo(mvo, no);
 		if(result != 1) {
 			session.setAttribute("alertMsg", "회원정보수정 실패.. 다시 시도해주세요");
-			System.out.println("mvo : "+mvo);
 			return "redirect:/member/editInfo";
 		}
 		session.setAttribute("alertMsg" , "회원정보 수정 성공!");			
 		mvo = ms.updatedInfo(no);
-		System.out.println("mvo : "+mvo);
 		session.setAttribute("mvo", mvo);
 		return "redirect:/home";
 	}	

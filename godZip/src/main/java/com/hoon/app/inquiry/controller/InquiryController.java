@@ -39,7 +39,7 @@ public class InquiryController {
 	@GetMapping("customerService")
 	public String customerService(Model model) {
 		List<FaqVo> faqList = is.getFAQList();
-		model.addAttribute("faqList", faqList); // 모델에 데이터 추가
+		model.addAttribute("faqList", faqList); 
 		log.info("faqList : "+faqList);
 		return "inquiry/customerService";
 	}

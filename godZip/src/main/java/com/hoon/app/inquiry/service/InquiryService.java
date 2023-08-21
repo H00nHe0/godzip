@@ -26,11 +26,11 @@ public class InquiryService {
 	public List<FaqVo> getFAQList() {
 		return idao.getFAQList(sst);
 	}
-	public List<InquiryVo> getInquiryList(PageVo pv, Map<String, String> searchMap) {
-		return idao.getInquiryList(sst, pv, searchMap);
-	}
 	public List<InquiryVo> myQList(PageVo pv,int no) {
 		return idao.myQList(sst, pv, no);
+	}
+	public List<InquiryVo> getInquiryList(PageVo pv, Map<String, String> searchMap) {
+		return idao.getInquiryList(sst, pv, searchMap);
 	}
 	public int inquiryInsert(InquiryVo ivo) {
 		return idao.inquiryInsert(sst, ivo);
