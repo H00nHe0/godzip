@@ -32,6 +32,25 @@ pageEncoding="UTF-8"%>
       .title {
         font-weight: bold;
         font-size: 1.6rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 300px;
+      }
+      #withdrawalAccount-button {
+        background-color: #0066ff;
+        color: #fff;
+        border: 0;
+        border-radius: 24px;
+        padding: 10px 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #withdrawalAccount:hover {
+        background-color: #005ce6;
       }
 
       .subtitle {
@@ -137,7 +156,16 @@ pageEncoding="UTF-8"%>
             method="post"
             onsubmit="return checkValidation();"
           >
-            <span class="title">회원 정보 수정</span>
+            <span class="title"
+              >회원 정보 수정
+              <button
+                type="button"
+                id="withdrawalAccount"
+                onclick="withdrawalAccount()"
+              >
+                회원탈퇴하기
+              </button></span
+            >
             <span class="subtitle">Share , Check reviews and Choose!</span>
             <div class="form-container">
               <table>
@@ -524,11 +552,11 @@ pageEncoding="UTF-8"%>
       alert("이메일을 확인해 주세요");
       return false;
     }
-    if($("#noNickUpdate").prop("checked")){
-        nick.value = registeredNick;
-        alert(document.querySelector('input[name="nick"]').value);
-        isNickValidated = true;
-      }else if (
+    if ($("#noNickUpdate").prop("checked")) {
+      nick.value = registeredNick;
+      alert(document.querySelector('input[name="nick"]').value);
+      isNickValidated = true;
+    } else if (
       (!$("#noNickUpdate").prop("checked") || !isNickValidated) &&
       !nick.value
     ) {
@@ -540,5 +568,12 @@ pageEncoding="UTF-8"%>
     }
     alert(password.value + nick.value + email.value);
     return true;
+  }
+
+  //회원탈퇴 --구현하기
+  function withdrawalAccount() {
+   	if(window.confirm("정말로 탈퇴 하시겠습니까?")){
+    location.href = "${root}/member/withdrawalAccount";
+   	} 
   }
 </script>
