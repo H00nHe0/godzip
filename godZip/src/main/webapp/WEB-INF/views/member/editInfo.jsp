@@ -138,6 +138,39 @@ pageEncoding="UTF-8"%>
         justify-content: center;
         margin-right: 10px;
       }
+      .withdrawalForm {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      #deleteForm {
+        background-color: white;
+        width: 400px;
+        height: 200px;
+        padding: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      #deleteForm input {
+        width: 80%;
+        border-radius: 10px;
+        height: 40px;
+      }
+      #withdrawal-btn {
+        width: 60%;
+        background-color: red;
+      }
+      #closeForm-btn {
+        width: 60%;
+      }
     </style>
   </head>
   <body>
@@ -161,14 +194,51 @@ pageEncoding="UTF-8"%>
               <button
                 type="button"
                 id="withdrawalAccount"
-                onclick="withdrawalAccount()"
+                onclick="withdrawal()"
               >
                 회원탈퇴하기
               </button></span
             >
+            <!-- 회원 탏퇴 form -->
+            <div class="form-container withdrawalForm">
+              <table id="deleteForm">
+                <tr>
+                  <th colspan="2">회원 탈퇴를 위한 비밀번호를 입력해 주세요</th>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <input
+                      type="password"
+                      id="lastPwdChk"
+                      placeholder="비밀번호 입력"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width: 50%">
+                    <button
+                      type="button"
+                      id="withdrawal-btn"
+                      onclick="deleteMember()"
+                    >
+                      탈퇴하기
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      id="closeForm-btn"
+                      onclick="closeForm()"
+                    >
+                      취소하기
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>
             <span class="subtitle">Share , Check reviews and Choose!</span>
             <div class="form-container">
-              <table>
+              <table id="joinInputTable">
                 <tr>
                   <th colspan="2">아이디</th>
                 </tr>
@@ -571,9 +641,40 @@ pageEncoding="UTF-8"%>
   }
 
   //회원탈퇴 --구현하기
-  function withdrawalAccount() {
-   	if(window.confirm("정말로 탈퇴 하시겠습니까?")){
-    location.href = "${root}/member/withdrawalAccount";
-   	} 
+  var deleteForm = document.querySelector(".withdrawalForm");
+  var inputPwd = document.querySelector("#lastPwdChk");
+  function withdrawal() {
+    if (window.confirm("정말로 탈퇴 하시겠습니까?")) {
+      openPasswordPopup();
+    }
+  }
+  function openPasswordPopup() {
+    deleteForm.style.display = "block";
+  }
+
+  function closeForm() {
+    deleteForm.style.display = "none";
+  }
+
+  function deleteMember() {
+    const password = inputPwd.value;
+    console.log(password);
+    $.ajax({
+      url: "${root}/member/withdrawalPwdChk",
+      type: "POST",
+      data: { pwd: password },
+      dataType: "text",
+      success: function (result) {
+        if (result === "success") {
+          alert("회원 탈퇴 성공!");
+          window.location.href = "${root}/home";
+        } else {
+          alert("회원탈퇴 실패ㅜㅡㅜ 비밀번호를 확인해 주세요");
+        }
+      },
+      error: function (error) {
+        console.error("서버 통신실패", error);
+      },
+    });
   }
 </script>

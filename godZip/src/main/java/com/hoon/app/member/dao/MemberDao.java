@@ -37,7 +37,6 @@ public class MemberDao {
 	}
 
 	public MemberVo updatedInfo(SqlSessionTemplate sst, int no) {
-		// TODO Auto-generated method stub
 		return sst.selectOne("member.updatedInfo", no);
 	}
 
@@ -55,6 +54,10 @@ public class MemberDao {
 
 	public List<GradeVo> gradeList(SqlSessionTemplate sst) {
 		return sst.selectList("member.gradeList");
+	}
+
+	public int withdrawal(SqlSessionTemplate sst,int no) {
+		return sst.update("member.withdrawal", no);
 	}
 
 

@@ -18,8 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -282,6 +285,25 @@ public class MemberController {
 		return "redirect:/home";
 	}	
 	
-	
+	//회원탈퇴
+	@PostMapping("withdrawalPwdChk")
+	@ResponseBody
+	public String withdrawalPwdChk(@RequestParam String pwd, HttpSession session) {
+		System.out.println("값넘어옴");
+		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		int no = mvo.getNo();
+		String memberPwd = mvo.getPwd();
+		System.out.println("memberpwd : "+memberPwd+"inputpwd : "+pwd);
+		if(!memberPwd.equals(pwd)) {
+			return "error";
+		}else {
+			int result = ms.withdrawal(no);
+			if(result == 1) {
+				session.invalidate();
+				return "success";
+			}
+			return "error";			
+		}
+	}
 	
 }
