@@ -63,5 +63,9 @@ public class MemberService {
 		return dao.gradeList(sst);
 	}
 
+	public int withdrawal(int no) {
+		return dao.withdrawal(sst, no);
+	}
+
 
 }
