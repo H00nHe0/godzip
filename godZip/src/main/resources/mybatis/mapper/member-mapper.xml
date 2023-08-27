@@ -84,4 +84,8 @@
 		UPDATE MEMBER_INFO SET QUIT_YN = 'Y' WHERE NO = #{no}
 	</update>
 	
+	<update id="toDefaultImg">
+		UPDATE MEMBER_INFO SET PROFILE = NULL WHERE NO = #{no}
+	</update>
+	
 </mapper>

@@ -184,42 +184,14 @@ pageEncoding="UTF-8"%>
       	<h2 class="fw-bold" style="text-align: center; margin-top: 10px;">Category</h2>
       <div id="category-area">
       	<div id="category-div" class="mx-3">
+      	<c:forEach items="${cList}" var="cl">
 		 	<div class="book my-3">
-		    <p>Hello</p>
+		    <p>${cl.caInfo}</p>
 		    <div class="cover">
-		        <p>전자 제품</p>
+		        <p>${cl.caName}</p>
 		    </div>
 		   </div>
-		    <div class="book">
-		    <p>Hello</p>
-		    <div class="cover">
-		        <p>가구</p>
-		    </div>
-		   </div>
-		    <div class="book">
-		    <p>Hello</p>
-		    <div class="cover">
-		        <p>취미 요품</p>
-		    </div>
-		   </div>
-   		 	<div class="book">
-		    <p>Hello</p>
-		    <div class="cover">
-		        <p>자동차</p>
-		    </div>
-		   </div>
-		    <div class="book">
-		    <p>Hello</p>
-		    <div class="cover">
-		        <p>호신용품</p>
-		    </div>
-		   </div>
-		    <div class="book">
-		    <p>Hello</p>
-		    <div class="cover">
-		        <p>레스토랑</p>
-		    </div>
-		   </div>
+      	</c:forEach>
 		</div>
 	
       </div>
@@ -241,4 +213,17 @@ pageEncoding="UTF-8"%>
         currentSlide = (currentSlide + 1) % slides.length; // 다음 슬라이드의 인덱스 계산
         slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
       }
+	  $(document).ready(function() {
+      $.ajax({
+    	  url: "product/subion",
+    	  typt: "GET",
+		  datatype: "JSON",
+	      success: function (result) {
+	            alert(result);
+	        },
+	        error: function (response) {
+	          console.log(response);
+	        }, 
+      })
+	});
       </script>
