@@ -5,11 +5,11 @@
   
 <mapper namespace="product">
 	<select id="getCList" resultType="productVo">
-		SELECT NO, CA_NAME, CA_INFO FROM CATEGORY
+		SELECT NO, CA_NAME, CA_INFO, CA_IMG FROM CATEGORY
 	</select>
 	  
 	<select id="getSubList" resultType="productVo">
-		SELECT SUB.NO, CA.CA_NAME, SUB.CA_NO, SUB.SUB_CATEGORY
+		SELECT SUB.NO, CA.CA_NAME, SUB.CA_NO, SUB.SUB_CATEGORY, CA.CA_IMG
 		FROM SUBDIVISION SUB 
 		JOIN CATEGORY CA 
 		ON SUB.CA_NO = CA.NO

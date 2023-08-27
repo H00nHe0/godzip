@@ -23,6 +23,7 @@ public class ProductController {
 	@ResponseBody
 	public List<ProductVo> subDivision() {
 		List<ProductVo> pList = ps.getSubList();
+		System.out.println("pList : " +pList);
 		return pList;
 	}
 		

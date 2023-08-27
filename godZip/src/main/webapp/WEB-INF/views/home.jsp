@@ -186,7 +186,7 @@ pageEncoding="UTF-8"%>
       	<div id="category-div" class="mx-3">
       	<c:forEach items="${cList}" var="cl">
 		 	<div class="book my-3">
-		    <p>${cl.caInfo}</p>
+				<ul id="subListArea${cl.no}"></ul>
 		    <div class="cover">
 		        <p>${cl.caName}</p>
 		    </div>
@@ -199,9 +199,57 @@ pageEncoding="UTF-8"%>
       <%-- <%@ include file="/WEB-INF/views/common/footer.jsp" %> --%>
     </div>
   </body>
-</html>
       <link rel="stylesheet" href="${root}/resources/css/main/home.css"></link>
       <script>
+      $(document).ready(function () {
+    	  $.ajax({
+          	  url:" ${root}/product/subDivision",
+          	  type: "GET",
+        		  datatype: "JSON",
+        	      success: function (result) {
+        	            var subList = result;
+        	            for (let i = 0; i < subList.length; i++) {
+        	                var subCaNo = subList[i].caNo;
+        	                var subCategory = subList[i].subCategory;
+        	                
+        	                if (subCaNo == 1) {
+        	                    var subListArea = $("#subListArea" + subCaNo);
+        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
+        	                    let listItem = "<li>" + subCategory + "</li>";
+        	                    subListArea.append(listItem);
+        	                    sideCaArea.append(listItem);
+        	                }else if (subCaNo == 2) {
+         	                    var subListArea = $("#subListArea" + subCaNo);
+        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
+        	                    let listItem = "<li>" + subCategory + "</li>";
+        	                    subListArea.append(listItem);
+        	                    sideCaArea.append(listItem);
+        	                }else if (subCaNo == 3) {
+        	                    var subListArea = $("#subListArea" + subCaNo);
+        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
+        	                    let listItem = "<li>" + subCategory + "</li>";
+        	                    subListArea.append(listItem);
+        	                    sideCaArea.append(listItem);
+        	                }else if (subCaNo == 4) {
+        	                    var subListArea = $("#subListArea" + subCaNo);
+        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
+        	                    let listItem = "<li>" + subCategory + "</li>";
+        	                    subListArea.append(listItem);
+        	                    sideCaArea.append(listItem);
+        	                }else if (subCaNo == 5) {
+        	                    var subListArea = $("#subListArea" + subCaNo);
+        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
+        	                    let listItem = "<li>" + subCategory + "</li>";
+        	                    subListArea.append(listItem);
+        	                    sideCaArea.append(listItem);
+        	                }
+        	            }
+        	        },
+        	        error: function (response) {
+        	          console.log(response);
+        	        }, 
+            })
+      });
       var currentSlide = 0;
       var slides = document.querySelectorAll('.slideshow img');
       slides[currentSlide].classList.add('active'); // 첫 번째 슬라이드에 클래스 추가
@@ -213,17 +261,6 @@ pageEncoding="UTF-8"%>
         currentSlide = (currentSlide + 1) % slides.length; // 다음 슬라이드의 인덱스 계산
         slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
       }
-	  $(document).ready(function() {
-      $.ajax({
-    	  url: "product/subion",
-    	  typt: "GET",
-		  datatype: "JSON",
-	      success: function (result) {
-	            alert(result);
-	        },
-	        error: function (response) {
-	          console.log(response);
-	        }, 
-      })
-	});
+     
       </script>
+</html>
