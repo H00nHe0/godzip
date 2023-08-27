@@ -60,6 +60,10 @@ public class MemberDao {
 		return sst.update("member.withdrawal", no);
 	}
 
+	public int toDefaultImg(SqlSessionTemplate sst, int no) {
+		return sst.update("member.toDefaultImg", no);
+	}
+
 
 
 }

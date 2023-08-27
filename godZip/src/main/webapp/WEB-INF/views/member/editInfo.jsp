@@ -398,7 +398,9 @@ pageEncoding="UTF-8"%>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <button style="width: 90%">회원 정보 변경하기</button>
+                    <button type="button" style="width: 90%">
+                      회원 정보 변경하기
+                    </button>
                   </td>
                 </tr>
               </table>
@@ -653,28 +655,40 @@ pageEncoding="UTF-8"%>
   }
 
   function closeForm() {
+    inputPwd.value = "";
     deleteForm.style.display = "none";
   }
-
+  //탈퇴 비번창 떳을때 엔터치면 함수실행(기존 엔터시 form제출은 button type='buttob'으로 방지)
+  document
+    .querySelector("#lastPwdChk")
+    .addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        deleteMember();
+      }
+    });
   function deleteMember() {
     const password = inputPwd.value;
     console.log(password);
-    $.ajax({
-      url: "${root}/member/withdrawalPwdChk",
-      type: "POST",
-      data: { pwd: password },
-      dataType: "text",
-      success: function (result) {
-        if (result === "success") {
-          alert("회원 탈퇴 성공!");
-          window.location.href = "${root}/home";
-        } else {
-          alert("회원탈퇴 실패ㅜㅡㅜ 비밀번호를 확인해 주세요");
-        }
-      },
-      error: function (error) {
-        console.error("서버 통신실패", error);
-      },
-    });
+    if (password === "") {
+      alert("회원 탈퇴를 위한 비밀번호를 입력해주세요");
+    } else {
+      $.ajax({
+        url: "${root}/member/withdrawalPwdChk",
+        type: "POST",
+        data: { pwd: password },
+        dataType: "text",
+        success: function (result) {
+          if (result === "success") {
+            alert("회원 탈퇴 성공!");
+            window.location.href = "${root}/home";
+          } else {
+            alert("회원탈퇴 실패.. 비밀번호를 확인해 주세요");
+          }
+        },
+        error: function (error) {
+          console.error("서버 통신실패", error);
+        },
+      });
+    }
   }
 </script>

@@ -15,6 +15,7 @@
   		<typeAlias type="com.hoon.app.inquiry.vo.FaqVo" alias="faqVo"/>	
   		<typeAlias type="com.hoon.app.inquiry.vo.InquiryTypeVo" alias="inquiryTypeVo"/>	
   		<typeAlias type="com.hoon.app.grade.vo.GradeVo" alias="gradeVo"/>	
+  		<typeAlias type="com.hoon.app.product.vo.ProductVo" alias="productVo"/>	
 	</typeAliases>	
 	
 	

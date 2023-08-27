@@ -60,37 +60,36 @@ public class MemberController {
 	//닉네임 중복 검사
 	@GetMapping("nickDupChk")
 	@ResponseBody
-	public int nickDupChk(@RequestParam("nick")String nick) {
+	public String nickDupChk(@RequestParam("nick")String nick) {
 		
 		MemberVo mvo = ms.nickDupChk(nick);
-		if(mvo!=null) {
-			return 0;
-		}else {			
-			return 1; 		
+		if(mvo!=null) {      
+			return "duplicate";
+		}else {				
+			return "success"; 		
 		}
 	}
 	//아이디 중복 검사
 	@GetMapping("idDupChk")
 	@ResponseBody
-	public int idDupChk(@RequestParam("id")String id) {
-		System.out.println(id);
+	public String idDupChk(@RequestParam("id")String id) {
 		MemberVo mvo = ms.idDupChk(id);
-
 		if(mvo!=null) {      
-			return 0;
+			return "duplicate";
 		}else {				
-			return 1; 		
+			return "success"; 		
 		}
 	}	
 	//회원가입 처리
 	@PostMapping("join")
-	public String join(MemberVo mvo, Model model) {
+	public String join(MemberVo mvo, Model model, HttpSession session) {
 		int result = ms.join(mvo);
 		
 		if(result != 1) {
 			model.addAttribute("errorMsg" , "회원 가입 실패..");
 			return "common/error-page";			
 		}
+			session.setAttribute("successMsg", "회원가입성공! 다시로그인 해주세요");
 			return "redirect:/home";		
 	}
 	//로그인
@@ -115,19 +114,23 @@ public class MemberController {
 			//날짜 포멧 정의&적용
 			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
 			 String formatedToday = today.format(formatter);
-			 String formatedLastVisit = loginMember.getLastVisit().substring(2,10).replace("-", "/");
-			 //최근 로그아웃 날짜랑 오늘날짜 비교(문자열)
-			if(!formatedLastVisit.equals(formatedToday)) {
-				log.info("loginMember.getLastVisit() : "+loginMember.getLastVisit()+", formatedToday : "+formatedToday);
-				int alreadyVisit = ms.updateTotalVisit(no);
-				if (alreadyVisit == 1) {
-				    log.info("Visited days column updated");
-				} else {
-				    log.info("Error updating visited days column");
-				}
-			}else {
-				log.info("오늘 로그인  이미 함");
-			}
+			 //멤버가 첫 로그인하면 lastvisit아직 업데이트 안되어 있어서 에러남
+			 if(!(loginMember.getLastVisit() == null)) {
+				 String formatedLastVisit = loginMember.getLastVisit().substring(2,10).replace("-", "/");
+				 //최근 로그아웃 날짜랑 오늘날짜 비교(문자열)
+				 if(!formatedLastVisit.equals(formatedToday)) {
+					 log.info("loginMember.getLastVisit() : "+loginMember.getLastVisit()+", formatedToday : "+formatedToday);
+					 int alreadyVisit = ms.updateTotalVisit(no);
+					 if (alreadyVisit == 1) {
+						 log.info("Visited days column updated");
+					 } else {
+						 log.info("Error updating visited days column");
+					 }
+				 }else {
+					 log.info("오늘 로그인  이미 함");
+				 }
+			 }
+			
 			rttr.addFlashAttribute("msgType", "successMsg");
 			rttr.addFlashAttribute("msg", "로그인 성공!");
 			//총방문횟수 업뎃되면 업데이트 반영한 정보 세션에 담기
@@ -146,7 +149,9 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		//로그아웃 시 lastvisit칼럼 날짜 업데이트
 		MemberVo mvo = (MemberVo) session.getAttribute("mvo");
+		log.info("mvo :"+mvo);
 		int memberNo = mvo.getNo();
+		log.info("memberNo :"+memberNo);
 		int result = ms.updateLastVisit(memberNo);
 		if(result != 1) {
 			log.info("error occurred when logout with updating last_visit column");
@@ -267,7 +272,21 @@ public class MemberController {
 		}
 		return false;
 	}
-
+	
+	//기본 프로필 사진으로 변경
+	@PostMapping("toDefaultImg")
+	@ResponseBody
+	public String toDefaultImg(@RequestParam("no") int no, HttpSession session) {
+		int result = ms.toDefaultImg(no);
+		if(result == 1) {
+			MemberVo mvo = ms.updatedInfo(no);
+			session.setAttribute("mvo", mvo);
+			return "success";
+		}else {
+			session.setAttribute("errorMsg", "프로필 사진변경 실패..");
+			return "fail";
+		}
+	}
 	
 	//회원정보 수정
 	@PostMapping("editInfo")

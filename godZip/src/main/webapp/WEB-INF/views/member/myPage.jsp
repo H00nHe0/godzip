@@ -7,24 +7,29 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
     <meta charset="UTF-8" />
     <title>Insert title here</title>
     <style type="text/css">
-      #grade-info-btn{
-	  border: 1px solid #8F9092;
-	  outline: none;
-      background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
-	  padding: 8px 10px;
-	  font-size: 12px;
-	  font-weight: 700;
-	  color: #606060;
-	  border-radius: 20px;
-	  transition: all ease 0.1s;
-	  box-shadow: 0px 5px 0px 0px white;
-	  margin-left: 30px;
-	}
-	
-	.grade-info-btn:active {
-	  transform: translateY(5px);
-	  box-shadow: 0px 0px 0px 0px #a29bfe;
-	}
+      #grade-info-btn {
+        border: 1px solid #8f9092;
+        outline: none;
+        background-image: linear-gradient(
+          to top,
+          #d8d9db 0%,
+          #fff 80%,
+          #fdfdfd 100%
+        );
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #606060;
+        border-radius: 20px;
+        transition: all ease 0.1s;
+        box-shadow: 0px 5px 0px 0px white;
+        margin-left: 30px;
+      }
+
+      .grade-info-btn:active {
+        transform: translateY(5px);
+        box-shadow: 0px 0px 0px 0px #a29bfe;
+      }
       h2 {
         padding-top: 30px;
         text-align: center;
@@ -162,6 +167,20 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         width: 50%;
         font-size: 11px;
       }
+      .filebox button {
+        margin-top: 10px;
+        display: inline-block;
+        padding: 5px 5px;
+        color: #fff;
+        vertical-align: middle;
+        background-color: #005ce6;
+        cursor: pointer;
+        height: 30px;
+        width: 50%;
+        font-size: 11px;
+
+        border: none;
+      }
       .filebox input[type="file"] {
         position: absolute;
         width: 0;
@@ -229,31 +248,35 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         border: none;
         text-align: center;
       }
-      .titleBox a{
-      font-weight:600;
-      text-decoration: none;
-   	  color: black;
+      .titleBox a {
+        font-weight: 600;
+        text-decoration: none;
+        color: black;
       }
-      table th{
-      background-color: #FFC107;
+      table th {
+        background-color: #ffc107;
       }
-      table .info-row > td{
-      height: 40px;
+      table .info-row > td {
+        height: 40px;
       }
       .info-title {
-      background-color: #ffffcc;
-      font-weight: 600;
-      margin-right: 15px;
+        background-color: #ffffcc;
+        font-weight: 600;
+        margin-right: 15px;
       }
-       	#page-area{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
- 	}
- 	.table-bordered{
- 		font-size: 13px;
- 	}
+      #page-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .table-bordered {
+        font-size: 13px;
+      }
+      #profileBtnHolder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -300,33 +323,51 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
           >
             <span class="title"
               >${mvo.nick}님은
-              <span id="gradeName">${mvo.gradeNo}</span> 등급입니다.<span style="display: inline-block;"><button type="button" id="grade-info-btn" data-bs-toggle="modal" data-bs-target="#myModal">등급안내</button></span>
+              <span id="gradeName">${mvo.gradeNo}</span> 등급입니다.<span
+                style="display: inline-block"
+                ><button
+                  type="button"
+                  id="grade-info-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#myModal"
+                >
+                  등급안내
+                </button></span
+              >
             </span>
             <!-- The Modal -->
-			<div class="modal" id="myModal">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			
-			      <!-- Modal Header -->
-			      <div class="modal-header">
-			        <h4 class="modal-title">등급 기준 안내</h4>
-			        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-			      </div>
-			      <!-- Modal body -->
-			      <div class="modal-body">
-					<c:forEach items="${gradeList}" var="gl">
-					 <h4>${gl.grade}</h4>
-					 <p>${gl.gradeInfo}</p>
-					</c:forEach>
-			      </div>
-			      <!-- Modal footer -->
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-            
+            <div class="modal" id="myModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">등급 기준 안내</h4>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                    ></button>
+                  </div>
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    <c:forEach items="${gradeList}" var="gl">
+                      <h4>${gl.grade}</h4>
+                      <p>${gl.gradeInfo}</p>
+                    </c:forEach>
+                  </div>
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
             <span class="subtitle">Share , Check reviews and Choose!</span>
             <div class="form-container">
               <table>
@@ -352,14 +393,21 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                         />
                       </c:if>
                       <!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일"> -->
-                      <label for="uploadProfile" id="profileChange"
-                        >프로필 사진변경</label
-                      >
-                      <input
-                        type="file"
-                        id="uploadProfile"
-                        name="uploadProfile"
-                      />
+                      <div id="profileBtnHolder">
+                        <label for="uploadProfile" id="profileChange"
+                          >프로필 사진변경</label
+                        >
+                        <c:if test="${!empty mvo.profile}">
+                          <button type="button" onclick="toDefaultProfile()">
+                            기본사진사용
+                          </button>
+                        </c:if>
+                        <input
+                          type="file"
+                          id="uploadProfile"
+                          name="uploadProfile"
+                        />
+                      </div>
                     </div>
                     <div id="profileInfo">
                       프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
@@ -441,118 +489,174 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                   </td>
                 </tr>
                 <tr>
-                  <th colspan="2">나의 문의내역 (제목 클릭시 상세 내용 확인)</th>
+                  <th colspan="2">
+                    나의 문의내역 (제목 클릭시 상세 내용 확인)
+                  </th>
                 </tr>
                 <tr>
                   <td colspan="2">
-                  <c:if test="${empty ivoList}">
-        			<div class="panel-body fw-bold" id="view">문의하신 내역이 없습니다.</div>
-                  </c:if>
-                  <c:if test="${!empty ivoList}">
-        			<div class="panel-body fw-bold" id="view">
-				 		<div class="panel-body" id="view">
-							<table class ="table table-bordered">
-								<tr style="text-align: center;">
-									<th id="inquiryNo" style="width:5%;">번호</th>
-									<th id="inquiryType" style="width:12%;">문의유형</th>
-									<th id="inquiryTitle"style="width:50%;">제목</th>
-									<th id="inquiryDate"style="width:15%;">작성일</th>
-								</tr>
-								<c:forEach items="${ivoList}" var="i">
-									<tr>
-										<td style="text-align: center;">${i.rno}</td>
-										<td>${i.type}</td>
-				          				<td class="titleBox" id="t${i.no}"><a href="#" data-bs-toggle="modal" data-bs-target="#myModal${i.no}">${i.title}</a>
-								          	 <c:if test="${i.answeredYn eq 'Y'}"><span class="badge bg-success">답변완료</span></c:if>
-				          					 <c:if test="${i.answeredYn eq 'N'}"><span class="badge bg-warning">답변필요</span></c:if>
-				          					 <c:if test="${i.answeredYn eq null}"><span class="badge bg-warning">답변필요</span></c:if>
-				          				</td>
-										<td class="enrollDate">${i.enrollDate}</td>
-									</tr>
-										            <!-- The Modal -->
-										<div class="modal" id="myModal${i.no}">
-										  <div class="modal-dialog">
-										    <div class="modal-content">
-										
-										      <div class="modal-header">
-						                        <c:set value="${i.enrollDate.substring(0, 4)}"  var="inquiryYear"/>
-							                    <c:set value="${i.enrollDate.substring(5, 7)}" var="inquiryMonth"/>
-							                    <c:set value="${i.enrollDate.substring(8, 10)}" var="inquiryDay"/>
-										      	<h6>${mvo.nick}님이  ${inquiryYear}년 ${inquiryMonth}월 ${inquiryDay}일 남겨주신 문의내역 입니다.</h6>
-										        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-										      </div>
-										      <!-- Modal Header -->
-										        <p class="modal-title" style="text-align: center;">문의 제목: ${i.title}</p>
-										      <!-- Modal body -->
-										      <div class="modal-body" style="text-align: left;">
-										        <p>문의 유형: ${i.type}</p>
-												문의 내용 : ${i.content}<br/>
-												답변 내용 : ${i.answer}<br/>
-												답변 일자 : ${i.answerDate}
-										      </div>
-										      <!-- Modal footer -->
-										      <div class="modal-footer">
-										        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-										      </div> 
-										      
-										    </div>
-										  </div>
-										</div>
-								</c:forEach>
-							</table>
-				              <div id="page-area">
-				             	 <ul class="pagination ">
-				                <c:if test="${pv.currentPage > 1}">
-								  <li class="page-item">
-				                  <a
-				                    href="${root}/member/myPage?page=${pv.currentPage-1}"
-				                    class="page-link"
-				                    >이전</a
-				                  >
-								  </li>
-				                </c:if>
-				                <c:forEach
-				                  begin="${pv.startPage}"
-				                  end="${pv.endPage}"
-				                  step="1"
-				                  var="i"
-				                >
-				                  <c:if test="${pv.currentPage != i}">
-								  <li class="page-item">                  
-				                    <a class="page-link"
-				                      href="${root}/member/myPage?page=${i}"
-				                      >${i}</a
-				                    >
-								  </li>                    
-				                  </c:if>
-				                  <c:if test="${pv.currentPage == i}">
-								  <li class="page-item active">                  
-				                    <a
-									  class="page-link"
-				                      >${i}</a
-				                    >
-								  </li>                    
-				                  </c:if>
-				                </c:forEach>
-				                <c:if test="${pv.currentPage < pv.maxPage}">
-								  <li class="page-item">
-				                  <a
-				                    href="${root}/member/myPage?page=${pv.currentPage+1}"
-				                    class="page-link"
-				                    >다음</a
-				                  >
-								  </li>
-				                </c:if>
-								 </ul>
-				              </div>
-				        </div>
-        			</div>
-                  </c:if>
+                    <c:if test="${empty ivoList}">
+                      <div class="panel-body fw-bold" id="view">
+                        문의하신 내역이 없습니다.
+                      </div>
+                    </c:if>
+                    <c:if test="${!empty ivoList}">
+                      <div class="panel-body fw-bold" id="view">
+                        <div class="panel-body" id="view">
+                          <table class="table table-bordered">
+                            <tr style="text-align: center">
+                              <th id="inquiryNo" style="width: 5%">번호</th>
+                              <th id="inquiryType" style="width: 12%">
+                                문의유형
+                              </th>
+                              <th id="inquiryTitle" style="width: 50%">제목</th>
+                              <th id="inquiryDate" style="width: 15%">
+                                작성일
+                              </th>
+                            </tr>
+                            <c:forEach items="${ivoList}" var="i">
+                              <tr>
+                                <td style="text-align: center">${i.rno}</td>
+                                <td>${i.type}</td>
+                                <td class="titleBox" id="t${i.no}">
+                                  <a
+                                    href="#"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#myModal${i.no}"
+                                    >${i.title}</a
+                                  >
+                                  <c:if test="${i.answeredYn eq 'Y'}"
+                                    ><span class="badge bg-success"
+                                      >답변완료</span
+                                    ></c:if
+                                  >
+                                  <c:if test="${i.answeredYn eq 'N'}"
+                                    ><span class="badge bg-warning"
+                                      >답변필요</span
+                                    ></c:if
+                                  >
+                                  <c:if test="${i.answeredYn eq null}"
+                                    ><span class="badge bg-warning"
+                                      >답변필요</span
+                                    ></c:if
+                                  >
+                                </td>
+                                <td class="enrollDate">${i.enrollDate}</td>
+                              </tr>
+                              <!-- The Modal -->
+                              <div class="modal" id="myModal${i.no}">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <c:set
+                                        value="${i.enrollDate.substring(0, 4)}"
+                                        var="inquiryYear"
+                                      />
+                                      <c:set
+                                        value="${i.enrollDate.substring(5, 7)}"
+                                        var="inquiryMonth"
+                                      />
+                                      <c:set
+                                        value="${i.enrollDate.substring(8, 10)}"
+                                        var="inquiryDay"
+                                      />
+                                      <h6>
+                                        ${mvo.nick}님이 ${inquiryYear}년
+                                        ${inquiryMonth}월 ${inquiryDay}일
+                                        남겨주신 문의내역 입니다.
+                                      </h6>
+                                      <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                      ></button>
+                                    </div>
+                                    <!-- Modal Header -->
+                                    <p
+                                      class="modal-title"
+                                      style="text-align: center"
+                                    >
+                                      문의 제목: ${i.title}
+                                    </p>
+                                    <!-- Modal body -->
+                                    <div
+                                      class="modal-body"
+                                      style="text-align: left"
+                                    >
+                                      <p>문의 유형: ${i.type}</p>
+                                      문의 내용 : ${i.content}<br /> 답변 내용 :
+                                      ${i.answer}<br />
+                                      답변 일자 : ${i.answerDate}
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                      <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        data-bs-dismiss="modal"
+                                      >
+                                        Close
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </c:forEach>
+                          </table>
+                          <div id="page-area">
+                            <ul class="pagination">
+                              <c:if test="${pv.currentPage > 1}">
+                                <li class="page-item">
+                                  <a
+                                    href="${root}/member/myPage?page=${pv.currentPage-1}"
+                                    class="page-link"
+                                    >이전</a
+                                  >
+                                </li>
+                              </c:if>
+                              <c:forEach
+                                begin="${pv.startPage}"
+                                end="${pv.endPage}"
+                                step="1"
+                                var="i"
+                              >
+                                <c:if test="${pv.currentPage != i}">
+                                  <li class="page-item">
+                                    <a
+                                      class="page-link"
+                                      href="${root}/member/myPage?page=${i}"
+                                      >${i}</a
+                                    >
+                                  </li>
+                                </c:if>
+                                <c:if test="${pv.currentPage == i}">
+                                  <li class="page-item active">
+                                    <a class="page-link">${i}</a>
+                                  </li>
+                                </c:if>
+                              </c:forEach>
+                              <c:if test="${pv.currentPage < pv.maxPage}">
+                                <li class="page-item">
+                                  <a
+                                    href="${root}/member/myPage?page=${pv.currentPage+1}"
+                                    class="page-link"
+                                    >다음</a
+                                  >
+                                </li>
+                              </c:if>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </c:if>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <button id="seeReview-btn" style="width: 90%">내가 쓴 리뷰 확인하기(in progress..)</button>
+                    <div id="HiddenNo" style="display: none">${mvo.no}</div>
+                    <button id="seeReview-btn" style="width: 90%">
+                      내가 쓴 리뷰 확인하기(in progress..)
+                    </button>
                   </td>
                 </tr>
               </table>
@@ -566,18 +670,15 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
   </body>
 </html>
 <script>
-$(document).ready(function () {
-
+  $(document).ready(function () {
     var qNAEnroll = $(".enrollDate");
-    
-    qNAEnroll.each(function() {
-        var original = $(this).text(); 
-        var formattedQNAEnroll = original.substring(0, 10); 
-        $(this).text(formattedQNAEnroll); 
-    });
-    });
 
-	
+    qNAEnroll.each(function () {
+      var original = $(this).text();
+      var formattedQNAEnroll = original.substring(0, 10);
+      $(this).text(formattedQNAEnroll);
+    });
+  });
 
   //파일 확장자,사진 용량 제한
   var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|pdf)");
@@ -585,16 +686,18 @@ $(document).ready(function () {
   function checkExtension(fileName, fileSize) {
     if (fileSize >= maxSize) {
       alert("사진의 용량이 10mb를 넘습니다.");
-      return false;}
+      return false;
+    }
     if (regex.test(fileName)) {
       alert("해당 확장자 파일은 업로드 할 수 없습니다.");
-      return false;}
-    return true;}
-  
-  $("#profileChange").on("click", function () {
+      return false;
+    }
+    return true;
+  }
 
+  $("#profileChange").on("click", function () {
     var formData = new FormData();
-    var memberNo = ${mvo.no};
+    var memberNo = document.querySelector("#HiddenNo").innerHTML;
     //이벤트 버블링 발생 하여 off메서드 사용
     $("input[name='uploadProfile']")
       .off()
@@ -604,7 +707,8 @@ $(document).ready(function () {
         //첨부파일 서버로 보내서 저장하기
         if (!checkExtension(selectedFile.name, selectedFile.size)) {
           console.log("파일 확장자,사진 용량 제한");
-          return false;}
+          return false;
+        }
         formData.append("profile", selectedFile);
         formData.append("no", memberNo);
 
@@ -617,7 +721,11 @@ $(document).ready(function () {
           success: function (result) {
             alert("프로필 업데이트완료!");
             console.log(result);
-            $(".img-circle").attr("src", "${root}/resources/img/memberImg/" + result);
+            $(".img-circle").attr(
+              "src",
+              "${root}/resources/img/memberImg/" + result
+            );
+            location.reload();
           },
           error: function () {
             alert(formData);
@@ -628,13 +736,33 @@ $(document).ready(function () {
   });
   //최근방문일 이쁘게
   var recentVisit = $("#recentVisit").val();
-  var modifiedDate = recentVisit.substring(0,10);
+  var modifiedDate = recentVisit.substring(0, 10);
   $("#recentVisit").val(modifiedDate);
   //총 방문일 앞뒤 텍스트 붙이기
   var totalVisit = $("#totalVisit").val();
-  var modifiedTotal = "총 "+totalVisit+"일 방문";
+  var modifiedTotal = "총 " + totalVisit + "일 방문";
   $("#totalVisit").val(modifiedTotal);
 
+  function toDefaultProfile() {
+    var memberNo = document.querySelector("#HiddenNo").innerHTML;
+    $.ajax({
+      url: "${root}/member/toDefaultImg",
+      type: "POST",
+      data: { no: memberNo },
+      success: function (response) {
+        if (response == "success") {
+          alert("기본프로필 사진으로 변경완료");
+          location.reload();
+        } else {
+          console.log(response);
+        }
+      },
+      error: function (response) {
+        alert(response);
+        console.log("에러에러");
+      },
+    });
+  }
 
   //등급별 색상변화
   var grade = $("span[id='gradeName']").text();
@@ -650,6 +778,4 @@ $(document).ready(function () {
   if (grade == "DIAMOND") {
     $("span[id='gradeName']").css("color", "diamond");
   }
-  
-    
 </script>

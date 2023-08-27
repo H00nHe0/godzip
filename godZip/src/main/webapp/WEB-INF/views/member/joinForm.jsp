@@ -274,16 +274,15 @@ pageEncoding="UTF-8"%>
         url: "${root}/member/idDupChk",
         type: "get",
         data: { id: id },
-        success: function (result) {
-          // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-          if (result === 0) {
+        success: function (response) {
+          if (response === "duplicate") {
             alert("중복된 아이디 입니다. 다른 아이디를 입력해 주세요.");
           } else {
             validId();
           }
         },
-        error: function (result) {
-          console.log(result);
+        error: function (response) {
+          console.log(response);
         },
       });
     } else {
@@ -347,16 +346,16 @@ pageEncoding="UTF-8"%>
         url: "${root}/member/nickDupChk",
         type: "get",
         data: { nick: nickName },
-        success: function (result) {
+        success: function (response) {
           // 중복유무 출력(result == 1: 사용가능, 아니면 사용불가)
-          if (result === 0) {
+          if (response === "duplicate") {
             alert("중복된 닉네임 입니다. 다른 닉네임을 입력해 주세요.");
           } else {
             validNick();
           }
         },
-        error: function (result) {
-          console.log(result);
+        error: function (response) {
+          console.log(response);
         },
       });
     } else {

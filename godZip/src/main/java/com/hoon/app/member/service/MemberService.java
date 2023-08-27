@@ -67,5 +67,9 @@ public class MemberService {
 		return dao.withdrawal(sst, no);
 	}
 
+	public int toDefaultImg(int no) {
+		return dao.toDefaultImg(sst, no);
+	}
+
 
 }
