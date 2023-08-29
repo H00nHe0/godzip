@@ -261,7 +261,6 @@ public class MemberController {
 				return encodedFileName;
 			}
 		}//end
-
 	//이미지 파일 판단->섬네일 위해
 	private boolean checkImageType(File file) {
 		try {

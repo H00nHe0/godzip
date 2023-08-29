@@ -64,7 +64,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
           </div>
         </li>
         <li class="nav-item mx-4">
-          <a class="nav-link" href="#"
+          <a class="nav-link" href="${root}/review/write"
             ><dt class="text-muted lead fw-bold">리뷰 작성하기</dt></a
           >
         </li>

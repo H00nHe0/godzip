@@ -392,14 +392,13 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                           style="width: 100%; height: 80%"
                         />
                       </c:if>
-                      <!-- <input class="upload-name" value="첨부파일" placeholder="첨부파일"> -->
                       <div id="profileBtnHolder">
                         <label for="uploadProfile" id="profileChange"
                           >프로필 사진변경</label
                         >
                         <c:if test="${!empty mvo.profile}">
                           <button type="button" onclick="toDefaultProfile()">
-                            기본사진사용
+                           	 기본사진사용
                           </button>
                         </c:if>
                         <input
@@ -410,7 +409,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       </div>
                     </div>
                     <div id="profileInfo">
-                      프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
+                      	프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
                     </div>
                   </td>
                   <td>
@@ -734,15 +733,6 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         }); //ajax
       });
   });
-  //최근방문일 이쁘게
-  var recentVisit = $("#recentVisit").val();
-  var modifiedDate = recentVisit.substring(0, 10);
-  $("#recentVisit").val(modifiedDate);
-  //총 방문일 앞뒤 텍스트 붙이기
-  var totalVisit = $("#totalVisit").val();
-  var modifiedTotal = "총 " + totalVisit + "일 방문";
-  $("#totalVisit").val(modifiedTotal);
-
   function toDefaultProfile() {
     var memberNo = document.querySelector("#HiddenNo").innerHTML;
     $.ajax({
@@ -763,6 +753,15 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       },
     });
   }
+  //최근방문일 이쁘게
+  var recentVisit = $("#recentVisit").val();
+  var modifiedDate = recentVisit.substring(0, 10);
+  $("#recentVisit").val(modifiedDate);
+  //총 방문일 앞뒤 텍스트 붙이기
+  var totalVisit = $("#totalVisit").val();
+  var modifiedTotal = "총 " + totalVisit + "일 방문";
+  $("#totalVisit").val(modifiedTotal);
+
 
   //등급별 색상변화
   var grade = $("span[id='gradeName']").text();
