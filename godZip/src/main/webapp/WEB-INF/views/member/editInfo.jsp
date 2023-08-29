@@ -642,7 +642,7 @@ pageEncoding="UTF-8"%>
     return true;
   }
 
-  //회원탈퇴 --구현하기
+  //회원탈퇴 
   var deleteForm = document.querySelector(".withdrawalForm");
   var inputPwd = document.querySelector("#lastPwdChk");
   function withdrawal() {
@@ -653,12 +653,11 @@ pageEncoding="UTF-8"%>
   function openPasswordPopup() {
     deleteForm.style.display = "block";
   }
-
   function closeForm() {
     inputPwd.value = "";
     deleteForm.style.display = "none";
   }
-  //탈퇴 비번창 떳을때 엔터치면 함수실행(기존 엔터시 form제출은 button type='buttob'으로 방지)
+  //탈퇴 비번창 떳을때 엔터치면 함수실행(기존 엔터시 form제출은 button type='button'으로 방지)
   document
     .querySelector("#lastPwdChk")
     .addEventListener("keyup", function (event) {
