@@ -4,16 +4,13 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="${root}/resources/css/common/header.css" />
-
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+     <script src="${pageContext.request.contextPath}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <c:if test="${ not empty alertMsg }">
   <script>
     alert("${sessionScope.alertMsg}");
@@ -224,6 +221,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     </div>
   </div>
 </header>
+
 <script>
   // 페이지가 로드될 때 세션 시간을 업데이트하고 1초마다 업데이트함
 
