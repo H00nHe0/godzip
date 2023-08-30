@@ -23,6 +23,9 @@ public class ProductService {
 	public List<ProductVo> getSubList() {
 		return pDao.getSubList(sst);
 	}
+	public List<ProductVo> getSList(int caNo) {
+		return pDao.getSList(sst,caNo);
+	}
 	
 	
 }

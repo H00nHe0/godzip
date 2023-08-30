@@ -14,4 +14,10 @@
 		JOIN CATEGORY CA 
 		ON SUB.CA_NO = CA.NO
 	</select>
+	<select id="getSList" resultType="productVo">
+		SELECT SUB.NO, CA.CA_NAME, SUB.CA_NO, SUB.SUB_CATEGORY
+		FROM SUBDIVISION SUB 
+		JOIN CATEGORY CA 
+		ON SUB.CA_NO = CA.NO WHERE SUB.CA_NO = #{caNo}
+	</select>
 </mapper>

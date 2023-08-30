@@ -18,4 +18,8 @@ public class ProductDao {
 		return sst.selectList("product.getSubList");
 	}
 
+	public List<ProductVo> getSList(SqlSessionTemplate sst, int caNo) {
+		return sst.selectList("product.getSList", caNo);
+	}
+
 }

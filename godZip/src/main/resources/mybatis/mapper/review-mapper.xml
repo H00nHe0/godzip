@@ -5,4 +5,68 @@
   
 <mapper namespace="review">
 
+
+	<insert id="submitReview">
+		INSERT INTO REVIEW
+		(
+		NO,
+		CATEGORY_NO,
+		SUB_CA_NO,
+		PROD_NAME,
+		MEMBER_NO,
+		TITLE,
+		CONTENT,
+		SCORE,
+		IS_LIKE,
+		IS_UNLIKE,
+		PURCHASE_DATE,
+		POST_DATE,
+		SHARE_COUNT,
+		IS_UPDATE_YN,
+		DELETE_YN,
+		ATT_FILE,
+		COUNT
+		)
+		VALUES
+		(
+		SEQ_REVIEW_NO.NEXTVAL,
+		#{categoryNo},
+		#{subCaNo},
+		#{prodName},
+		#{memberNo},
+		#{title},
+		#{content},
+		#{score},
+		DEFAULT,
+		DEFAULT,
+		#{purchaseDate},
+		DEFAULT,
+		DEFAULT,
+		DEFAULT,
+		DEFAULT,
+		#{attFile},
+		0
+		)
+	</insert>
+	
+	<select id="getRvoList" resultType="reviewVo">
+		SELECT 
+			NO,
+			CATEGORY_NO,
+			SUB_CA_NO,
+			PROD_NAME,
+			MEMBER_NO,
+			TITLE,
+			CONTENT,
+			SCORE,
+			IS_LIKE,
+			IS_UNLIKE,
+			PURCHASE_DATE,
+			POST_DATE,
+			SHARE_COUNT,
+			IS_UPDATE_YN,
+			DELETE_YN,
+			ATT_FILE
+			FROM REVIEW WHERE CATEGORY_NO = #{categoryNo}
+	</select>
 </mapper>
