@@ -209,9 +209,9 @@ pageEncoding="UTF-8"%>
 					</tr>
 				</c:forEach>
 	     		 <c:if test="${empty mvo}">
-						<form id="searchForm" action="inquiryBoard" method="get">
 		        			<tr>
 		        				<td colspan ="6" id="table-bottom-area">
+						<form id="searchForm" action="inquiryBoard" method="get">
 	       				            <select name="searchType" class="">
 						              <option value="all" selected>분류 선택(전체)</option>
 						              <option value="type" >문의유형 (
@@ -230,9 +230,9 @@ pageEncoding="UTF-8"%>
 						                name="searchValue"
 	                					value="${searchMap.searchValue}"					                
 						              />
+	        			</form>   
 		        				</td>
 	        				</tr>
-	        			</form>   
 	        				<c:if test="${mvo.no != 3}">
 	        					<span style="display: inline-block;"><button id="write-btn" onclick='goQuiryForm()'>문의글 작성</button></span>
 	        				</c:if>  		 
@@ -344,51 +344,51 @@ pageEncoding="UTF-8"%>
             </table>
           </form>
         </div>
-              <div id="page-area">
-             	 <ul class="pagination">
-                <c:if test="${pv.currentPage > 1}">
-				  <li class="page-item">
-                  <a
-                    href="${root}/inquiry/inquiryBoard?page=${pv.currentPage-1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
-                    class="page-link"
-                    >이전</a
-                  >
-				  </li>
-                </c:if>
-                <c:forEach
-                  begin="${pv.startPage}"
-                  end="${pv.endPage}"
-                  step="1"
-                  var="i"
-                >
-                  <c:if test="${pv.currentPage != i}">
-				  <li class="page-item">                  
-                    <a class="page-link"
-                      href="${root}/inquiry/inquiryBoard?page=${i}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
-                      >${i}</a
-                    >
-				  </li>                    
-                  </c:if>
-                  <c:if test="${pv.currentPage == i}">
-				  <li class="page-item active">                  
-                    <a
-					  class="page-link"
-                      >${i}</a
-                    >
-				  </li>                    
-                  </c:if>
-                </c:forEach>
-                <c:if test="${pv.currentPage < pv.maxPage}">
-				  <li class="page-item">
-                  <a
-                    href="${root}/inquiry/inquiryBoard?page=${pv.currentPage+1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
-                    class="page-link"
-                    >다음</a
-                  >
-				  </li>
-                </c:if>
-				 </ul>
-              </div>
+        <div id="page-area">
+          <ul class="pagination">
+              <c:if test="${pv.currentPage > 1}">
+                    <li class="page-item">
+                            <a
+                              href="${root}/inquiry/inquiryBoard?page=${pv.currentPage-1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                              class="page-link"
+                              >이전</a
+                            >
+                    </li>
+                          </c:if>
+                          <c:forEach
+                            begin="${pv.startPage}"
+                            end="${pv.endPage}"
+                            step="1"
+                            var="i"
+                          >
+                            <c:if test="${pv.currentPage != i}">
+                    <li class="page-item">                  
+                              <a class="page-link"
+                                href="${root}/inquiry/inquiryBoard?page=${i}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                                >${i}</a
+                              >
+                    </li>                    
+                            </c:if>
+                            <c:if test="${pv.currentPage == i}">
+                    <li class="page-item active">                  
+                              <a
+                      class="page-link"
+                                >${i}</a
+                              >
+                    </li>                    
+                            </c:if>
+                          </c:forEach>
+                          <c:if test="${pv.currentPage < pv.maxPage}">
+                    <li class="page-item">
+                            <a
+                              href="${root}/inquiry/inquiryBoard?page=${pv.currentPage+1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                              class="page-link"
+                              >다음</a
+                            >
+                    </li>
+              </c:if>
+          </ul>
+        </div>
         <div class="panel-footer fw-bold">GODZIP CUSTOMER SERVICE CALL CENTER: 02-XXX-XXXX</div>
       </div>
         </div>

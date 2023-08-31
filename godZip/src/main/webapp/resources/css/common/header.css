@@ -137,3 +137,16 @@
   margin-right: 5px;
   border-radius: 20%;
 }
+.side-uL li, .side-uL li a{
+	list-style: none;
+	  text-decoration: none;
+	  color: black;
+	  margin-top: 3px;
+	  font-weight: 600;
+}
+
+ .side-uL li:hover, .side-uL li:hover a{ 
+ font-size: 1.1rem;
+ color: #ffc107;
+ } 
+ 

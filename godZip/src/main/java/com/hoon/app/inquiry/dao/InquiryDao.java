@@ -59,7 +59,6 @@ public class InquiryDao {
 
 
 	public int getCnt(SqlSessionTemplate sst, Map<String, String> searchMap) {
-		System.out.println(searchMap);
 		return sst.selectOne("inquiry.getCnt" , searchMap);
 	}
 
