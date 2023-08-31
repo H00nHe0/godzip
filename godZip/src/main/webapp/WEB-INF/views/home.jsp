@@ -186,7 +186,7 @@ pageEncoding="UTF-8"%>
       	<div id="category-div" class="mx-3">
       	<c:forEach items="${cList}" var="cl">
 		 	<div class="book my-3">
-				<ul id="subListArea${cl.no}"></ul>
+				<ul class="side-uL" id="subListArea${cl.no}"></ul>
 		    <div class="cover">
 		        <p>${cl.caName}</p>
 		    </div>
@@ -202,7 +202,7 @@ pageEncoding="UTF-8"%>
       <link rel="stylesheet" href="${root}/resources/css/main/home.css"></link>
       <script>
       $(document).ready(function () {
-    	  $.ajax({
+/*     	  $.ajax({
           	  url:" ${root}/product/subDivision",
           	  type: "GET",
         		  datatype: "JSON",
@@ -249,7 +249,7 @@ pageEncoding="UTF-8"%>
         	          console.log(response);
         	        }, 
             })
-      });
+      }); */
       var currentSlide = 0;
       var slides = document.querySelectorAll('.slideshow img');
       slides[currentSlide].classList.add('active'); // 첫 번째 슬라이드에 클래스 추가
@@ -261,6 +261,6 @@ pageEncoding="UTF-8"%>
         currentSlide = (currentSlide + 1) % slides.length; // 다음 슬라이드의 인덱스 계산
         slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
       }
-     
+      });
       </script>
 </html>

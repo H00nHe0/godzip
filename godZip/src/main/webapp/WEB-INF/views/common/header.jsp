@@ -178,12 +178,12 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         <c:forEach items="${cList}" var="cl">
         		<label for="label${cl.no}" id="labelForCa">
 		        	<div class="sideCaHolder">
-					 	<div class="side-book my-3" id="label${cl.no}">
-					 		<img alt="" src="${root}/resources/img/category/${cl.caImg}">
-					    <div class="side-cover">
-					        <p>${cl.caName}</p>
-					    </div>
-					    </div>
+               <div class="side-book my-3" id="label${cl.no}">
+                  <img alt="" src="${root}/resources/img/category/${cl.caImg}">
+                 <div class="side-cover">
+                     <p>${cl.caName}</p> 
+                 </div>
+                 </div>
 			            <div>
 							<ul class="side-uL" id="sideCaArea${cl.no}"></ul>
 			            </div>
@@ -234,6 +234,31 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       updateSessionTime();
       setInterval(updateSessionTime, 1000);
     }
+   
+    
+	  $.ajax({
+    	  url:" ${root}/product/subDivision",
+    	  type: "GET",
+  		  datatype: "JSON",
+  	      success: function (result) {
+  	            var subList = result;
+                for (let i = 0; i < subList.length; i++) {
+                  var caNo = subList[i].caNo;
+                  var subCaNo = subList[i].no;
+                  var subCategory = subList[i].subCategory;
+                  
+                  var subListArea = $("#subListArea" + caNo);
+                  var sideCaArea = $("#sideCaArea" + caNo);
+                  let listItem = "<li><a href='/app/review/board/" + subCaNo + "'>" + subCategory + "</a></li>";
+                  subListArea.append(listItem);
+                  sideCaArea.append(listItem);
+              }
+  	        },
+  	        error: function (response) {
+  	          console.log(response);
+  	        }, 
+      })
+
   });
 
 
@@ -255,4 +280,5 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       }
     }
   }
+
 </script>

@@ -22,5 +22,8 @@ public class ReviewVo {
 	private String isUpdateYn;
 	private String deleteYn;
 	private String attFile;
+	private String nick;
+	private String subCategory;
+	private String profile;
 	
 }
