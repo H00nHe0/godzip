@@ -10,8 +10,8 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         position: relative;
         max-width: 1000px;
         width: 80%;
-        height: 90%;
-        max-height: 900px;
+        height: 95%;
+        max-height: 1000px;
         background: rgba(221, 236, 253, 0.7);
         padding: 25px;
         border-radius: 8px;
@@ -268,12 +268,11 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
                 />
               </div>
 
-              <div id="summernote"></div>
-              <textarea
-                id="content"
-                name="content"
-                style="display: none"
-              ></textarea>
+              <div id="summernote-holder">
+                <textarea id="summernote" name="content">
+                	<c:if test=""></c:if>
+                </textarea>
+              </div>
             </div>
             <div style="text-align: center">
               <button id="writeBtn">Submit</button>
@@ -312,6 +311,14 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       height: 350,
       lang: "ko-KR",
       focus: true,
+      callbacks: {
+        //onImageUpload = 이미지 업로드시 작동하는 콜백함수
+        onImageUpload: function (files, editor, welEditable) {
+          for (var i = 0; i < files.length; i++) {
+            uploadSummernoteImageFile(files[i], this);
+          }
+        },
+      },
       toolbar: [
         // 글꼴 설정
         ["fontname", ["fontname"]],
@@ -358,18 +365,22 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         "72",
       ],
     });
+    function uploadSummernoteImageFile(file, editor) {
+      data = new FormData();
+      data.append("file", file);
+      $.ajax({
+        url: "uploadSummernoteImage",
+        data: data,
+        type: "POST",
+        dataType: "JSON",
+        contentType: false,
+        processData: false,
 
-    $(".form").submit(function (event) {
-      //썸머노트 안에 내용 서버로 보낼때 앞뒤로 <p><option %2p>비슷한 태그가 자동으로 붙어서 제거
-      function removeHtmlTags(input) {
-        var doc = new DOMParser().parseFromString(input, "text/html");
-        return doc.body.textContent || "";
-      }
-      // Summernote 내용을 숨겨진 textarea에 복사
-      var summernoteContent = $("#summernote").summernote("code");
-      var textOnly = removeHtmlTags(summernoteContent);
-      $("#content").val(textOnly);
-    });
+        success: function (data) {
+          $(editor).summernote("insertImage", data.url);
+        },
+      });
+    }
 
     // 상품 카테고리 선택 박스 변경 시 이벤트 리스너
     $("#categorySelect").change(function () {
