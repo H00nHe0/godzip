@@ -74,11 +74,12 @@ pageEncoding="UTF-8"%>
         background-color: #fff;
         overflow-y: auto;
       }
-      #prodInfo{
-      margin: -10px -10px 5px -10px;
-      background-color: rgba(221, 236, 253, 0.7);
-      border-radius: 20px;
-      padding: 10px 10px 2px 10px;
+      #prodInfo {
+        margin: -10px -10px 5px -10px;
+        background-color: rgba(221, 236, 253, 0.7);
+        border-radius: 20px;
+        font-weight:600;
+        padding: 10px 10px 10px 10px;
       }
 
       .rtf h1,
@@ -212,6 +213,7 @@ pageEncoding="UTF-8"%>
       }
 
       #likeBtn {
+        margin-left: -5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -227,6 +229,7 @@ pageEncoding="UTF-8"%>
         word-spacing: -2px;
       }
       #unLikeBtn {
+        margin-left: -5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -357,6 +360,10 @@ pageEncoding="UTF-8"%>
         color: #ffc107;
         /* Filled star color */
       }
+      #reviewTitle{
+      font-size: 1.2rem;
+      font-weight: 600;
+      }
     </style>
   </head>
   <body>
@@ -381,11 +388,20 @@ pageEncoding="UTF-8"%>
                 ></path>
               </svg>
               작성자:
-              <img
-                class="img-circle"
-                src="${root}/resources/img/memberImg/${rvo.profile}"
-                style="width: 50px; height: 50px"
-              />
+              <c:if test="${empty rvo.profile}">
+                <img
+                  class="img-circle"
+                  src="${root}/resources/img/memberImg/defaultProfile.png"
+                  style="width: 50px; height: 50px"
+                />
+              </c:if>
+              <c:if test="${!empty rvo.profile}">
+                <img
+                  class="img-circle"
+                  src="${root}/resources/img/memberImg/${rvo.profile}"
+                  style="width: 50px; height: 50px"
+                />
+              </c:if>
               ${rvo.nick}
               <div class="rating-box input-box">
                 <label>구매 만족도 &nbsp;&nbsp;</label>
@@ -430,13 +446,13 @@ pageEncoding="UTF-8"%>
               <p>상품 구매일 : ${rvo.purchaseDate}</p>
               <p>리뷰 게시일 : ${rvo.postDate}</p>
               <p>리뷰 조회수 : ${rvo.count}</p>
+            <span id="reviewTitle">제목 : ${rvo.title}</span>
             </div>
-            <span>제목 : ${rvo.title}</span>
 
             <p>${rvo.content}</p>
           </section>
           <footer class="modal-container-footer">
-            LIKE
+            LIKE : ${rvo.isLike}
             <button id="likeBtn" class="footer-button">
               <svg
                 height="25"
@@ -450,7 +466,7 @@ pageEncoding="UTF-8"%>
                 ></path>
               </svg>
             </button>
-            UNLIKE
+            UNLIKE : ${rvo.isUnlike}
             <button id="unLikeBtn" class="footer-button">
               <svg
                 height="22"
@@ -464,8 +480,16 @@ pageEncoding="UTF-8"%>
                 ></path>
               </svg>
             </button>
-            <button class="button is-primary footer-button">목록으로</button>
-            <button class="button is-comment footer-button">댓글등록</button>
+            <a href="${root}/review/board/${rvo.subCaNo}"
+              ><button class="button is-primary footer-button">
+                목록으로
+              </button></a
+            >
+            <a
+              ><button class="button is-comment footer-button">
+                댓글등록
+              </button></a
+            >
           </footer>
         </article>
       </div>

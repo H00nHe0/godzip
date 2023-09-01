@@ -40,4 +40,8 @@ public class ReviewDao {
 		return sst.selectOne("review.getDetail", no);
 	}
 
+	public int growCnt(SqlSessionTemplate sst, int no) {
+		return sst.update("review.growCnt", no);
+	}
+
 }

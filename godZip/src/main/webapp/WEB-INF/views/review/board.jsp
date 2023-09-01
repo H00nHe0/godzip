@@ -127,6 +127,19 @@ pageEncoding="UTF-8"%>
     $(".reviewTr").click(function () {
       var reviewId = this.id.replace("no", "");
       var moveToDetail = "${root}/review/board/detail/" + reviewId;
+
+      $.ajax({
+        url: "count/" + reviewId,
+        type: "PUT",
+        data: { no: reviewId },
+        success: function () {
+          console.log("게시물 조회수 증가");
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
+
       window.location.href = moveToDetail;
     });
   });

@@ -59,6 +59,7 @@
 			RE.TITLE,
 			RE.CONTENT,
 			RE.SCORE,
+			RE.COUNT,
 			RE.IS_LIKE,
 			RE.IS_UNLIKE,
 			RE.PURCHASE_DATE,
@@ -128,7 +129,7 @@
 		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
 		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
-		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%'
 		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%'))
 		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
 		    </when>
@@ -159,13 +160,20 @@
 				RE.IS_UPDATE_YN,
 				RE.DELETE_YN,
 				RE.ATT_FILE,
-				RE.COUNT
+				RE.COUNT,
+				MI.PROFILE
 			FROM REVIEW RE
 			JOIN MEMBER_INFO MI
 			ON RE.MEMBER_NO = MI.NO 
 			JOIN SUBDIVISION SD 
 			ON RE.SUB_CA_NO = SD.NO
 			WHERE RE.NO = #{no} AND RE.DELETE_YN = 'N'
-			
 		</select>
+		<update id="growCnt">
+			UPDATE REVIEW
+			SET
+			COUNT = COUNT +1
+			WHERE NO = #{no}
+		</update>
+		
 </mapper>

@@ -1,19 +1,27 @@
 package com.hoon.app.review.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hoon.app.common.page.vo.PageVo;
@@ -91,12 +99,55 @@ public class ReviewController {
 	
 	@GetMapping("board/detail/{no}")
 	public String ReviewDetail(@PathVariable int no, Model model) {
-		
+
 		ReviewVo rvo = rs.getDetail(no);
 		log.info("detail rvo : "+rvo);
 		model.addAttribute("rvo", rvo);
 		
 		return "review/board/detail";
+	}
+	
+	@PostMapping("uploadSummernoteImage")
+	@ResponseBody
+	public Map<String, String> uploadSummerImg(@RequestParam MultipartFile file, HttpSession session) {
+		Map<String, String> map = new HashMap<String, String>();
+		String uploadFolder = "/resources/img/reviewImg/";
+		String serverPath = session.getServletContext().getRealPath(uploadFolder);
+		log.info("Uplodaed profile img :"+ file.getOriginalFilename());
+		log.info("Uplodaed profile size :"+ file.getSize());
+		String uploadedFileName = file.getOriginalFilename();
+		uploadedFileName = uploadedFileName.substring(uploadedFileName.lastIndexOf("//")+1);
+		log.info("only file name: "+uploadedFileName);
+		//중복방지를 위한 UUID적용
+		UUID uuid = UUID.randomUUID();
+		uploadedFileName = uuid.toString()+"_"+uploadedFileName; // 저장 파일이름
+		File targetFile = new File(serverPath,uploadedFileName);
+		
+		try {
+			InputStream fileStream = file.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, targetFile); //파일저장
+			map.put("url", "/app/resources/img/reviewImg/"+uploadedFileName);
+			map.put("responseCode", "success");
+		}catch (IOException e) {
+			FileUtils.deleteQuietly(targetFile); //문제발생시 저장된 파일삭제
+			map.put("responseCode", "error");
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	@PutMapping("board/count/{no}")
+	@ResponseBody
+	public String growCnt(@PathVariable("no") int no) {
+
+			int result = rs.growCnt(no);
+			if(result != 1) {
+			log.info("growing review count failed..");
+			return "error";				
+			}
+			log.info("growing review count success!!");
+			return "success";
+		
 	}
 
 }

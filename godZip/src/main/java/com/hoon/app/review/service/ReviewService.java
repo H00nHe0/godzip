@@ -40,4 +40,8 @@ public class ReviewService {
 		return rdao.getDetail(sst, no);
 	}
 
+	public int growCnt(int no) {
+		return rdao.growCnt(sst, no);
+	}
+
 }
