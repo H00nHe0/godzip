@@ -175,5 +175,11 @@
 			COUNT = COUNT +1
 			WHERE NO = #{no}
 		</update>
+		<update id="likeManage">
+			UPDATE REVIEW
+			SET
+			IS_LIKE = IS_LIKE +1
+			WHERE NO = #{no}
+		</update>
 		
 </mapper>
