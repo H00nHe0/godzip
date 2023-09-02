@@ -78,7 +78,7 @@ pageEncoding="UTF-8"%>
         margin: -10px -10px 5px -10px;
         background-color: rgba(221, 236, 253, 0.7);
         border-radius: 20px;
-        font-weight:600;
+        font-weight: 600;
         padding: 10px 10px 10px 10px;
       }
 
@@ -360,9 +360,9 @@ pageEncoding="UTF-8"%>
         color: #ffc107;
         /* Filled star color */
       }
-      #reviewTitle{
-      font-size: 1.2rem;
-      font-weight: 600;
+      #reviewTitle {
+        font-size: 1.2rem;
+        font-weight: 600;
       }
     </style>
   </head>
@@ -370,7 +370,7 @@ pageEncoding="UTF-8"%>
     <div id="wrap">
       <%@ include file="/WEB-INF/views/common/header.jsp" %>
       <script type="script" defer src="${root}/resources/js/main.js"></script>
-      <div class="reviewModal">
+      <div class="reviewModal" id="${rvo.no}">
         <article class="modal-container">
           <header class="modal-container-header">
             <span class="modal-container-title">
@@ -446,7 +446,7 @@ pageEncoding="UTF-8"%>
               <p>상품 구매일 : ${rvo.purchaseDate}</p>
               <p>리뷰 게시일 : ${rvo.postDate}</p>
               <p>리뷰 조회수 : ${rvo.count}</p>
-            <span id="reviewTitle">제목 : ${rvo.title}</span>
+              <span id="reviewTitle">제목 : ${rvo.title}</span>
             </div>
 
             <p>${rvo.content}</p>
@@ -498,3 +498,24 @@ pageEncoding="UTF-8"%>
     </div>
   </body>
 </html>
+<script>
+  $(document).ready(function () {
+    var likeBtn = document.querySelector("#likeBtn");
+    var unLikeBtn = document.querySelector("#unLikeBtn");
+    likeBtn.addEventListener("click", function () {
+      var reviewNo = document.querySelector(".reviewModal").id;
+
+      $.ajax({
+        url: "${root}/review/board/likeManage",
+        method: "PUT",
+        data: { no: reviewNo },
+        success: function (data) {
+          alert(data + "번 리뷰 좋아요 감사합니다.");
+        },
+        error: function (error) {
+          console.log(error);
+        },
+      });
+    });
+  });
+</script>

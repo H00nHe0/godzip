@@ -149,5 +149,18 @@ public class ReviewController {
 			return "success";
 		
 	}
+	
+	@PutMapping("board/likeManage")
+	@ResponseBody
+	public String likeManage(@RequestParam int no) {
+		
+		int result = rs.likeManage(no);
+		
+		if(result != 1) {
+			
+			return "";
+		}
+		return "";
+	}
 
 }

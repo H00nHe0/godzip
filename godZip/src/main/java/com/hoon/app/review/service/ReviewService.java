@@ -44,4 +44,8 @@ public class ReviewService {
 		return rdao.growCnt(sst, no);
 	}
 
+	public int likeManage(int no) {
+		return rdao.likeManage(sst, no);
+	}
+
 }

@@ -44,4 +44,8 @@ public class ReviewDao {
 		return sst.update("review.growCnt", no);
 	}
 
+	public int likeManage(SqlSessionTemplate sst, int no) {
+		return sst.update("revire.likeManage", no);
+	}
+
 }
