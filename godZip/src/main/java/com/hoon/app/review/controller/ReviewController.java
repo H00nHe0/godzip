@@ -150,17 +150,19 @@ public class ReviewController {
 		
 	}
 	
-	@PutMapping("board/likeManage")
+	@PostMapping("board/likeManage")
 	@ResponseBody
-	public String likeManage(@RequestParam int no) {
+	public String likeManage(@RequestParam int no, HttpSession session) {
+		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		int memberNo = mvo.getNo();
 		
-		int result = rs.likeManage(no);
+		int result = rs.likeManage(no,memberNo);
 		
 		if(result != 1) {
 			
-			return "";
+			return "error";
 		}
-		return "";
+		return "success";
 	}
 
 }

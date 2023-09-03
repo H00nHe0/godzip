@@ -17,6 +17,7 @@
   		<typeAlias type="com.hoon.app.grade.vo.GradeVo" alias="gradeVo"/>	
   		<typeAlias type="com.hoon.app.product.vo.ProductVo" alias="productVo"/>	
   		<typeAlias type="com.hoon.app.review.vo.ReviewVo" alias="reviewVo"/>	
+  		<typeAlias type="com.hoon.app.review.vo.LikeManageVo" alias="likeVo"/>	  		
 	</typeAliases>	
 	
 	
