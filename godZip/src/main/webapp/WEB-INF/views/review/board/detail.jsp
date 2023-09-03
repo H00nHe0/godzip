@@ -502,18 +502,21 @@ pageEncoding="UTF-8"%>
   $(document).ready(function () {
     var likeBtn = document.querySelector("#likeBtn");
     var unLikeBtn = document.querySelector("#unLikeBtn");
+
     likeBtn.addEventListener("click", function () {
       var reviewNo = document.querySelector(".reviewModal").id;
+      alert(reviewNo);
 
       $.ajax({
         url: "${root}/review/board/likeManage",
-        method: "PUT",
+        method: "POST",
         data: { no: reviewNo },
         success: function (data) {
           alert(data + "번 리뷰 좋아요 감사합니다.");
         },
         error: function (error) {
           console.log(error);
+          alert(data + "번 리뷰 좋아요/싫어요 선택실패.");
         },
       });
     });

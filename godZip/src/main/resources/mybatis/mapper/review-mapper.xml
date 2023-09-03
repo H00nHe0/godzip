@@ -76,30 +76,30 @@
 		  <choose>
 		    <when test="searchType eq 'prodName'">
 		      WHERE LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </when>
 		    <when test="searchType eq 'title'">
 		      WHERE LOWER(TITLE) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </when>
 		    <when test="searchType eq 'content'">
 		      WHERE LOWER(CONTENT) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </when>
 		    <when test="searchType eq 'nick'">
 		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
 		      WHERE LOWER(MI.NICK) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </when>
 		    <when test="searchType eq 'all'">
 		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%') )
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </when>
 		    <otherwise>
-		     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
 		    </otherwise>
 		  </choose>
 	</select>
@@ -175,11 +175,23 @@
 			COUNT = COUNT +1
 			WHERE NO = #{no}
 		</update>
-		<update id="likeManage">
-			UPDATE REVIEW
-			SET
-			IS_LIKE = IS_LIKE +1
-			WHERE NO = #{no}
-		</update>
+		<insert id="likeManage">
+			INSERT INTO REVIEW_LIKE
+			(
+			LIKENO
+			,MEMBER_NO
+			,REVIEW_NO
+			,LIKE_STATUS
+			,CLICK_TIME
+			)
+			VALUES
+			(
+			SEQ_REVIEW_LIKE_NO.NEXTVAL
+			, #{memberNo}
+			, #{no}
+			, 'L'
+			, SYSDATE
+			)
+		</insert>
 		
 </mapper>

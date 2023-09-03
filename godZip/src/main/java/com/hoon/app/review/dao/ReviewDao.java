@@ -44,8 +44,11 @@ public class ReviewDao {
 		return sst.update("review.growCnt", no);
 	}
 
-	public int likeManage(SqlSessionTemplate sst, int no) {
-		return sst.update("revire.likeManage", no);
+	public int likeManage(SqlSessionTemplate sst, int no, int memberNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("memberNo", memberNo);
+		return sst.insert("review.likeManage", map);
 	}
 
 }
