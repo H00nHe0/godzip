@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.hoon.app.common.page.vo.PageVo;
+import com.hoon.app.review.vo.CommentVo;
 import com.hoon.app.review.vo.ReviewVo;
 
 import lombok.extern.java.Log;
@@ -51,4 +52,38 @@ public class ReviewDao {
 		return sst.insert("review.likeManage", map);
 	}
 
-}
+	public int addLike(SqlSessionTemplate sst, int no) {
+		return sst.update("review.addLike", no);
+	}
+
+	public int likeChk(SqlSessionTemplate sst, int no, int memberNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("memberNo", memberNo);
+		return sst.selectOne("review.likeChk", map);
+	}
+
+	public int cancelLike(SqlSessionTemplate sst, int no, int memberNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("memberNo", memberNo);
+		return sst.delete("review.cancelLike", map);
+	}
+
+	public int downLike(SqlSessionTemplate sst, int no) {
+		return sst.update("review.downLike", no);
+	}
+
+	public int insertComment(SqlSessionTemplate sst, int reviewNo, int memberNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewNo", reviewNo);
+		map.put("memberNo", memberNo);
+		return sst.insert("review.insertComment", map);
+	}
+
+	public List<CommentVo> getClist(SqlSessionTemplate sst, int reviewNo) {
+		return sst.selectList("review.getClist", reviewNo);
+	}
+	}
+
+

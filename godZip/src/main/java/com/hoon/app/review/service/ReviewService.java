@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.hoon.app.common.page.vo.PageVo;
 import com.hoon.app.member.dao.MemberDao;
 import com.hoon.app.review.dao.ReviewDao;
+import com.hoon.app.review.vo.CommentVo;
 import com.hoon.app.review.vo.ReviewVo;
 
 @Service
@@ -46,6 +47,31 @@ public class ReviewService {
 
 	public int likeManage(int no, int memberNo) {
 		return rdao.likeManage(sst, no, memberNo);
+	}
+
+	public int addLike(int no) {
+		return rdao.addLike(sst, no);
+	}
+
+	public int likeChk(int no, int memberNo) {
+		return rdao.likeChk(sst, no, memberNo);
+	}
+
+	public int cancelLike(int no, int memberNo) {
+		return rdao.cancelLike(sst, no, memberNo);
+	}
+
+	public int downLike(int no) {
+		return rdao.downLike(sst, no);
+		
+	}
+
+	public int insertComment(int reviewNo,String content, int memberNo) {
+		return rdao.insertComment(sst, reviewNo, memberNo);
+	}
+
+	public List<CommentVo> getClist(int reviewNo) {
+		return rdao.getClist(sst, reviewNo);
 	}
 
 }

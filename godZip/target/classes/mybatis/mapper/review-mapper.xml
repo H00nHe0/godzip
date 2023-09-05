@@ -18,10 +18,9 @@
 		CONTENT,
 		SCORE,
 		IS_LIKE,
-		IS_UNLIKE,
 		PURCHASE_DATE,
 		POST_DATE,
-		SHARE_COUNT,
+		COMM_COUNT,
 		IS_UPDATE_YN,
 		DELETE_YN,
 		ATT_FILE,
@@ -37,7 +36,6 @@
 		#{title},
 		#{content},
 		#{score},
-		DEFAULT,
 		DEFAULT,
 		#{purchaseDate},
 		DEFAULT,
@@ -61,10 +59,9 @@
 			RE.SCORE,
 			RE.COUNT,
 			RE.IS_LIKE,
-			RE.IS_UNLIKE,
 			RE.PURCHASE_DATE,
 			TO_CHAR(RE.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
-			RE.SHARE_COUNT,
+			RE.COMM_COUNT,
 			RE.IS_UPDATE_YN,
 			RE.DELETE_YN,
 			RE.ATT_FILE,
@@ -129,7 +126,7 @@
 		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
 		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
-		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%'
+		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
 		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%'))
 		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
 		    </when>
@@ -153,10 +150,9 @@
 				RE.CONTENT,
 				RE.SCORE,
 				RE.IS_LIKE,
-				RE.IS_UNLIKE,
 				TO_CHAR(PURCHASE_DATE, 'YYYY-MM-DD') AS PURCHASE_DATE,
 				TO_CHAR(POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
-				RE.SHARE_COUNT,
+				RE.COMM_COUNT,
 				RE.IS_UPDATE_YN,
 				RE.DELETE_YN,
 				RE.ATT_FILE,
@@ -181,7 +177,6 @@
 			LIKENO
 			,MEMBER_NO
 			,REVIEW_NO
-			,LIKE_STATUS
 			,CLICK_TIME
 			)
 			VALUES
@@ -189,9 +184,47 @@
 			SEQ_REVIEW_LIKE_NO.NEXTVAL
 			, #{memberNo}
 			, #{no}
-			, 'L'
 			, SYSDATE
 			)
 		</insert>
-		
+		<update id="addLike">
+			UPDATE REVIEW
+			SET
+			IS_LIKE = IS_LIKE + 1
+			WHERE NO = #{no}
+		</update>
+		<update id="downLike">
+			UPDATE REVIEW
+			SET
+			IS_LIKE = IS_LIKE - 1
+			WHERE NO = #{no}
+		</update>
+		<delete id="cancelLike">
+			DELETE FROM REVIEW_LIKE WHERE MEMBER_NO = #{memberNo} AND REVIEW_NO = #{no}
+		</delete>
+		<select id="likeChk" resultType="int">
+			SELECT COUNT(LIKENO) FROM REVIEW_LIKE WHERE REVIEW_NO = #{no} AND MEMBER_NO = #{memberNo}
+		</select>
+		<insert id="insertComment">
+			INSERT INT COMM
+			(
+			NO
+			,REVIEW_NO
+			,MEMBER_NO
+			,CONTENT
+			,POST_DATE
+			,IS_UPDATE_YN
+			)
+			VALUES
+			(
+			SEQ_COMM_NO.NEXTVAL
+			,#{reviewNo}
+			,#{memberNo}
+			,SYSDATE
+			,DEFAULT
+			)
+		</insert>
+		<select id="getClist">
+			SELECT * FROM COMM WHERE REVIEW_NO = #{reviewNo} 
+		</select>
 </mapper>
