@@ -6,13 +6,29 @@ pageEncoding="UTF-8"%>
     <meta charset="UTF-8" />
     <title>Insert title here</title>
     <style type="text/css">
+      #detail-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       .reviewModal {
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100%;
-        width: 100%;
+        width: 700px;
         margin-top: 30px;
+        margin-right: 0;
+      }
+      #comment-container {
+        width: 400px;
+        height: 300px;
+        background: rgba(221, 236, 253, 0.7);
+        border-radius: 16px;
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
       }
       .button,
       .input,
@@ -364,134 +380,150 @@ pageEncoding="UTF-8"%>
         font-size: 1.2rem;
         font-weight: 600;
       }
+      #comment-info {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        padding-right: 10px;
+        text-align: right;
+      }
+      #comments {
+        padding: 5px 5px 5px;
+        min-height: 200px;
+        background-color: #fff;
+        overflow-y: auto;
+      }
+      #comment-input input {
+        margin: 5px 5px 5px;
+        border-radius: 10px;
+        height: 50px;
+        width: 320px;
+        background-color: #fff;
+        overflow-y: auto;
+      }
     </style>
   </head>
   <body>
     <div id="wrap">
       <%@ include file="/WEB-INF/views/common/header.jsp" %>
       <script type="script" defer src="${root}/resources/js/main.js"></script>
-      <div class="reviewModal" id="${rvo.no}">
-        <article class="modal-container">
-          <header class="modal-container-header">
-            <span class="modal-container-title">
-              <svg
-                aria-hidden="true"
-                height="24"
-                width="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                  d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-              작성자:
-              <c:if test="${empty rvo.profile}">
-                <img
-                  class="img-circle"
-                  src="${root}/resources/img/memberImg/defaultProfile.png"
-                  style="width: 50px; height: 50px"
-                />
-              </c:if>
-              <c:if test="${!empty rvo.profile}">
-                <img
-                  class="img-circle"
-                  src="${root}/resources/img/memberImg/${rvo.profile}"
-                  style="width: 50px; height: 50px"
-                />
-              </c:if>
-              ${rvo.nick}
-              <div class="rating-box input-box">
-                <label>구매 만족도 &nbsp;&nbsp;</label>
-                <div class="rating">
-                  <input value="5" name="score" id="star5" type="radio"
-                  ${rvo.score == 5 ? 'checked' : ''} disabled />
-                  <label for="star5"></label>
-                  <input value="4" name="score" id="star4" type="radio"
-                  ${rvo.score == 4 ? 'checked' : ''} disabled />
-                  <label for="star4"></label>
-                  <input value="3" name="score" id="star3" type="radio"
-                  ${rvo.score == 3 ? 'checked' : ''} disabled />
-                  <label for="star3"></label>
-                  <input value="2" name="score" id="star2" type="radio"
-                  ${rvo.score == 2 ? 'checked' : ''} disabled />
-                  <label for="star2"></label>
-                  <input value="1" name="score" id="star1" type="radio"
-                  ${rvo.score == 1 ? 'checked' : ''} disabled />
-                  <label for="star1"></label>
+      <div id="detail-area">
+        <div class="reviewModal" id="${rvo.no}">
+          <article class="modal-container">
+            <header class="modal-container-header">
+              <span class="modal-container-title">
+                <svg
+                  aria-hidden="true"
+                  height="24"
+                  width="24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+                작성자:
+                <c:if test="${empty rvo.profile}">
+                  <img
+                    class="img-circle"
+                    src="${root}/resources/img/memberImg/defaultProfile.png"
+                    style="width: 50px; height: 50px"
+                  />
+                </c:if>
+                <c:if test="${!empty rvo.profile}">
+                  <img
+                    class="img-circle"
+                    src="${root}/resources/img/memberImg/${rvo.profile}"
+                    style="width: 50px; height: 50px"
+                  />
+                </c:if>
+                ${rvo.nick}
+                <div class="rating-box input-box">
+                  <label>구매 만족도 &nbsp;&nbsp;</label>
+                  <div class="rating">
+                    <input value="5" name="score" id="star5" type="radio"
+                    ${rvo.score == 5 ? 'checked' : ''} disabled />
+                    <label for="star5"></label>
+                    <input value="4" name="score" id="star4" type="radio"
+                    ${rvo.score == 4 ? 'checked' : ''} disabled />
+                    <label for="star4"></label>
+                    <input value="3" name="score" id="star3" type="radio"
+                    ${rvo.score == 3 ? 'checked' : ''} disabled />
+                    <label for="star3"></label>
+                    <input value="2" name="score" id="star2" type="radio"
+                    ${rvo.score == 2 ? 'checked' : ''} disabled />
+                    <label for="star2"></label>
+                    <input value="1" name="score" id="star1" type="radio"
+                    ${rvo.score == 1 ? 'checked' : ''} disabled />
+                    <label for="star1"></label>
+                  </div>
+                  <div id="score"></div>
                 </div>
-                <div id="score"></div>
+              </span>
+              <button class="icon-button">
+                <svg
+                  height="24"
+                  width="24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </button>
+            </header>
+            <section class="modal-container-body rtf">
+              <div id="prodInfo">
+                <p>리뷰 상품 : ${rvo.prodName}</p>
+                <p>상품 구매일 : ${rvo.purchaseDate}</p>
+                <p>리뷰 게시일 : ${rvo.postDate}</p>
+                <p>리뷰 조회수 : ${rvo.count}</p>
+                <span id="reviewTitle">제목 : ${rvo.title}</span>
               </div>
-            </span>
-            <button class="icon-button">
-              <svg
-                height="24"
-                width="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                  d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </button>
-          </header>
-          <section class="modal-container-body rtf">
-            <div id="prodInfo">
-              <p>리뷰 상품 : ${rvo.prodName}</p>
-              <p>상품 구매일 : ${rvo.purchaseDate}</p>
-              <p>리뷰 게시일 : ${rvo.postDate}</p>
-              <p>리뷰 조회수 : ${rvo.count}</p>
-              <span id="reviewTitle">제목 : ${rvo.title}</span>
-            </div>
 
-            <p>${rvo.content}</p>
-          </section>
-          <footer class="modal-container-footer">
-            LIKE : ${rvo.isLike}
-            <button id="likeBtn" class="footer-button">
-              <svg
-                height="25"
-                width="25"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              <p>${rvo.content}</p>
+            </section>
+            <footer class="modal-container-footer">
+              <div id="likeContent">LIKE : ${rvo.isLike}</div>
+              <button id="likeBtn" class="footer-button">
+                <svg
+                  class="heart-icon"
+                  height="25"
+                  width="25"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0H24V24H0z" fill="none"></path>
+                  <path
+                    d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
+                  ></path>
+                </svg>
+              </button>
+              <a href="${root}/review/board/${rvo.subCaNo}"
+                ><button class="button is-primary footer-button">
+                  목록으로
+                </button></a
               >
-                <path d="M0 0H24V24H0z" fill="none"></path>
-                <path
-                  d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
-                ></path>
-              </svg>
-            </button>
-            UNLIKE : ${rvo.isUnlike}
-            <button id="unLikeBtn" class="footer-button">
-              <svg
-                height="22"
-                width="22"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M0 0H24V24H0z" fill="none"></path>
-                <path
-                  d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
-                ></path>
-              </svg>
-            </button>
-            <a href="${root}/review/board/${rvo.subCaNo}"
-              ><button class="button is-primary footer-button">
-                목록으로
-              </button></a
-            >
-            <a
-              ><button class="button is-comment footer-button">
-                댓글등록
-              </button></a
-            >
-          </footer>
-        </article>
+              <button class="button is-comment footer-button" id="commentChk">
+                댓글 확인(${rvo.commCount})
+              </button>
+            </footer>
+          </article>
+        </div>
+        <div id="comment-container">
+          <div id="comment-info">댓글 : 총 ${rvo.commCount} 개</div>
+          <div id="comments"></div>
+
+          <div id="comment-input">
+            <input type="text" id="comment" />
+            <button onclick="insertComm()">등록</button>
+          </div>
+        </div>
       </div>
 
       <%-- <%@ include file="/WEB-INF/views/common/footer.jsp" %> --%>
@@ -501,24 +533,77 @@ pageEncoding="UTF-8"%>
 <script>
   $(document).ready(function () {
     var likeBtn = document.querySelector("#likeBtn");
-    var unLikeBtn = document.querySelector("#unLikeBtn");
+    var heart = likeBtn.innerHTML;
+    var likeContent = document.querySelector("#likeContent");
+    var reviewNo = document.querySelector(".reviewModal").id;
+    var isLiked = false;
+
+    // 좋아요 상태 확인
+    $.ajax({
+      url: "${root}/review/board/likeChk",
+      method: "GET",
+      data: { no: reviewNo },
+      success: function (data) {
+        if (data == "already") {
+          isLiked = true;
+          likeBtn.textContent = "좋아요 완료";
+        } else if (data == "canLike") {
+          isLiked = false;
+        } else {
+          console.log("좋아요 했는지 여부 확인중 에러");
+        }
+      },
+      error: function (data) {
+        console.log("통신실패");
+      },
+    });
 
     likeBtn.addEventListener("click", function () {
-      var reviewNo = document.querySelector(".reviewModal").id;
-      alert(reviewNo);
-
       $.ajax({
         url: "${root}/review/board/likeManage",
         method: "POST",
         data: { no: reviewNo },
-        success: function (data) {
-          alert(data + "번 리뷰 좋아요 감사합니다.");
+        success: function (rvo) {
+          if (rvo !== null) {
+            var likeCnt = parseInt(rvo.isLike);
+            likeContent.textContent = "LIKE : " + likeCnt;
+
+            if (isLiked) {
+              likeBtn.innerHTML = heart;
+            } else {
+              likeBtn.textContent = "좋아요 완료";
+            }
+            isLiked = !isLiked;
+          } else {
+            alert(rvo.no + "번 리뷰 좋아요/싫어요 선택실패.");
+          }
         },
         error: function (error) {
           console.log(error);
-          alert(data + "번 리뷰 좋아요/싫어요 선택실패.");
+          alert(data + "통신실패");
         },
       });
     });
+    var commentContainer = document.querySelector("#comment-container");
+    var commentChk = document.querySelector("#commentChk");
+    commentChk.addEventListener("click", function () {
+      commentContainer.style.display = "block";
+    });
+
+    function insertComm() {
+      var content = document.querySelector("#comment").value;
+      $.ajax({
+        url: "${root}/review/board/detail/" + reviewNo + "/comment",
+        type: "POST",
+        data: { reviewNo: reviewNo, content: content },
+        dataType: "JSON",
+        success: function (comments) {
+          alert(comments);
+        },
+        error: function (response) {
+          console.log("통신실패!!z");
+        },
+      });
+    }
   });
 </script>

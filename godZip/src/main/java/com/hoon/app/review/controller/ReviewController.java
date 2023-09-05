@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,7 @@ import com.hoon.app.member.vo.MemberVo;
 import com.hoon.app.product.service.ProductService;
 import com.hoon.app.product.vo.ProductVo;
 import com.hoon.app.review.service.ReviewService;
+import com.hoon.app.review.vo.CommentVo;
 import com.hoon.app.review.vo.ReviewVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -152,17 +154,87 @@ public class ReviewController {
 	
 	@PostMapping("board/likeManage")
 	@ResponseBody
-	public String likeManage(@RequestParam int no, HttpSession session) {
+	public ReviewVo likeManage(@RequestParam int no, HttpSession session) {
+		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		int memberNo = mvo.getNo();
+		int didLike =  rs.likeChk(no, memberNo);
+		
+		if(didLike == 1) {//좋아요 눌었으면 -> 좋아요 취소 작동
+			int cancelLike = rs.cancelLike(no, memberNo);
+			if(cancelLike != 1) {
+				log.info("좋아요 취소중 에러 발생");
+				return null;
+			}else {
+				rs.downLike(no);
+				ReviewVo rvo = rs.getDetail(no);
+				return rvo;
+			}
+		}else { //좋아요 안 눌렀으면
+			int result = rs.likeManage(no,memberNo);
+			
+			
+			if(result != 1) {//테이블에 안들어가면
+				log.info("좋아요 테이블 insert 중에 에러발생");
+				return null;
+			}else {//review_like에 정보 insert완료 되면
+				try {
+					int addLike = rs.addLike(no);
+					
+					if(addLike != 1) {
+						log.info("좋아요 증가 중에 에러발생");
+						return null;
+					}
+					ReviewVo rvo = rs.getDetail(no);
+					return rvo;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		}
+		
+	}
+	
+	@GetMapping("board/likeChk")
+	@ResponseBody
+	public String likeChk(@RequestParam int no, HttpSession session) {
 		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
 		int memberNo = mvo.getNo();
 		
-		int result = rs.likeManage(no,memberNo);
-		
-		if(result != 1) {
-			
+		try {
+			int didLike =  rs.likeChk(no, memberNo);
+			if(didLike == 1) {
+				System.out.println("좋아요 했음");
+				//이미 좋아요 했음
+				return "already";
+			}else if(didLike == 0) {
+				System.out.println("좋아요 안했음");
+				//좋아요 안했음
+				return "canLike";
+			}else
+				//카운트가 1혹은 0이 아님
+			return "error";			
+		} catch (Exception e) {
+			e.printStackTrace();
 			return "error";
 		}
-		return "success";
-	}
 
+	}
+	
+	@PostMapping("board/detail/{reviewNo}/comment")
+	@ResponseBody
+	public String insertComment(@PathVariable("reviewNo") int reviewNo,@RequestBody String content, HttpSession session) {
+		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		int memberNo = mvo.getNo();
+		int result = rs.insertComment(reviewNo,content, memberNo);
+		
+		if(result != 1) {
+			log.info("댓글 db삽입중 문제");
+			return "error";
+		}else {
+			log.info("댓글 db삽입성공!");
+			List<CommentVo> cList = rs.getClist(reviewNo);
+			return "success";
+		}
+	}
 }

@@ -9,10 +9,9 @@ public class ReviewVo {
 	private int memberNo;
 	private int categoryNo;
 	private int subCaNo;
-	private int shareCount;
+	private int commCount;
 	private int score;
 	private int isLike;
-	private int isUnlike;
 	private int count;
 	private String prodName;
 	private String title;
