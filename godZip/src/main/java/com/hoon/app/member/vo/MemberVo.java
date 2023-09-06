@@ -18,4 +18,6 @@ public class MemberVo {
 	private int visitedDays;
 	private String loginType;
 	private String profile;
+	private String formatedToday;
+	private String reviewCount;
 }

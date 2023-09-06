@@ -15,6 +15,49 @@ pageEncoding="UTF-8"%>
       .reviewTr {
         height: 40px;
       }
+
+      #typeSelect {
+        padding: 0.15rem 0.5rem;
+        min-height: 30px;
+        border-radius: 4px;
+      }
+
+      #qna-search {
+        max-width: 300px;
+        background-color: #ffffcc;
+        color: black;
+        padding: 0.15rem 0.5rem;
+        min-height: 30px;
+        border-radius: 4px;
+        outline: 2px solid #febf00;
+        border: none;
+        line-height: 1.15;
+        box-shadow: 0px 10px 20px -18px;
+        margin-top: 10px;
+      }
+
+      #qna-search:focus {
+        border-bottom: 2px solid #5b5fc7;
+        border-radius: 4px 4px 2px 2px;
+      }
+
+      #qna-search:hover {
+        outline: 1px solid lightgrey;
+      }
+      #table-bottom-area {
+        text-align: center;
+      }
+      table{
+        border: 3px solid;
+      }
+      table td {
+        font-weight: 600;
+      }
+      #page-area{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
@@ -24,7 +67,7 @@ pageEncoding="UTF-8"%>
       <div class="container mt-3">
         <h2>리뷰 게시판</h2>
 
-        <p>리뷰 게시판 for ${rvoList[0].subCategory}</p>
+        <p style="font-weight: 600;">리뷰 게시판 for ${rvoList[0].subCategory}</p>
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -40,10 +83,10 @@ pageEncoding="UTF-8"%>
           <tbody>
             <c:forEach items="${rvoList}" var="review">
               <tr id="no${review.no}" class="reviewTr">
-                <td>${review.no}</td>
+                <td>${review.rno}</td>
                 <td>${review.prodName}</td>
-                <td>${review.title}</td>
-                <td>${review.score}</td>
+                <td>${review.title} (${review.commCount})</td>
+                <td style="width: 80px;"> <img src="${root}/resources/img/stars/star.png" alt="" style="width: 40px; height: 40px; margin-right: -10px;" > ${review.score}</td>
                 <td>${review.nick}</td>
                 <td>${review.postDate}</td>
                 <td>${review.count}</td>
@@ -52,9 +95,9 @@ pageEncoding="UTF-8"%>
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="6" id="table-bottom-area">
+              <td colspan="7" id="table-bottom-area">
                 <form id="searchForm" action="${subCaNo}" method="get">
-                  <select name="searchType" class="">
+                  <select name="searchType" class="" id="typeSelect">
                     <option value="all" selected>분류 선택(전체)</option>
                     <option value="prodName">제품명</option>
                     <option value="title">제목</option>
@@ -78,7 +121,7 @@ pageEncoding="UTF-8"%>
             <c:if test="${pv.currentPage > 1}">
               <li class="page-item">
                 <a
-                  href="${root}/review/board/${rvoList.no}?page=${pv.currentPage-1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                  href="${root}/review/board/${subCaNo}?page=${pv.currentPage-1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
                   class="page-link"
                   >이전</a
                 >
@@ -94,7 +137,7 @@ pageEncoding="UTF-8"%>
                 <li class="page-item">
                   <a
                     class="page-link"
-                    href="${root}/review/board/${rvoList.no}?page=${i}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                    href="${root}/review/board/${subCaNo}?page=${i}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
                     >${i}</a
                   >
                 </li>
@@ -108,7 +151,7 @@ pageEncoding="UTF-8"%>
             <c:if test="${pv.currentPage < pv.maxPage}">
               <li class="page-item">
                 <a
-                  href="${root}/review/board/${rvoList.no}?page=${pv.currentPage+1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
+                  href="${root}/review/board/${subCaNo}?page=${pv.currentPage+1}&searchType=${searchMap.searchType}&searchValue=${searchMap.searchValue}"
                   class="page-link"
                   >다음</a
                 >

@@ -64,6 +64,10 @@ public class MemberDao {
 		return sst.update("member.toDefaultImg", no);
 	}
 
+	public int updatefirstVisit(SqlSessionTemplate sst, int no, String formatedToday) {
+		return sst.update("member.updateLastVisit", no);
+	}
+
 
 
 }

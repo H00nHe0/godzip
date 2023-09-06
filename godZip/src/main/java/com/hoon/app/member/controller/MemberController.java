@@ -129,6 +129,9 @@ public class MemberController {
 				 }else {
 					 log.info("오늘 로그인  이미 함");
 				 }
+			 }else {//getLastVist이null이면(첫 로그인이면)
+				 int result = ms.updatefirstVisit(no,formatedToday);
+				 
 			 }
 			
 			rttr.addFlashAttribute("msgType", "successMsg");

@@ -74,15 +74,28 @@ public class ReviewDao {
 		return sst.update("review.downLike", no);
 	}
 
-	public int insertComment(SqlSessionTemplate sst, int reviewNo, int memberNo) {
+	public int insertComment(SqlSessionTemplate sst, int reviewNo,String content, int memberNo) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("reviewNo", reviewNo);
+		map.put("content", content);
 		map.put("memberNo", memberNo);
 		return sst.insert("review.insertComment", map);
 	}
 
 	public List<CommentVo> getClist(SqlSessionTemplate sst, int reviewNo) {
 		return sst.selectList("review.getClist", reviewNo);
+	}
+
+	public int growCommCnt(SqlSessionTemplate sst, int reviewNo) {
+		return sst.update("review.growCommCnt", reviewNo);
+	}
+
+	public int selectCommCnt(SqlSessionTemplate sst, int reviewNo) {
+		return sst.selectOne("review.selectCommCnt", reviewNo);
+	}
+
+	public List<ReviewVo> recentReview(SqlSessionTemplate sst) {
+		return sst.selectList("review.recentReview");
 	}
 	}
 

@@ -6,6 +6,7 @@ import lombok.Data;
 public class ReviewVo {
 
 	private int no;
+	private int rno;
 	private int memberNo;
 	private int categoryNo;
 	private int subCaNo;

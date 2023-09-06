@@ -6,6 +6,36 @@
 <mapper namespace="review">
 
 
+	<select id="recentReview" resultType="ReviewVo">
+    <![CDATA[
+    SELECT ROWNUM AS RNO, T.*
+    FROM (
+        SELECT
+            RE.NO,
+            RE.CATEGORY_NO,
+            RE.SUB_CA_NO,
+            RE.PROD_NAME,
+            RE.MEMBER_NO,
+            RE.TITLE,
+            RE.CONTENT,
+            RE.SCORE,
+            RE.IS_LIKE,
+            RE.PURCHASE_DATE,
+            RE.ATT_FILE,
+            RE.POST_DATE,
+            RE.COMM_COUNT,
+            RE.IS_UPDATE_YN,
+            RE.DELETE_YN,
+            RE.COUNT,
+            MI.NICK,
+            MI.PROFILE
+        FROM REVIEW RE
+        JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+        ORDER BY RE.NO DESC
+    ) T
+    WHERE ROWNUM <= 10
+    ]]>
+	</select>
 	<insert id="submitReview">
 		INSERT INTO REVIEW
 		(
@@ -48,57 +78,59 @@
 	</insert>
 	
 	<select id="getRvoList" resultType="reviewVo">
-		SELECT 
-			RE.NO,
-			RE.CATEGORY_NO,
-			RE.SUB_CA_NO,
-			RE.PROD_NAME,
-			RE.MEMBER_NO,
-			RE.TITLE,
-			RE.CONTENT,
-			RE.SCORE,
-			RE.COUNT,
-			RE.IS_LIKE,
-			RE.PURCHASE_DATE,
-			TO_CHAR(RE.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
-			RE.COMM_COUNT,
-			RE.IS_UPDATE_YN,
-			RE.DELETE_YN,
-			RE.ATT_FILE,
-			MI.NICK,
-			SD.SUB_CATEGORY
-			FROM REVIEW RE
-			INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
-			JOIN SUBDIVISION SD ON RE.SUB_CA_NO = SD.NO
-		  <choose>
-		    <when test="searchType eq 'prodName'">
-		      WHERE LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </when>
-		    <when test="searchType eq 'title'">
-		      WHERE LOWER(TITLE) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </when>
-		    <when test="searchType eq 'content'">
-		      WHERE LOWER(CONTENT) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </when>
-		    <when test="searchType eq 'nick'">
-		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
-		      WHERE LOWER(MI.NICK) LIKE LOWER('%${searchValue}%')
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </when>
-		    <when test="searchType eq 'all'">
-		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
-		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
-		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
-		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%') )
-		      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </when>
-		    <otherwise>
-		     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC
-		    </otherwise>
-		  </choose>
+		SELECT ROWNUM AS RNO, T.*
+			FROM
+				(SELECT 
+					RE.NO,
+					RE.CATEGORY_NO,
+					RE.SUB_CA_NO,
+					RE.PROD_NAME,
+					RE.MEMBER_NO,
+					RE.TITLE,
+					RE.CONTENT,
+					RE.SCORE,
+					RE.COUNT,
+					RE.IS_LIKE,
+					RE.PURCHASE_DATE,
+					TO_CHAR(RE.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
+					RE.COMM_COUNT,
+					RE.IS_UPDATE_YN,
+					RE.DELETE_YN,
+					RE.ATT_FILE,
+					MI.NICK,
+					SD.SUB_CATEGORY
+					FROM REVIEW RE
+					INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+					JOIN SUBDIVISION SD ON RE.SUB_CA_NO = SD.NO
+				  <choose>
+				    <when test="searchType eq 'prodName'">
+				      WHERE LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'title'">
+				      WHERE LOWER(TITLE) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'content'">
+				      WHERE LOWER(CONTENT) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'nick'">
+				      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+				      WHERE LOWER(MI.NICK) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'all'">
+				      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%') )
+				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <otherwise>
+				     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
+				    </otherwise>
+				  </choose>
 	</select>
 	
 		<select id="getCnt" resultType="int">
@@ -206,7 +238,7 @@
 			SELECT COUNT(LIKENO) FROM REVIEW_LIKE WHERE REVIEW_NO = #{no} AND MEMBER_NO = #{memberNo}
 		</select>
 		<insert id="insertComment">
-			INSERT INT COMM
+			INSERT INTO COMM
 			(
 			NO
 			,REVIEW_NO
@@ -220,11 +252,30 @@
 			SEQ_COMM_NO.NEXTVAL
 			,#{reviewNo}
 			,#{memberNo}
+			,#{content}
 			,SYSDATE
 			,DEFAULT
 			)
 		</insert>
-		<select id="getClist">
-			SELECT * FROM COMM WHERE REVIEW_NO = #{reviewNo} 
+		<select id="getClist" resultType="commentVo">
+			SELECT
+			CO.NO,
+			CO.REVIEW_NO,
+			CO.MEMBER_NO,
+			CO.CONTENT,
+			TO_CHAR(CO.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
+			CO.IS_UPDATE_YN,
+			MI.NICK  
+			FROM COMM CO JOIN MEMBER_INFO MI ON CO.MEMBER_NO = MI.NO
+			WHERE REVIEW_NO = #{reviewNo} ORDER BY NO DESC
+		</select>
+		<update id="growCommCnt">
+			UPDATE REVIEW
+			SET
+			COMM_COUNT = COMM_COUNT+1
+			WHERE NO = #{reviewNo}
+		</update>
+		<select id="selectCommCnt" resultType="int">
+			SELECT COMM_COUNT FROM REVIEW WHERE NO = #{reviewNo}
 		</select>
 </mapper>

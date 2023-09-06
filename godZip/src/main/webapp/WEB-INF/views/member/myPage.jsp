@@ -43,7 +43,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
         margin: auto;
       }
 
-      .form {
+      .myPageForm {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -315,12 +315,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 
       <div id="form-area">
         <div class="form-box">
-          <form
-            class="form"
-            action="${root}/member/myPage"
-            method="post"
-            onsubmit="return checkValidation();"
-          >
+          <div class="myPageForm">
             <span class="title"
               >${mvo.nick}님은
               <span id="gradeName">${mvo.gradeNo}</span> 등급입니다.<span
@@ -398,7 +393,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                         >
                         <c:if test="${!empty mvo.profile}">
                           <button type="button" onclick="toDefaultProfile()">
-                           	 기본사진사용
+                            기본사진사용
                           </button>
                         </c:if>
                         <input
@@ -409,7 +404,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       </div>
                     </div>
                     <div id="profileInfo">
-                      	프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
+                      프로필사진은 10mb이하의 jpg,png,gif 형식만 가능합니다.
                     </div>
                   </td>
                   <td>
@@ -472,7 +467,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       class="mypageInfo"
                       type="text"
                       id="myReviewCnt"
-                      value="in progress.."
+                      value="${mvo.reviewCount} 개"
                       readonly
                     />
                   </td>
@@ -653,14 +648,16 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                 <tr>
                   <td colspan="2">
                     <div id="HiddenNo" style="display: none">${mvo.no}</div>
-                    <button id="seeReview-btn" style="width: 90%">
-                      내가 쓴 리뷰 확인하기(in progress..)
-                    </button>
+                    <a href="${root}/review/board/myReview/${mvo.no}">
+                      <button id="seeReview-btn" style="width: 90%">
+                        내가 쓴 리뷰 확인하기(in progress..)
+                      </button>
+                    </a>
                   </td>
                 </tr>
               </table>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
@@ -761,7 +758,6 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
   var totalVisit = $("#totalVisit").val();
   var modifiedTotal = "총 " + totalVisit + "일 방문";
   $("#totalVisit").val(modifiedTotal);
-
 
   //등급별 색상변화
   var grade = $("span[id='gradeName']").text();
