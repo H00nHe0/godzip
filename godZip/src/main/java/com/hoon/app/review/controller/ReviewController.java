@@ -86,7 +86,7 @@ public class ReviewController {
 		int listCount = rs.getCnt(subCaNo, searchMap);
 		int currentPage = page;
 		int pageLimit = 5;
-		int boardLimit = 10;
+		int boardLimit = 7;
 		PageVo pv = new PageVo(listCount, currentPage, pageLimit, boardLimit);		
 		log.info("listCount:"+listCount);
 		log.info("pv:"+pv);		
@@ -221,20 +221,47 @@ public class ReviewController {
 
 	}
 	
+	@GetMapping("board/detail/{reviewNo}/comments")
+	@ResponseBody
+	public List<CommentVo> commentList(@PathVariable int reviewNo) {
+		log.info("reviewNo : "+reviewNo);
+		try {
+			List<CommentVo> cList = rs.getClist(reviewNo);
+			if(cList != null) {
+				log.info("cList : "+cList);
+			return cList;
+			}else {
+				return null;	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@GetMapping("board/editCommCnt")
+	@ResponseBody
+	public int editCommCnt(int reviewNo) {
+		int updatedCommCnt = rs.selectCommCnt(reviewNo);
+		return updatedCommCnt;
+	}
+	
 	@PostMapping("board/detail/{reviewNo}/comment")
 	@ResponseBody
-	public String insertComment(@PathVariable("reviewNo") int reviewNo,@RequestBody String content, HttpSession session) {
+	public List<CommentVo> insertComment(@PathVariable("reviewNo") int reviewNo,@RequestParam String content, HttpSession session) {
 		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
 		int memberNo = mvo.getNo();
 		int result = rs.insertComment(reviewNo,content, memberNo);
 		
 		if(result != 1) {
 			log.info("댓글 db삽입중 문제");
-			return "error";
+			return null;
 		}else {
+			//리뷰테이블 댓클수 증가
 			log.info("댓글 db삽입성공!");
+			rs.growCommCnt(reviewNo);
 			List<CommentVo> cList = rs.getClist(reviewNo);
-			return "success";
+			System.out.println(cList);
+			return cList;
 		}
 	}
 }

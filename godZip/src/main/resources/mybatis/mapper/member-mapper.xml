@@ -36,21 +36,23 @@
 
 	<select id="login" resultType="memberVo">
 		SELECT 
-		NO
-		,GRADE_NO
-		,ID
-		,PWD
-		,NICK
-		,ENROLL_DATE
-		,QUIT_YN
-		,IS_BLOCKED_YN
-		,EMAIL
-		,LAST_VISIT
-		,VISITED_DAYS
-		,LOGIN_TYPE
-		,PROFILE
-		FROM MEMBER_INFO WHERE ID = #{id} AND PWD = #{pwd} AND QUIT_YN = 'N'
+		MI.NO
+		,MI.GRADE_NO
+		,MI.ID
+		,MI.PWD
+		,MI.NICK
+		,MI.ENROLL_DATE
+		,MI.QUIT_YN
+		,MI.IS_BLOCKED_YN
+		,MI.EMAIL
+		,MI.LAST_VISIT
+		,MI.VISITED_DAYS
+		,MI.LOGIN_TYPE
+		,MI.PROFILE
+        ,(SELECT COUNT(*) FROM REVIEW RE WHERE RE.MEMBER_NO = MI.NO) AS REVIEW_COUNT
+		FROM MEMBER_INFO MI WHERE MI.ID = #{id} AND MI.PWD = #{pwd} AND MI.QUIT_YN = 'N'
 	</select>
+
 	<update id="updateTotalVisit">
 		UPDATE MEMBER_INFO SET VISITED_DAYS = VISITED_DAYS + 1 WHERE NO = #{no}
 	</update>
@@ -87,5 +89,6 @@
 	<update id="toDefaultImg">
 		UPDATE MEMBER_INFO SET PROFILE = NULL WHERE NO = #{no}
 	</update>
+
 	
 </mapper>

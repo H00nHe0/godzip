@@ -66,117 +66,45 @@ pageEncoding="UTF-8"%>
 		  </div>
 
 
-		 <div class="container mt-3">
-
+		 <div class="recentContainer mt-3">
+		<c:forEach items="${rvoList}" var="list">
 		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body" style="height: 200px;">
-		      <h4 class="card-title">KINGHOON</h4>
-		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-		      <div style="text-align: center; margin-bottom: 0;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
+			  <div class="card-body" style="height: 100px;">
+				<c:if test="${!empty list.profile}">
+					<img class="card-img-top" src="${root}/resources/img/memberImg/${list.profile}" alt="Card image" style="width:80px; height: 80px;">
+				</c:if>
+				<c:if test="${empty list.profile}">
+					<img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:80px; height: 80px;">				
+				</c:if>
+				<h4 class="card-nick">${list.nick}</h4>
+				<div id="star-area">
+					<c:if test="${list.score == 1}">
+						<img src="${root}/resources/img/stars/1star.png" alt="1star" style="width:100px; height: 30px;">
+					</c:if>
+					<c:if test="${list.score == 2}">
+						<img src="${root}/resources/img/stars/2stars.png" alt="2star" style="width:100px; height: 30px;">
+					</c:if>
+					<c:if test="${list.score == 3}">
+						<img src="${root}/resources/img/stars/3stars.png" alt="3star" style="width:100px; height: 30px;">
+					</c:if>
+					<c:if test="${list.score == 4}">
+						<img src="${root}/resources/img/stars/4stars.png" alt="4star" style="width:100px; height: 30px;">
+					</c:if>
+					<c:if test="${list.score == 5}">
+						<img src="${root}/resources/img/stars/5stars.png" alt="5star" style="width:100px; height: 30px;">
+					</c:if>
+				</div>
 		    </div>
+			<div class="card-title">
+				<h5 class="card-text">${list.title}</h5>
+			</div>
+			<div style="text-align: center; margin-bottom: 10px;">
+				<a href="${root}/review/board/detail/${list.no}" class="btn btn-primary" id="review${list.no}" onclick="growCnt(this)">See Review</a>
+			</div>
 		  </div>		  
+		
+		</c:forEach>
 
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">	  
-		    <div class="card-body">
-		      <h4 class="card-title">iamtwoh</h4>
-		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">kokoko19</h4>
-		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">	  
-		    <div class="card-body">
-		      <h4 class="card-title">hun7265</h4>
-		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-		  
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">kekezz</h4>
-		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>		  
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">  
-		    <div class="card-body">
-		      <h4 class="card-title">youknow</h4>
-		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
-			      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">김삿갓</h4>
-		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">리뷰매니아</h4>
-		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">나는짱이다</h4>
-		      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>
-
-		  <div class="card mx-4 my-3">
-		    <img class="card-img-top" src="${root}/resources/img/memberImg/defaultProfile.png" alt="Card image" style="width:100%; height: 100px;">
-		    <div class="card-body">
-		      <h4 class="card-title">kingsman</h4>
-		      <p class="card-text">Some example text some example text. Jane Doe is an architect and engineer</p>
-		      <div style="text-align: center;">
-			      <a href="#" class="btn btn-primary">See Review</a>
-		      </div>
-		    </div>
-		  </div>		  
-		  
 		  
 		</div>
       </div>
@@ -202,54 +130,7 @@ pageEncoding="UTF-8"%>
       <link rel="stylesheet" href="${root}/resources/css/main/home.css"></link>
       <script>
       $(document).ready(function () {
-/*     	  $.ajax({
-          	  url:" ${root}/product/subDivision",
-          	  type: "GET",
-        		  datatype: "JSON",
-        	      success: function (result) {
-        	            var subList = result;
-        	            for (let i = 0; i < subList.length; i++) {
-        	                var subCaNo = subList[i].caNo;
-        	                var subCategory = subList[i].subCategory;
-        	                
-        	                if (subCaNo == 1) {
-        	                    var subListArea = $("#subListArea" + subCaNo);
-        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
-        	                    let listItem = "<li>" + subCategory + "</li>";
-        	                    subListArea.append(listItem);
-        	                    sideCaArea.append(listItem);
-        	                }else if (subCaNo == 2) {
-         	                    var subListArea = $("#subListArea" + subCaNo);
-        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
-        	                    let listItem = "<li>" + subCategory + "</li>";
-        	                    subListArea.append(listItem);
-        	                    sideCaArea.append(listItem);
-        	                }else if (subCaNo == 3) {
-        	                    var subListArea = $("#subListArea" + subCaNo);
-        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
-        	                    let listItem = "<li>" + subCategory + "</li>";
-        	                    subListArea.append(listItem);
-        	                    sideCaArea.append(listItem);
-        	                }else if (subCaNo == 4) {
-        	                    var subListArea = $("#subListArea" + subCaNo);
-        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
-        	                    let listItem = "<li>" + subCategory + "</li>";
-        	                    subListArea.append(listItem);
-        	                    sideCaArea.append(listItem);
-        	                }else if (subCaNo == 5) {
-        	                    var subListArea = $("#subListArea" + subCaNo);
-        	                    var sideCaArea = $("#sideCaArea" + subCaNo);
-        	                    let listItem = "<li>" + subCategory + "</li>";
-        	                    subListArea.append(listItem);
-        	                    sideCaArea.append(listItem);
-        	                }
-        	            }
-        	        },
-        	        error: function (response) {
-        	          console.log(response);
-        	        }, 
-            })
-      }); */
+
       var currentSlide = 0;
       var slides = document.querySelectorAll('.slideshow img');
       slides[currentSlide].classList.add('active'); // 첫 번째 슬라이드에 클래스 추가
@@ -262,5 +143,21 @@ pageEncoding="UTF-8"%>
         slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
       }
       });
+
+	  function growCnt(element) {
+        var reviewNo = element.getAttribute("id").replace("review", "");
+
+        $.ajax({
+            url: "${root}/review/board/count/" + reviewNo,
+            type: "PUT",
+            data: { no: reviewNo },
+            success: function () {
+                console.log("게시물 조회수 증가");
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    }
       </script>
 </html>

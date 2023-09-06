@@ -67,11 +67,24 @@ public class ReviewService {
 	}
 
 	public int insertComment(int reviewNo,String content, int memberNo) {
-		return rdao.insertComment(sst, reviewNo, memberNo);
+		return rdao.insertComment(sst, reviewNo,content, memberNo);
 	}
 
 	public List<CommentVo> getClist(int reviewNo) {
 		return rdao.getClist(sst, reviewNo);
+	}
+
+	public int growCommCnt(int reviewNo) {
+		return rdao.growCommCnt(sst,reviewNo );
+		
+	}
+
+	public int selectCommCnt(int reviewNo) {
+		return rdao.selectCommCnt(sst, reviewNo);
+	}
+
+	public List<ReviewVo> recentReview() {
+		return rdao.recentReview(sst);
 	}
 
 }

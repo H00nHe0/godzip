@@ -71,5 +71,9 @@ public class MemberService {
 		return dao.toDefaultImg(sst, no);
 	}
 
+	public int updatefirstVisit(int no, String formatedToday) {
+		return dao.updatefirstVisit(sst, no, formatedToday);
+	}
+
 
 }

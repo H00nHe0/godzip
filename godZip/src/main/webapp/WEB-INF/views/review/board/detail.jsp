@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%>
         margin-right: 0;
       }
       #comment-container {
-        width: 400px;
+        width: 500px;
         height: 300px;
         background: rgba(221, 236, 253, 0.7);
         border-radius: 16px;
@@ -388,7 +388,8 @@ pageEncoding="UTF-8"%>
       }
       #comments {
         padding: 5px 5px 5px;
-        min-height: 200px;
+        height: 200px;
+        word-break: keep-all;
         background-color: #fff;
         overflow-y: auto;
       }
@@ -396,9 +397,20 @@ pageEncoding="UTF-8"%>
         margin: 5px 5px 5px;
         border-radius: 10px;
         height: 50px;
-        width: 320px;
+        width: 400px;
         background-color: #fff;
         overflow-y: auto;
+      }
+      #comment-input img {
+        margin-left: 10px;
+        border-radius: 20px;
+        background-color: white;
+      }
+      .comment-content {
+        display: flex;
+      }
+      .comment-date {
+        font-size: 10px;
       }
     </style>
   </head>
@@ -520,8 +532,25 @@ pageEncoding="UTF-8"%>
           <div id="comments"></div>
 
           <div id="comment-input">
-            <input type="text" id="comment" />
-            <button onclick="insertComm()">등록</button>
+            <c:if test="${empty mvo.profile}">
+              <img
+                class="img-circle"
+                src="${root}/resources/img/memberImg/defaultProfile.png"
+                style="width: 50px; height: 50px"
+              />
+            </c:if>
+            <c:if test="${!empty mvo.profile}">
+              <img
+                class="img-circle"
+                src="${root}/resources/img/memberImg/${mvo.profile}"
+                style="width: 50px; height: 50px"
+              />
+            </c:if>
+            <input
+              type="text"
+              id="comment"
+              placeholder="댓글 입력 후 엔터를 누르면 댓글이 등록됩니다."
+            />
           </div>
         </div>
       </div>
@@ -584,24 +613,97 @@ pageEncoding="UTF-8"%>
         },
       });
     });
+
+    var commentsDiv = document.querySelector("#comments");
+    var commentInput = document.querySelector("#comment");
     var commentContainer = document.querySelector("#comment-container");
     var commentChk = document.querySelector("#commentChk");
+    var commentInfo = document.querySelector("#comment-info");
     commentChk.addEventListener("click", function () {
       commentContainer.style.display = "block";
+      $.ajax({
+        url: "${root}/review/board/detail/" + reviewNo + "/comments",
+        type: "GET",
+        data: { reviewNo: reviewNo },
+        success: function (cList) {
+          if (cList !== null) {
+            console.log("통신성공!");
+            commentsDiv.innerHTML = "";
+            for (var comment of cList) {
+              var commentHTML = '<div class="comment-content">';
+              commentHTML +=
+                '<p class="comment-nick">' + comment.nick + " </p>";
+              commentHTML +=
+                '<p class="comment-date">' + comment.postDate + "</p>";
+              commentHTML +=
+                '<h6 class="comment-text">' +
+                "  : " +
+                comment.content +
+                "</h6>";
+              commentHTML += "</div>";
+
+              commentsDiv.innerHTML += commentHTML;
+            }
+          } else {
+            console.log("통신성공했으나 불러오기 실패!");
+          }
+        },
+        error: function (params) {
+          console.log("통신실패..");
+        },
+      });
     });
 
+    document
+      .querySelector("#comment")
+      .addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+          insertComm();
+        }
+      });
+
     function insertComm() {
-      var content = document.querySelector("#comment").value;
+      var comment = commentInput.value;
       $.ajax({
         url: "${root}/review/board/detail/" + reviewNo + "/comment",
         type: "POST",
-        data: { reviewNo: reviewNo, content: content },
+        data: { reviewNo: reviewNo, content: comment },
         dataType: "JSON",
         success: function (comments) {
-          alert(comments);
+          commentsDiv.innerHTML = "";
+          comments.forEach(function (comments) {
+            var commentHTML = '<div class="comment-content">';
+            commentHTML += '<p class="comment-nick">' + comments.nick + "</p>";
+            commentHTML +=
+              '<p class="comment-date">' + comments.postDate + " </p>";
+            commentHTML +=
+              '<h6 class="comment-text">' + "  : " + comments.content + "</h6>";
+            commentHTML += "</div>";
+
+            commentsDiv.innerHTML += commentHTML;
+          });
+          commentInput.value = "";
+          $.ajax({
+            url: "${root}/review/board/editCommCnt",
+            type: "GET",
+            data: { reviewNo: reviewNo },
+            dataType: "JSON",
+            success: function (commCnt) {
+              commentChk.innerHTML = "";
+              commentInfo.innerHTML = "";
+              if (commCnt) {
+                commentChk.innerHTML = "댓글 확인(" + commCnt + ")";
+                commentInfo.innerHTML = "댓글 : 총 " + commCnt + "개";
+              }
+              console.log("댓글수 ajax업뎃 값 안넘어옴");
+            },
+            error: function (params) {
+              console.log("댓글수 ajax업뎃 통신실패");
+            },
+          });
         },
         error: function (response) {
-          console.log("통신실패!!z");
+          console.log("통신실패!!");
         },
       });
     }

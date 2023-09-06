@@ -181,7 +181,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
                <div class="side-book my-3" id="label${cl.no}">
                   <img alt="" src="${root}/resources/img/category/${cl.caImg}">
                  <div class="side-cover">
-                     <p>${cl.caName}</p> 
+                     <p style="font-weight: 600;">${cl.caName}</p> 
                  </div>
                  </div>
 			            <div>
@@ -249,7 +249,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
                   
                   var subListArea = $("#subListArea" + caNo);
                   var sideCaArea = $("#sideCaArea" + caNo);
-                  let listItem = "<li><a href='/app/review/board/" + subCaNo + "'>" + subCategory + "</a></li>";
+                  let listItem = "<li><a href='/app/review/board/" + subCaNo + "'><dt class ='text-muted fw-bold'>" + subCategory + "</dt></a></li>";
                   subListArea.append(listItem);
                   sideCaArea.append(listItem);
               }
