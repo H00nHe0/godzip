@@ -36,6 +36,9 @@ public class ReviewService {
 	public int getCnt(int subCaNo, Map<String, String> searchMap) {
 		return rdao.getCnt(sst,subCaNo, searchMap);
 	}
+	public int getMyReviewCnt(int memberNo, Map<String, String> searchMap) {
+		return rdao.getMyReviewCnt(sst,memberNo, searchMap);
+	}
 
 	public ReviewVo getDetail(int no) {
 		return rdao.getDetail(sst, no);
@@ -85,6 +88,14 @@ public class ReviewService {
 
 	public List<ReviewVo> recentReview() {
 		return rdao.recentReview(sst);
+	}
+
+	public List<ReviewVo> myReviewList(int memberNo, PageVo pv, Map<String, String> searchMap) {
+		return rdao.myReviewList(sst, memberNo, pv, searchMap);
+	}
+
+	public int deleteReview(int reviewNo) {
+		return rdao.deleteReview(sst, reviewNo);
 	}
 
 }

@@ -20,4 +20,6 @@ public class MemberVo {
 	private String profile;
 	private String formatedToday;
 	private String reviewCount;
+	private String totalLikes;
+	
 }

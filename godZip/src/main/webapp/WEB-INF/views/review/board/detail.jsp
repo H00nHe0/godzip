@@ -167,11 +167,6 @@ pageEncoding="UTF-8"%>
         right: 24px;
         height: 50px;
         flex-shrink: 0;
-        background-image: linear-gradient(
-          to top,
-          rgba(255, 255, 255, 0.75),
-          transparent
-        );
         pointer-events: none;
       }
       .button {
@@ -244,22 +239,6 @@ pageEncoding="UTF-8"%>
           border-color 400ms ease-in-out, background-color 400ms ease-in-out;
         word-spacing: -2px;
       }
-      #unLikeBtn {
-        margin-left: -5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 12px 14px 12px 14px;
-        box-shadow: rgba(160, 160, 160, 0.35) 0px -2px 6px 0px inset;
-        background-color: #e8e8e8;
-        border-color: #a0a0a0;
-        border-style: solid;
-        border-width: 8px;
-        border-radius: 30px;
-        transition: transform 400ms cubic-bezier(0.68, -0.55, 0.27, 2.5),
-          border-color 400ms ease-in-out, background-color 400ms ease-in-out;
-        word-spacing: -2px;
-      }
 
       @keyframes movingBorders {
         0% {
@@ -292,11 +271,6 @@ pageEncoding="UTF-8"%>
         background-color: #eee;
         transform: scale(105%);
         animation: movingBorders 3s infinite;
-      }
-      #unLikeBtn:hover {
-        background-color: #a0a0a0;
-        transform: scale(105%);
-        animation: movingBorders1 3s infinite;
       }
 
       #likeBtn svg {
@@ -412,6 +386,18 @@ pageEncoding="UTF-8"%>
       .comment-date {
         font-size: 10px;
       }
+      .my-btns {
+        margin-right: 5px;
+      }
+      .my-btns:hover {
+        text-decoration: underline;
+      }
+      #editMyReview:hover {
+        background-color: rgb(130, 183, 243, 0.8);
+      }
+      #deleteMyReview:hover {
+        background-color: rgba(253, 46, 23, 0.5);
+      }
     </style>
   </head>
   <body>
@@ -500,31 +486,77 @@ pageEncoding="UTF-8"%>
 
               <p>${rvo.content}</p>
             </section>
+            <c:if test="${mvo.no eq rvo.memberNo}">
+              <div style="margin: auto">
+                <button class="button my-btns" id="editMyReview">
+                  수정하기
+                </button>
+                <button class="button my-btns" id="deleteMyReview">
+                  삭제하기
+                </button>
+              </div>
+            </c:if>
             <footer class="modal-container-footer">
               <div id="likeContent">LIKE : ${rvo.isLike}</div>
-              <button id="likeBtn" class="footer-button">
-                <svg
-                  class="heart-icon"
-                  height="25"
-                  width="25"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+              <c:if test="${!empty mvo}">
+                <button id="likeBtn" class="footer-button">
+                  <svg
+                    class="heart-icon"
+                    height="25"
+                    width="25"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0H24V24H0z" fill="none"></path>
+                    <path
+                      d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
+                    ></path>
+                  </svg>
+                </button>
+                <a href="${root}/review/board/${rvo.subCaNo}"
+                  ><button class="button is-primary footer-button">
+                    목록으로
+                  </button></a
                 >
-                  <path d="M0 0H24V24H0z" fill="none"></path>
-                  <path
-                    d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
-                  ></path>
-                </svg>
-              </button>
-              <a href="${root}/review/board/${rvo.subCaNo}"
-                ><button class="button is-primary footer-button">
-                  목록으로
-                </button></a
-              >
-              <button class="button is-comment footer-button" id="commentChk">
-                댓글 확인(${rvo.commCount})
-              </button>
+                <button class="button is-comment footer-button" id="commentChk">
+                  댓글 확인(${rvo.commCount})
+                </button>
+              </c:if>
+              <c:if test="${empty mvo}">
+                <button
+                  id="likeBtn"
+                  class="footer-button"
+                  disabled
+                  style="background-color: #a0a0a0"
+                >
+                  <svg
+                    class="heart-icon"
+                    height="25"
+                    width="25"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0H24V24H0z" fill="none"></path>
+                    <path
+                      d="M16.5 3C19.538 3 22 5.5 22 9c0 7-7.5 11-10 12.5C9.5 20 2 16 2 9c0-3.5 2.5-6 5.5-6C9.36 3 11 4 12 5c1-1 2.64-2 4.5-2z"
+                    ></path>
+                  </svg>
+                </button>
+                <a href="${root}/review/board/${rvo.subCaNo}"
+                  ><button class="button is-primary footer-button">
+                    목록으로
+                  </button></a
+                >
+                <button class="button is-comment footer-button" id="commentChk">
+                  댓글 확인(${rvo.commCount})
+                </button>
+              </c:if>
             </footer>
+            <c:if test="${empty mvo}">
+              <div style="text-align: center">
+                좋아요, 댓글 작성은 로그인 후 가능합니다.
+              </div>
+            </c:if>
           </article>
         </div>
         <div id="comment-container">
@@ -532,25 +564,41 @@ pageEncoding="UTF-8"%>
           <div id="comments"></div>
 
           <div id="comment-input">
-            <c:if test="${empty mvo.profile}">
+            <c:if test="${!empty mvo}">
+              <c:if test="${empty mvo.profile}">
+                <img
+                  class="img-circle"
+                  src="${root}/resources/img/memberImg/defaultProfile.png"
+                  style="width: 50px; height: 50px"
+                />
+              </c:if>
+              <c:if test="${!empty mvo.profile}">
+                <img
+                  class="img-circle"
+                  src="${root}/resources/img/memberImg/${mvo.profile}"
+                  style="width: 50px; height: 50px"
+                />
+              </c:if>
+              <input
+                type="text"
+                id="comment"
+                placeholder="댓글 입력 후 엔터를 누르면 댓글이 등록됩니다."
+              />
+            </c:if>
+            <c:if test="${empty mvo}">
               <img
                 class="img-circle"
                 src="${root}/resources/img/memberImg/defaultProfile.png"
                 style="width: 50px; height: 50px"
               />
-            </c:if>
-            <c:if test="${!empty mvo.profile}">
-              <img
-                class="img-circle"
-                src="${root}/resources/img/memberImg/${mvo.profile}"
-                style="width: 50px; height: 50px"
+              <input
+                type="text"
+                id="comment"
+                placeholder="로그인 후 댓글입력 기능합니다.."
+                disabled
+                style="background-color: #a0a0a0"
               />
             </c:if>
-            <input
-              type="text"
-              id="comment"
-              placeholder="댓글 입력 후 엔터를 누르면 댓글이 등록됩니다."
-            />
           </div>
         </div>
       </div>
@@ -578,6 +626,8 @@ pageEncoding="UTF-8"%>
           likeBtn.textContent = "좋아요 완료";
         } else if (data == "canLike") {
           isLiked = false;
+        } else if (data == "notMember") {
+          likeBtn.textContent = "로그인필요";
         } else {
           console.log("좋아요 했는지 여부 확인중 에러");
         }
@@ -620,38 +670,42 @@ pageEncoding="UTF-8"%>
     var commentChk = document.querySelector("#commentChk");
     var commentInfo = document.querySelector("#comment-info");
     commentChk.addEventListener("click", function () {
-      commentContainer.style.display = "block";
-      $.ajax({
-        url: "${root}/review/board/detail/" + reviewNo + "/comments",
-        type: "GET",
-        data: { reviewNo: reviewNo },
-        success: function (cList) {
-          if (cList !== null) {
-            console.log("통신성공!");
-            commentsDiv.innerHTML = "";
-            for (var comment of cList) {
-              var commentHTML = '<div class="comment-content">';
-              commentHTML +=
-                '<p class="comment-nick">' + comment.nick + " </p>";
-              commentHTML +=
-                '<p class="comment-date">' + comment.postDate + "</p>";
-              commentHTML +=
-                '<h6 class="comment-text">' +
-                "  : " +
-                comment.content +
-                "</h6>";
-              commentHTML += "</div>";
+      if (commentContainer.style.display === "block") {
+        commentContainer.style.display = "none";
+      } else {
+        commentContainer.style.display = "block";
+        $.ajax({
+          url: "${root}/review/board/detail/" + reviewNo + "/comments",
+          type: "GET",
+          data: { reviewNo: reviewNo },
+          success: function (cList) {
+            if (cList !== null) {
+              console.log("통신성공!");
+              commentsDiv.innerHTML = "";
+              for (var comment of cList) {
+                var commentHTML = '<div class="comment-content">';
+                commentHTML +=
+                  '<p class="comment-nick">' + comment.nick + " </p>";
+                commentHTML +=
+                  '<p class="comment-date">' + comment.postDate + "</p>";
+                commentHTML +=
+                  '<h6 class="comment-text">' +
+                  "  : " +
+                  comment.content +
+                  "</h6>";
+                commentHTML += "</div>";
 
-              commentsDiv.innerHTML += commentHTML;
+                commentsDiv.innerHTML += commentHTML;
+              }
+            } else {
+              console.log("통신성공했으나 불러오기 실패!");
             }
-          } else {
-            console.log("통신성공했으나 불러오기 실패!");
-          }
-        },
-        error: function (params) {
-          console.log("통신실패..");
-        },
-      });
+          },
+          error: function (params) {
+            console.log("통신실패..");
+          },
+        });
+      }
     });
 
     document
@@ -707,5 +761,26 @@ pageEncoding="UTF-8"%>
         },
       });
     }
+    var deleteMyReview = document.querySelector("#deleteMyReview");
+    deleteMyReview.addEventListener("click", function () {
+      if (window.confirm("정말로 삭제 하시겠습니까?")) {
+        $.ajax({
+          url: "${root}/review/board/delete/" + reviewNo,
+          method: "DELETE",
+          data: { reviewNo: reviewNo },
+          success: function (params) {
+            if (params == "success") {
+              alert("리뷰 삭제가 완료되었습니다");
+              window.location.href = "${root}/review/board/${rvo.subCaNo}";
+            } else {
+              alert("리뷰 삭제중 오류가 발생하였습니다.");
+            }
+          },
+          error: function () {
+            console.log("리뷰 삭제 ajax통신실패!!");
+          },
+        });
+      }
+    });
   });
 </script>

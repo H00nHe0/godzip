@@ -57,19 +57,16 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
             data-bs-target="#offcanvasWithBothOptions"
             aria-controls="offcanvasWithBothOptions"
           >
-            <dt class="text-muted lead fw-bold">리뷰 확인하기</dt>
+            <dt class="text-muted lead fw-bold">리뷰 카테고리</dt>
           </div>
         </li>
-        <li class="nav-item mx-4">
-          <a class="nav-link" href="${root}/review/write"
-            ><dt class="text-muted lead fw-bold">리뷰 작성하기</dt></a
-          >
-        </li>
-        <li class="nav-item mx-4">
-          <a class="nav-link" href="#"
-            ><dt class="text-muted lead fw-bold">자유게시판</dt></a
-          >
-        </li>
+        <c:if test="${!empty mvo}">
+          <li class="nav-item mx-4">
+            <a class="nav-link" href="${root}/review/write"
+              ><dt class="text-muted lead fw-bold">리뷰 작성하기</dt></a
+            >
+          </li>
+        </c:if>
       </ul>
       <c:if test="${empty mvo}">
         <ul class="navbar-nav navbar-right nav-underline">
@@ -249,7 +246,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
                   
                   var subListArea = $("#subListArea" + caNo);
                   var sideCaArea = $("#sideCaArea" + caNo);
-                  let listItem = "<li><a href='/app/review/board/" + subCaNo + "'><dt class ='text-muted fw-bold'>" + subCategory + "</dt></a></li>";
+                  let listItem = "<li><a href='/app/review/board/" + subCaNo + "'><dt class ='fw-bold'>" + subCategory + "</dt></a></li>";
                   subListArea.append(listItem);
                   sideCaArea.append(listItem);
               }

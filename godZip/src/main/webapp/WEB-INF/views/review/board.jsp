@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%>
         cursor: pointer;
       }
       .table-bordered {
-        min-height: 600px;
+        max-height: 600px;
       }
       .reviewTr {
         height: 40px;

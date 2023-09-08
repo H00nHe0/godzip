@@ -96,7 +96,7 @@ pageEncoding="UTF-8"%>
 				</div>
 		    </div>
 			<div class="card-title">
-				<h5 class="card-text">${list.title}</h5>
+				<h5 class="card-text">${list.title}(${list.commCount})</h5>
 			</div>
 			<div style="text-align: center; margin-bottom: 10px;">
 				<a href="${root}/review/board/detail/${list.no}" class="btn btn-primary" id="review${list.no}" onclick="growCnt(this)">See Review</a>

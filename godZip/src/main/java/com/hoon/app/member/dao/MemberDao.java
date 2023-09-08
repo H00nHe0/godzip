@@ -68,6 +68,10 @@ public class MemberDao {
 		return sst.update("member.updateLastVisit", no);
 	}
 
+	public MemberVo updateMemberInfo(SqlSessionTemplate sst, int no) {
+		return sst.selectOne("member.updateMemberInfo",no);
+	}
+
 
 
 }

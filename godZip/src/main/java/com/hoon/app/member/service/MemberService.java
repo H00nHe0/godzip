@@ -75,5 +75,9 @@ public class MemberService {
 		return dao.updatefirstVisit(sst, no, formatedToday);
 	}
 
+	public MemberVo updateMemberInfo(int no) {
+		return dao.updateMemberInfo(sst,no);
+	}
+
 
 }

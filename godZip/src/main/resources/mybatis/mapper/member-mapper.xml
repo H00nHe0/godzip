@@ -89,6 +89,26 @@
 	<update id="toDefaultImg">
 		UPDATE MEMBER_INFO SET PROFILE = NULL WHERE NO = #{no}
 	</update>
+	
+	<select id="updateMemberInfo" resultType="memberVo">
+		SELECT 
+		MI.NO
+		,MI.GRADE_NO
+		,MI.ID
+		,MI.PWD
+		,MI.NICK
+		,MI.ENROLL_DATE
+		,MI.QUIT_YN
+		,MI.IS_BLOCKED_YN
+		,MI.EMAIL
+		,MI.LAST_VISIT
+		,MI.VISITED_DAYS
+		,MI.LOGIN_TYPE
+		,MI.PROFILE
+        ,(SELECT COUNT(*) FROM REVIEW RE WHERE RE.MEMBER_NO = MI.NO) AS REVIEW_COUNT
+        ,(SELECT SUM(RE.IS_LIKE) FROM REVIEW RE WHERE RE.MEMBER_NO = MI.NO) AS TOTAL_LIKES
+		FROM MEMBER_INFO MI WHERE MI.NO = #{no} AND MI.QUIT_YN = 'N'
+	</select>
 
 	
 </mapper>

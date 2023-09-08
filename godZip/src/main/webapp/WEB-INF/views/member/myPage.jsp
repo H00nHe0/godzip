@@ -477,7 +477,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                       class="mypageInfo"
                       type="text"
                       id="likeCnt"
-                      value="in progress.."
+                      value=" 총 ${mvo.totalLikes} 개"
                       readonly
                     />
                   </td>

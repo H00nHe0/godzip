@@ -30,11 +30,24 @@ public class ReviewDao {
 		
 		return sst.selectList("review.getRvoList", rp, rb);
 	}
+	public List<ReviewVo> myReviewList(SqlSessionTemplate sst, int memberNo, PageVo pv, Map<String, String> searchMap) {
+		int limit = pv.getBoardLimit();
+		int offset = (pv.getCurrentPage()-1) * limit;
+		RowBounds rb = new RowBounds(offset , limit);	
+		RvoListParam rp = new RvoListParam(memberNo,searchMap);
+		
+		return sst.selectList("review.myReviewList", rp, rb);
+	}
 
 	public int getCnt(SqlSessionTemplate sst,int subCaNo, Map<String, String> searchMap) {
 		RvoListParam rp = new RvoListParam(subCaNo,searchMap);
 		System.out.println("it is rp : "+rp.getSearchType()+rp.getSearchValue());
 		return sst.selectOne("review.getCnt" ,rp);
+	}
+	public int getMyReviewCnt(SqlSessionTemplate sst, int memberNo, Map<String, String> searchMap) {
+		RvoListParam rp = new RvoListParam(memberNo,searchMap);
+		System.out.println("it is rp : "+rp.getSearchType()+rp.getSearchValue());
+		return sst.selectOne("review.getMyReviewCnt" ,rp);
 	}
 
 	public ReviewVo getDetail(SqlSessionTemplate sst, int no) {
@@ -97,6 +110,12 @@ public class ReviewDao {
 	public List<ReviewVo> recentReview(SqlSessionTemplate sst) {
 		return sst.selectList("review.recentReview");
 	}
+
+	public int deleteReview(SqlSessionTemplate sst, int reviewNo) {
+		return sst.delete("review.deleteReview", reviewNo);
+	}
+
+
 	}
 
 
