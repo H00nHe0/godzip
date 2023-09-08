@@ -16,11 +16,13 @@ public class RvoListParam {
 	private String searchType;
 	private String searchValue;
     private int subCaNo;
+    private int memberNo;
     private Map<String, String> searchMap;
     
     @Autowired
-    public RvoListParam(int subCaNo,Map<String, String> searchMap) {
-        this.subCaNo = subCaNo;
+    public RvoListParam(int no, Map<String, String> searchMap) {
+        this.subCaNo = no;
+        this.memberNo = no;
         this.searchMap = searchMap;
         this.searchType = searchMap.get("searchType");
         this.searchValue = searchMap.get("searchValue");

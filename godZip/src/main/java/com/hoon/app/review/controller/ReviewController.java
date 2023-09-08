@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hoon.app.common.page.vo.PageVo;
+import com.hoon.app.member.service.MemberService;
 import com.hoon.app.member.vo.MemberVo;
 import com.hoon.app.product.service.ProductService;
 import com.hoon.app.product.vo.ProductVo;
@@ -42,7 +44,7 @@ public class ReviewController {
 	
 	private ReviewService rs;
 	private ProductService ps;
-	
+
 	@Autowired
 	public ReviewController(ReviewService rs, ProductService ps) {
 		this.rs = rs;
@@ -66,10 +68,31 @@ public class ReviewController {
 		if(result != 1) {
 			return "common/error-page";		
 		}
-
 		return "redirect:/review/board/"+ rvo.getSubCaNo();
 	}
 	
+	@GetMapping("board/myReview/{no}")
+	public String myReview(@RequestParam(defaultValue = "1") int page ,@RequestParam Map<String , String> searchMap,HttpSession session,Model model) {
+		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		int memberNo = mvo.getNo();
+		//페이징
+		log.info("memberNo:"+memberNo);
+		int listCount = rs.getMyReviewCnt(memberNo, searchMap);
+		int currentPage = page;
+		int pageLimit = 5;
+		int boardLimit = 7;
+		PageVo pv = new PageVo(listCount, currentPage, pageLimit, boardLimit);		
+		log.info("listCount:"+listCount);
+		log.info("pv:"+pv);		
+		model.addAttribute("searchMap" , searchMap);
+		model.addAttribute("pv" , pv);
+		List<ReviewVo> rvoList = rs.myReviewList(memberNo, pv, searchMap);
+		log.info("나의리뷰 rvoList select done");
+		log.info("rvoList :"+rvoList);
+		model.addAttribute("rvoList", rvoList);
+		
+		return "review/board/myReview";
+	}
 	
 	@GetMapping("subCategory")
 	@ResponseBody
@@ -199,6 +222,9 @@ public class ReviewController {
 	@ResponseBody
 	public String likeChk(@RequestParam int no, HttpSession session) {
 		MemberVo mvo = (MemberVo)session.getAttribute("mvo");
+		if(mvo == null) {
+			return "notMember";
+		}
 		int memberNo = mvo.getNo();
 		
 		try {
@@ -263,5 +289,16 @@ public class ReviewController {
 			System.out.println(cList);
 			return cList;
 		}
+	}
+	
+	@DeleteMapping("board/delete/{reviewNo}")
+	@ResponseBody
+	public String deleteReview(@PathVariable int reviewNo) {
+		System.out.println("reviewNo :"+reviewNo);
+		int result = rs.deleteReview(reviewNo);
+		if(result != 1) {
+			return "failed";
+		}
+		return "success";
 	}
 }

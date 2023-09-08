@@ -194,6 +194,9 @@ public class MemberController {
 	public String myPage(@RequestParam(defaultValue = "1") int page ,HttpSession session, Model model) {
 		MemberVo loginMember = (MemberVo) session.getAttribute("mvo");		
 		int no = loginMember.getNo();
+		//최신 회원정보 반영(리뷰 등록 개수 등)
+		loginMember = ms.updateMemberInfo(no);
+		session.setAttribute("mvo", loginMember);
 		//페이징
 		int listCount = is.myQCnt(no);
 		int currentPage = page;

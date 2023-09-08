@@ -116,7 +116,6 @@
 				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
 				    </when>
 				    <when test="searchType eq 'nick'">
-				      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
 				      WHERE LOWER(MI.NICK) LIKE LOWER('%${searchValue}%')
 				      AND RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo} ORDER BY RE.NO DESC) T
 				    </when>
@@ -164,6 +163,41 @@
 		    </when>
 		    <otherwise>
 		     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
+		    </otherwise>
+		  </choose>
+		</select>
+		
+		<select id="getMyReviewCnt" resultType="int">
+		  SELECT COUNT (RE.NO)
+		  FROM REVIEW RE
+		  <choose>
+		    <when test="searchType eq 'prodName'">
+		      WHERE LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+		      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
+		    </when>
+		    <when test="searchType eq 'title'">
+		      WHERE LOWER(TITLE) LIKE LOWER('%${searchValue}%')
+		      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
+		    </when>
+		    <when test="searchType eq 'content'">
+		      WHERE LOWER(CONTENT) LIKE LOWER('%${searchValue}%')
+		      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
+		    </when>
+		    <when test="searchType eq 'nick'">
+		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+		      WHERE LOWER(MI.NICK) LIKE LOWER('%${searchValue}%')
+		      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
+		    </when>
+		    <when test="searchType eq 'all'">
+		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%'))
+		      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
+		    </when>
+		    <otherwise>
+		     WHERE RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC
 		    </otherwise>
 		  </choose>
 		</select>
@@ -278,4 +312,63 @@
 		<select id="selectCommCnt" resultType="int">
 			SELECT COMM_COUNT FROM REVIEW WHERE NO = #{reviewNo}
 		</select>
+		
+		<select id="myReviewList" resultType="reviewVo">
+		SELECT ROWNUM AS RNO, T.*
+			FROM
+				(SELECT 
+					RE.NO,
+					RE.CATEGORY_NO,
+					RE.SUB_CA_NO,
+					RE.PROD_NAME,
+					RE.MEMBER_NO,
+					RE.TITLE,
+					RE.CONTENT,
+					RE.SCORE,
+					RE.COUNT,
+					RE.IS_LIKE,
+					RE.PURCHASE_DATE,
+					TO_CHAR(RE.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
+					RE.COMM_COUNT,
+					RE.IS_UPDATE_YN,
+					RE.DELETE_YN,
+					RE.ATT_FILE,
+					MI.NICK,
+					SD.SUB_CATEGORY
+					FROM REVIEW RE
+					INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+					JOIN SUBDIVISION SD ON RE.SUB_CA_NO = SD.NO					
+				  <choose>
+				    <when test='searchType eq "prodName"'>
+				      WHERE LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test='searchType eq "title"'>
+				      WHERE LOWER(TITLE) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'content'">
+				      WHERE LOWER(CONTENT) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'subCategory'">
+				      WHERE LOWER(SD.SUB_CATEGORY) LIKE LOWER('%${searchValue}%')
+				      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <when test="searchType eq 'all'">
+				      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(SD.SUB_CATEGORY) LIKE LOWER('%${searchValue}%'))
+				      AND RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </when>
+				    <otherwise>
+				     WHERE RE.DELETE_YN = 'N' AND RE.MEMBER_NO = #{memberNo} ORDER BY RE.NO DESC) T
+				    </otherwise>
+				  </choose>
+			</select>
+			
+			<delete id="deleteReview">
+				DELETE FROM REVIEW WHERE NO = #{reviewNo}
+			</delete>
 </mapper>
