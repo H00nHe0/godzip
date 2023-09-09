@@ -78,9 +78,9 @@ pageEncoding="UTF-8"%>
         
         <div id="sorting-area"></div>
         <div class="container mt-3" style="margin-left: 100px;">
-          <h2>리뷰 게시판</h2>
+          <h2>검색 게시판</h2>
 
-          <p style="font-weight: 600;">리뷰 게시판 for ${rvoList[0].subCategory}</p>
+          <p style="font-weight: 600;">검색하신 ${searchValue}에 따른 결과 입니다.</p>
           <table class="table table-bordered">
           <thead>
             <tr>

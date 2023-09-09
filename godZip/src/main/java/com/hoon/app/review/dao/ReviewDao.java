@@ -38,11 +38,24 @@ public class ReviewDao {
 		
 		return sst.selectList("review.myReviewList", rp, rb);
 	}
+	public List<ReviewVo> searchList(SqlSessionTemplate sst, PageVo pv, String searchValue) {
+		int limit = pv.getBoardLimit();
+		int offset = (pv.getCurrentPage()-1) * limit;
+		RowBounds rb = new RowBounds(offset , limit);	
+		
+		return sst.selectList("review.searchList",new HashMap<String, Object>() {{
+	        put("pv", pv);
+	        put("searchValue", searchValue);
+	    }});
+	}
 
 	public int getCnt(SqlSessionTemplate sst,int subCaNo, Map<String, String> searchMap) {
 		RvoListParam rp = new RvoListParam(subCaNo,searchMap);
 		System.out.println("it is rp : "+rp.getSearchType()+rp.getSearchValue());
 		return sst.selectOne("review.getCnt" ,rp);
+	}
+	public int getTotalCnt(SqlSessionTemplate sst, String searchValue) {
+		return sst.selectOne("review.getTotalCnt", searchValue);
 	}
 	public int getMyReviewCnt(SqlSessionTemplate sst, int memberNo, Map<String, String> searchMap) {
 		RvoListParam rp = new RvoListParam(memberNo,searchMap);
@@ -57,7 +70,6 @@ public class ReviewDao {
 	public int growCnt(SqlSessionTemplate sst, int no) {
 		return sst.update("review.growCnt", no);
 	}
-
 	public int likeManage(SqlSessionTemplate sst, int no, int memberNo) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("no", no);
@@ -113,6 +125,10 @@ public class ReviewDao {
 
 	public int deleteReview(SqlSessionTemplate sst, int reviewNo) {
 		return sst.delete("review.deleteReview", reviewNo);
+	}
+
+	public int editReview(SqlSessionTemplate sst, ReviewVo rvo) {
+		return sst.update("review.editReview", rvo);
 	}
 
 

@@ -131,6 +131,42 @@
 				    </otherwise>
 				  </choose>
 	</select>
+		<select id="searchList" resultType="reviewVo">
+			SELECT ROWNUM AS RNO, T.*
+				FROM
+					(SELECT 
+					RE.NO,
+					RE.CATEGORY_NO,
+					RE.SUB_CA_NO,
+					RE.PROD_NAME,
+					RE.MEMBER_NO,
+					RE.TITLE,
+					RE.CONTENT,
+					RE.SCORE,
+					RE.COUNT,
+					RE.IS_LIKE,
+					RE.PURCHASE_DATE,
+					TO_CHAR(RE.POST_DATE, 'YYYY-MM-DD HH24:MI') AS POST_DATE,
+					RE.COMM_COUNT,
+					RE.IS_UPDATE_YN,
+					RE.DELETE_YN,
+					RE.ATT_FILE,
+					MI.NICK,
+					SD.SUB_CATEGORY
+					FROM REVIEW RE
+					INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+					JOIN SUBDIVISION SD ON RE.SUB_CA_NO = SD.NO
+	    			<if test="searchValue != null">		
+				      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+				      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%') )
+				      AND RE.DELETE_YN = 'N' ORDER BY RE.NO DESC) T
+		    		</if>
+		    		<if test="searchValue == null">
+				     WHERE RE.DELETE_YN = 'N' ORDER BY RE.NO DESC) T
+					</if>
+		</select>
 	
 		<select id="getCnt" resultType="int">
 		  SELECT COUNT (RE.NO)
@@ -165,6 +201,21 @@
 		     WHERE RE.DELETE_YN = 'N' AND RE.SUB_CA_NO = #{subCaNo}
 		    </otherwise>
 		  </choose>
+		</select>
+		<select id="getTotalCnt" resultType="int">
+		  SELECT COUNT (RE.NO)
+		  FROM REVIEW RE
+		    <if test="searchValue != null">
+		      INNER JOIN MEMBER_INFO MI ON RE.MEMBER_NO = MI.NO
+		      WHERE ( LOWER(PROD_NAME) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(RE.TITLE) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(RE.CONTENT) LIKE LOWER('%${searchValue}%')
+		      OR LOWER(MI.NICK) LIKE LOWER('%${searchValue}%'))
+		      AND RE.DELETE_YN = 'N'
+		    </if>
+		    <if test="searchValue == null">
+		     WHERE RE.DELETE_YN = 'N'
+		    </if>
 		</select>
 		
 		<select id="getMyReviewCnt" resultType="int">
@@ -371,4 +422,18 @@
 			<delete id="deleteReview">
 				DELETE FROM REVIEW WHERE NO = #{reviewNo}
 			</delete>
+			
+			<update id="editReview">
+				UPDATE REVIEW 
+				SET 
+				CATEGORY_NO = #{categoryNo} 
+				, SUB_CA_NO = #{subCaNo} 
+				, PROD_NAME = #{prodName} 
+				, TITLE = #{title} 
+				, CONTENT = #{content} 
+				, PURCHASE_DATE = #{purchaseDate} 
+				, IS_UPDATE_YN = 'Y'  
+				, ATT_FILE = #{attFile}
+				WHERE NO = #{no}
+			</update>
 </mapper>

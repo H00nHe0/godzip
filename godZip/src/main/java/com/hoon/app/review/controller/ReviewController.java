@@ -153,6 +153,9 @@ public class ReviewController {
 			FileUtils.copyInputStreamToFile(fileStream, targetFile); //파일저장
 			map.put("url", "/app/resources/img/reviewImg/"+uploadedFileName);
 			map.put("responseCode", "success");
+			for (Map.Entry<String, String> pair : map.entrySet()) {
+				  System.out.println(String.format("Key (name) is: %s, Value (age) is : %s", pair.getKey(), pair.getValue()));
+				}
 		}catch (IOException e) {
 			FileUtils.deleteQuietly(targetFile); //문제발생시 저장된 파일삭제
 			map.put("responseCode", "error");
@@ -300,5 +303,24 @@ public class ReviewController {
 			return "failed";
 		}
 		return "success";
+	}
+	@GetMapping("board/edit/{reviewNo}")
+	public String editForm(@PathVariable int reviewNo, Model model) {
+		int no = reviewNo;
+		ReviewVo rvo = rs.getDetail(no);
+		model.addAttribute("rvo", rvo);
+		List<ProductVo> cList = ps.getCList();
+		model.addAttribute("cList", cList);
+		return "review/board/edit";
+	}
+	@PostMapping("board/edit")
+	public String editReview(ReviewVo rvo) {
+		int no = rvo.getNo();
+		log.info("수정될 리뷰정보 : "+rvo);
+		int result = rs.editReview(rvo);
+		if(result != 1) {
+			return "board/edit"+no;
+		}
+		return "redirect:/review/board/detail/"+no;
 	}
 }
