@@ -782,5 +782,11 @@ pageEncoding="UTF-8"%>
         });
       }
     });
+    var editMyReview = document.querySelector("#editMyReview");
+    editMyReview.addEventListener("click", function () {
+      if (window.confirm("리뷰 수정페이지로 이동하시겠습니까?")) {
+        window.location.href = "${root}/review/board/edit/" + reviewNo;
+      }
+    });
   });
 </script>

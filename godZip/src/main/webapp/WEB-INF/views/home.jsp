@@ -59,7 +59,7 @@ pageEncoding="UTF-8"%>
       <div id="review-area">
 		  <div style="display: flex; align-items: center; justify-content: center;">
 		  <h2 class="fw-bold mx-4" style="text-align: center; margin-top: 10px;">Recent reviews</h2>
-		  	<button type="button" class="button" style="text-align: center; margin-top: 10px;">
+		  	<button type="button" class="button" style="text-align: center; margin-top: 10px;" id="getRecentReview">
 			  <span class="button__text">Refresh</span>
 			  <span class="button__icon"><svg class="svg" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M35.3 12.7c-2.89-2.9-6.88-4.7-11.3-4.7-8.84 0-15.98 7.16-15.98 16s7.14 16 15.98 16c7.45 0 13.69-5.1 15.46-12h-4.16c-1.65 4.66-6.07 8-11.3 8-6.63 0-12-5.37-12-12s5.37-12 12-12c3.31 0 6.28 1.38 8.45 3.55l-6.45 6.45h14v-14l-4.7 4.7z"></path><path d="M0 0h48v48h-48z" fill="none"></path></svg></span>
 			</button>		  
@@ -96,7 +96,7 @@ pageEncoding="UTF-8"%>
 				</div>
 		    </div>
 			<div class="card-title">
-				<h5 class="card-text">${list.title}(${list.commCount})</h5>
+				<h5 class="card-text">${list.title}(${list.commCount}) &nbsp;${list.attFile}</h5>
 			</div>
 			<div style="text-align: center; margin-bottom: 10px;">
 				<a href="${root}/review/board/detail/${list.no}" class="btn btn-primary" id="review${list.no}" onclick="growCnt(this)">See Review</a>
@@ -117,47 +117,54 @@ pageEncoding="UTF-8"%>
 				<ul class="side-uL" id="subListArea${cl.no}"></ul>
 		    <div class="cover">
 		        <p>${cl.caName}</p>
-		    </div>
-		   </div>
-      	</c:forEach>
+          </div>
+        </div>
+      </c:forEach>
 		</div>
-	
-      </div>
-      
-      <%-- <%@ include file="/WEB-INF/views/common/footer.jsp" %> --%>
-    </div>
-  </body>
-      <link rel="stylesheet" href="${root}/resources/css/main/home.css"></link>
-      <script>
-      $(document).ready(function () {
-
-      var currentSlide = 0;
-      var slides = document.querySelectorAll('.slideshow img');
-      slides[currentSlide].classList.add('active'); // 첫 번째 슬라이드에 클래스 추가
-
-      var slideInterval = setInterval(nextSlide, 3000); // 3초마다 슬라이드 변경
-
-      function nextSlide() {
-        slides[currentSlide].classList.remove('active'); // 현재 슬라이드의 클래스 제거
-        currentSlide = (currentSlide + 1) % slides.length; // 다음 슬라이드의 인덱스 계산
-        slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
-      }
-      });
-
-	  function growCnt(element) {
-        var reviewNo = element.getAttribute("id").replace("review", "");
-
-        $.ajax({
-            url: "${root}/review/board/count/" + reviewNo,
-            type: "PUT",
-            data: { no: reviewNo },
-            success: function () {
-                console.log("게시물 조회수 증가");
-            },
-            error: function (error) {
-                console.log(error);
-            },
-        });
-    }
-      </script>
+    
+  </div>
+  
+  <%-- <%@ include file="/WEB-INF/views/common/footer.jsp" %> --%>
+</div>
+</body>
+<link rel="stylesheet" href="${root}/resources/css/main/home.css"></link>
 </html>
+<script>
+  $(document).ready(function () {
+    var getRecentReview = document.querySelector("#getRecentReview");
+    getRecentReview.addEventListener("click", function () {
+            window.location.href = "${root}/home";
+    
+        })
+        
+        
+        function growCnt(element) {
+      var reviewNo = element.getAttribute("id").replace("review", "");
+      
+      $.ajax({
+          url: "${root}/review/board/count/" + reviewNo,
+          type: "PUT",
+          data: { no: reviewNo },
+          success: function () {
+              console.log("게시물 조회수 증가");
+          },
+          error: function (error) {
+              console.log(error);
+          },
+      });
+  }
+
+  var currentSlide = 0;
+  var slides = document.querySelectorAll('.slideshow img');
+  slides[currentSlide].classList.add('active'); // 첫 번째 슬라이드에 클래스 추가
+
+  var slideInterval = setInterval(nextSlide, 3000); // 3초마다 슬라이드 변경
+
+  function nextSlide() {
+    slides[currentSlide].classList.remove('active'); // 현재 슬라이드의 클래스 제거
+    currentSlide = (currentSlide + 1) % slides.length; // 다음 슬라이드의 인덱스 계산
+    slides[currentSlide].classList.add('active'); // 다음 슬라이드에 클래스 추가
+  }
+});
+  </script>
+  

@@ -36,12 +36,15 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       </a>
     </div>
     <div id="search-area">
+      <form id="searchForm" action="${root}/home/search" method="get">
       <input
         type="text"
         placeholder="Seach items or categories you want!"
-        name="text"
         class="input"
+        name="searchValue"
+        value="${searchValue}"
       />
+    </form>
     </div>
     <div id="slogan">
       <h4 class="fst-italic">Share , Check reviews and Choose!</h4>
@@ -224,7 +227,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
   $(document).ready(function () {
     var nickHolderValue = document.querySelector(".nickHolder");
-    var sessionDuration = 900; // 세션 지속 시간 (15분)
+    var sessionDuration = 1200; // 세션 지속 시간 (15분)
     var sessionEndTime = Math.floor(Date.now() / 1000) + sessionDuration;
     sessionStorage.setItem("sessionTime", sessionEndTime);
     if (nickHolderValue) {

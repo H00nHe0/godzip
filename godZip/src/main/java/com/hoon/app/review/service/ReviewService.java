@@ -33,8 +33,14 @@ public class ReviewService {
 		return rdao.getRvoList(sst, subCaNo, pv, searchMap);
 	}
 
+	public List<ReviewVo> searchList(PageVo pv, String searchValue) {
+		return rdao.searchList(sst, pv, searchValue);
+	}
 	public int getCnt(int subCaNo, Map<String, String> searchMap) {
 		return rdao.getCnt(sst,subCaNo, searchMap);
+	}
+	public int getTotalCnt(String searchValue) {
+		return rdao.getTotalCnt(sst, searchValue);
 	}
 	public int getMyReviewCnt(int memberNo, Map<String, String> searchMap) {
 		return rdao.getMyReviewCnt(sst,memberNo, searchMap);
@@ -97,5 +103,11 @@ public class ReviewService {
 	public int deleteReview(int reviewNo) {
 		return rdao.deleteReview(sst, reviewNo);
 	}
+
+	public int editReview(ReviewVo rvo) {
+		return rdao.editReview(sst, rvo);
+	}
+
+
 
 }

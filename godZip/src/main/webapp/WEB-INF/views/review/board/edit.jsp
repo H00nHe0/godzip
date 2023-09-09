@@ -98,7 +98,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         background: white;
       }
 
-      .form #writeBtn {
+      .form #editBtn {
         height: 40px;
         width: 80%;
         color: #000;
@@ -112,7 +112,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
         background: #ffc107;
       }
 
-      .form #writeBtn:hover {
+      .form #editBtn:hover {
         background: #ffc107;
       }
       #container-holder {
@@ -201,17 +201,17 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
       <div id="container-holder">
         <section class="container-area">
-          <header>리뷰 작성 양식</header>
-          <form class="form" action="${root}/review/submitReview" method="POST">
+          <header>리뷰 수정 양식</header>
+          <form class="form" action="${root}/review/board/edit" method="POST">
             <div id="reviewer">
               <label>Reviewer :</label>
               ${mvo.nick}
-              <input type="hidden" name="memberNo" value="${mvo.no}" />
+              <input type="hidden" name="no" value="${rvo.no}" />
             </div>
             <div class="column">
               <div class="select-box">
                 <select required name="categoryNo" id="categorySelect">
-                  <option value="0">상품 카테고리</option>
+                  <option value="">상품 카테고리</option>
                   <c:forEach items="${cList}" var="cl">
                     <option value="${cl.no}">${cl.caName}</option>
                   </c:forEach>
@@ -225,30 +225,34 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
             </div>
             <div class="input-box">
               <label>리뷰 제품명</label>
-              <input required type="text" name="prodName" />
+              <input
+                type="text"
+                name="prodName"
+                placeholder="${rvo.prodName}"
+              />
             </div>
             <div class="column">
               <div class="input-box">
                 <label>구매일</label>
-                <input
-                  required=""
-                  placeholder="Enter purchase date"
-                  type="date"
-                  name="purchaseDate"
-                />
+                <input placeholder="${rvo.purchaseDate}" name="purchaseDate" />
               </div>
               <div class="rating-box input-box">
                 <label>구매 만족도 &nbsp;&nbsp;</label>
                 <div class="rating">
-                  <input value="5" name="score" id="star5" type="radio" />
+                  <input value="5" name="score" id="star5" type="radio"
+                  ${rvo.score == 5 ? 'checked' : ''} />
                   <label for="star5"></label>
-                  <input value="4" name="score" id="star4" type="radio" />
+                  <input value="4" name="score" id="star4" type="radio"
+                  ${rvo.score == 4 ? 'checked' : ''} />
                   <label for="star4"></label>
-                  <input value="3" name="score" id="star3" type="radio" />
+                  <input value="3" name="score" id="star3" type="radio"
+                  ${rvo.score == 3 ? 'checked' : ''} />
                   <label for="star3"></label>
-                  <input value="2" name="score" id="star2" type="radio" />
+                  <input value="2" name="score" id="star2" type="radio"
+                  ${rvo.score == 2 ? 'checked' : ''} />
                   <label for="star2"></label>
-                  <input value="1" name="score" id="star1" type="radio" />
+                  <input value="1" name="score" id="star1" type="radio"
+                  ${rvo.score == 1 ? 'checked' : ''} />
                   <label for="star1"></label>
                 </div>
                 <div id="score"></div>
@@ -260,8 +264,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
               <div class="input-box">
                 <label>제목</label>
                 <input
-                  required=""
-                  placeholder="제목을 입력하세요"
+                  placeholder="${rvo.title}"
                   id="title"
                   type="text"
                   name="title"
@@ -269,13 +272,15 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
               </div>
 
               <div id="summernote-holder">
-                <textarea id="summernote" name="content"> </textarea>
-
-                <input id="thumbnail" name="attFile" style="display: none;"></input>
+                <textarea id="summernote" name="content">
+${rvo.content}
+                </textarea>
+                <input id="thumbnail" name="attFile" style="display: none
+                ;"></input>
               </div>
             </div>
             <div style="text-align: center">
-              <button id="writeBtn">Submit</button>
+              <button id="editBtn">수정하기</button>
             </div>
           </form>
         </section>
@@ -306,7 +311,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     });
 
     $("#summernote").summernote({
-      placeholder: "리뷰 내용을 입력하세요",
+      placeholder: "",
       tabsize: 2,
       height: 350,
       lang: "ko-KR",
@@ -370,7 +375,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
       data = new FormData();
       data.append("file", file);
       $.ajax({
-        url: "uploadSummernoteImage",
+        url: "${root}/review/uploadSummernoteImage",
         data: data,
         type: "POST",
         dataType: "JSON",
@@ -379,7 +384,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
         success: function (data) {
           $(editor).summernote("insertImage", data.url);
-          if(!thumbnail.value){
+          if (!thumbnail.value) {
             thumbnail.value +=
               "<img style='width: 60px; height: 60px;' src='" + data.url + "'>";
           }
@@ -414,6 +419,23 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
           console.log("Error:", error);
         },
       });
+    });
+    var form = document.querySelector(".form");
+    var inputProdName = document.querySelector("input[name = 'prodName']");
+    var inputPurchaseDate = document.querySelector(
+      "input[name = 'purchaseDate']"
+    );
+    var inputTitle = document.querySelector("input[name = 'title']");
+    form.addEventListener("submit", function (event) {
+      if (inputProdName.value.trim() === "") {
+        inputProdName.setAttribute("value", inputProdName.placeholder);
+      }
+      if (inputPurchaseDate.value.trim() === "") {
+        inputPurchaseDate.setAttribute("value", inputPurchaseDate.placeholder);
+      }
+      if (inputTitle.value.trim() === "") {
+        inputTitle.setAttribute("value", inputTitle.placeholder);
+      }
     });
   });
 </script>
